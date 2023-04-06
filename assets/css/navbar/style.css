@@ -1,0 +1,353 @@
+html {
+    scroll-behavior: smooth;
+    --navbar-color-primary: #262626;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#navbar * {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+#navbar .sidebar {
+    --min: 78px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--navbar-color-primary);
+    z-index: 100;
+    transition: all 0.5s ease;
+}
+
+#navbar .sidebar.close {
+    width: var(--min);
+}
+
+#navbar .sidebar .logo-details {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#navbar .sidebar .logo-details i {
+    content: url("https://wetter-naarn.at/assets/img/logo.svg");
+    font-size: 30px;
+    color: #fff;
+    height: 50px;
+    min-width: 50px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+#navbar .sidebar .logo-details .logo_name {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 600;
+    transition: 0.3s ease;
+    transition-delay: 0.1s;
+}
+
+#navbar .sidebar.close .logo-details .logo_name {
+    transition-delay: 0s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#navbar .sidebar .nav-links {
+    height: 100%;
+    overflow: auto;
+}
+
+#navbar .sidebar.close .nav-links {
+    overflow: visible;
+}
+
+#navbar .sidebar .nav-links::-webkit-scrollbar {
+    display: none;
+}
+
+#navbar .sidebar .nav-links li {
+    position: relative;
+    list-style: none;
+    transition: all 0.4s ease;
+}
+
+#navbar .sidebar .nav-links li .iocn-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#navbar .sidebar.close .nav-links li .iocn-link {
+    display: block
+}
+
+#navbar .sidebar .nav-links li i {
+    height: 50px;
+    min-width: var(--min);
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#navbar .sidebar .nav-links li.showMenu i.arrow {
+    transform: rotate(-180deg);
+}
+
+#navbar .sidebar.close .nav-links i.arrow {
+    display: none;
+}
+
+#navbar .sidebar .nav-links li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+#navbar .sidebar .nav-links li a .link_name {
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    transition: all 0.4s ease;
+}
+
+#navbar .sidebar.close .nav-links li a .link_name {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#navbar .sidebar .nav-links li .sub-menu {
+    padding: 6px 6px 14px 80px;
+    margin-top: -10px;
+    background: var(--navbar-color-primary);
+    display: none;
+}
+
+#navbar .sidebar .nav-links li.showMenu .sub-menu {
+    display: block;
+}
+
+#navbar .sidebar .nav-links li .sub-menu a {
+    color: #fff;
+    font-size: 15px;
+    padding: 5px 0;
+    white-space: nowrap;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+#navbar .sidebar .nav-links li .sub-menu a:hover {
+    opacity: 1;
+}
+
+#navbar .sidebar.close .nav-links li .sub-menu {
+    position: absolute;
+    left: 100%;
+    top: -10px;
+    margin-top: 0;
+    padding: 10px 20px;
+    border-radius: 0 6px 6px 0;
+    opacity: 0;
+    display: block;
+    pointer-events: none;
+    transition: 0s;
+}
+
+#navbar .sidebar.close .nav-links li:hover .sub-menu {
+    top: 0;
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.4s ease;
+}
+
+#navbar .sidebar .nav-links li .sub-menu .link_name {
+    display: none;
+}
+
+#navbar .sidebar.close .nav-links li .sub-menu .link_name {
+    font-size: 18px;
+    opacity: 1;
+    display: block;
+}
+
+#navbar .sidebar .nav-links li .sub-menu.blank {
+    opacity: 1;
+    pointer-events: auto;
+    padding: 3px 20px 6px 16px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#navbar .sidebar .nav-links li:hover .sub-menu.blank {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#navbar .sidebar .profile-details {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--navbar-color-primary);
+    padding: 12px 0;
+    transition: all 0.5s ease;
+}
+
+#navbar .sidebar.close .profile-details {
+    background: none;
+}
+
+#navbar .sidebar.close .profile-details {
+    width: var(--min);
+}
+
+#navbar .sidebar .profile-details .profile-content {
+    display: flex;
+    align-items: center;
+}
+
+#navbar .sidebar .profile-details img {
+    height: 52px;
+    width: 52px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 0 14px 0 12px;
+    background: var(--navbar-color-primary);
+    transition: all 0.5s ease;
+}
+
+#navbar .sidebar.close .profile-details img {
+    padding: 10px;
+}
+
+#navbar .sidebar .profile-details .profile_name,
+#navbar .sidebar .profile-details .job {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+#navbar .sidebar.close .profile-details i,
+#navbar .sidebar.close .profile-details .profile_name,
+#navbar .sidebar.close .profile-details .job {
+    display: none;
+}
+
+#navbar .sidebar .profile-details .job {
+    font-size: 12px;
+}
+
+#navbar .home-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    transition: all 0.5s ease;
+    padding: 12px;
+}
+
+#navbar .sidebar.close~.home-section {
+    left: var(--min);
+    width: calc(100% - var(--min));
+}
+
+#navbar .home-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#navbar .home-section .home-content .menu,
+#navbar .home-section .home-content .text {
+    color: #fff;
+    font-size: 35px;
+}
+
+#navbar .home-section .home-content .menu {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#navbar .home-section .home-content .text {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+
+#navbar .navhead {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: var(--navbar-color-primary);
+    z-index: -100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navbar .navhead .title {
+    font-size: 20px;
+    color: #fff;
+}
+
+#content {
+    position: absolute;
+    top: 0px;
+    left: 78px;
+    width: calc(100% - 78px);
+    height: auto;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@media screen and (max-width: 769px) {
+    #navbar .sidebar.close {
+        --min: 0px;
+        left: -30px;
+    }
+
+    #navbar .sidebar {
+        display: block;
+        --min: 78px;
+    }
+
+    #navbar .menu:not(.close) {
+        margin-left: calc(100% - 40px);
+        transition: margin-left 0.5s ease;
+        z-index: 100;
+    }
+    
+    #content {
+        top: 60px !important;
+        left: 0px !important;
+        width: 100% !important;
+    }
+}
+
+@media screen and (min-width: 768px) {
+
+    #navbar .menu,
+    #navbar .navhead {
+        display: none !important;
+    }
+
+    #navbar .sidebar .nav-links li:hover i {
+        background-color: #00000041;
+    }
+}

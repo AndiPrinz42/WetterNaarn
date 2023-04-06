@@ -1,0 +1,570 @@
+<div id="dashboard">
+    <div class="wrapper">
+        <div id="item1" class="contentitem">
+            <div class="title">
+                <span class="indented-left">
+                    <strong>Naarn im Machlande</strong> - <span class="time">N/A</span>
+                </span>
+            </div>
+            <div class="iconwrapper">
+                <div class="icon">
+                    <img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Aktuelle Wetterlage">
+                </div>
+            </div>
+            <div class="temp">
+                <div class="indented-left">N/A</div>
+            </div>
+            <div class="condition">
+                <div class="indented-left">N/A</div>
+            </div>
+            <div class="daynighttemp">
+                <div class="indented-left">Tag <span class="day">N/A</span> • Nacht <span
+                        class="night">N/A</span></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="item2" class="contentitem">
+            <div class="title">
+                <span class="indented-left">
+                    <strong>aktuelle Werte</strong>
+                </span>
+            </div>
+            <div id="section1">
+                <div class="feelslike-sunlocation">
+                    <div class="top">
+                        <span class="feelsliketemp indented-left left">
+                            N/A
+                        </span>
+                        <span class="sungraph indented-right right">
+                            <img class="sunimgpos"
+                                src="https://wetter-naarn.at/assets/img/dashboard/icons/sunimgpos.svg" alt="Horizont">
+                            <img class="sunimg" src="https://wetter-naarn.at/assets/img/dashboard/icons/forecast/8d.svg"
+                                alt="Sonne am Horizont">
+                        </span>
+                    </div>
+                    <div class="bottom">
+                        <span class="feelsliketxt indented-left left">
+                            Windchill
+                        </span>
+                        <span id="suntimes" class="indented-right right">
+                            <span class="riseicon">&#127749;</span><span class="rise">N/A</span> • <span
+                                class="seticon">&#127751;</span><span class="set">N/A</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="section2">
+                <div id="valueTable">
+                    <div class="column1">
+                        <div class="item humidity">Luftfeuchte<span class="value">N/A</span></div>
+                        <div class="item dewpoint">Taupunkt<span class="value">N/A</span></div>
+                        <div class="item pressure">Luftdruck<span class="value">N/A</span></div>
+                        <div class="item wind">Wind<span class="value">N/A</span></div>
+                        <div class="item guests">Windböen<span class="value">N/A</span></div>
+                        <div class="item windDirection">Windrichtung<span class="value">N/A</span></div>
+                        <div class="item lasticeday">Letzter Frost<span class="value">N/A</span></div>
+                    </div>
+                    <div class="column2">
+                        <div class="item rain">Regen heute<span class="value">N/A</span></div>
+                        <div class="item lastRain">Letzter Regen<span class="value">N/A</span></div>
+                        <div class="item cloudline">Wolkenuntergrenze<span class="value">N/A</span></div>
+                        <div class="item snowline">Schneeuntergrenze<span class="value">N/A</span></div>
+                        <div class="item horizView">Sichtweite<span class="value">N/A</span></div>
+                        <div class="item sunset">Sonnenuntergang<span class="value">N/A</span></div>
+                        <div class="item moonphase">Mondphase<span class="value">N/A</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="item3" class="contentitem">
+            <div class="title">
+                <span class="indented-left"><strong>Wetter heute</strong></span>
+            </div>
+            <div id="valuetable">
+                <div id="night" class="item">
+                    <div class="time">Nacht</div>
+                    <div class="temp">N/A</div>
+                    <div class="icon"><img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage bei Nacht"></div>
+                    <div class="wind">N/A</div>
+                    <div class="pop">N/A</div>
+                </div>
+                <div id="morning" class="item">
+                    <div class="time">Vorm.</div>
+                    <div class="temp">N/A</div>
+                    <div class="icon"><img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage am Morgen"></div>
+                    <div class="wind">N/A</div>
+                    <div class="pop">N/A</div>
+                </div>
+                <div id="afternoon" class="item">
+                    <div class="time">Nachm.</div>
+                    <div class="temp">N/A</div>
+                    <div class="icon"><img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage am Nachmittag"></div>
+                    <div class="wind">N/A</div>
+                    <div class="pop">N/A</div>
+                </div>
+                <div id="evening" class="item">
+                    <div class="time">Abend</div>
+                    <div class="temp">N/A</div>
+                    <div class="icon"><img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage am Abend"></div>
+                    <div class="wind">N/A</div>
+                    <div class="pop">N/A</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div id="item4" class="contentitem">
+            <div class="title">
+                <span class="indented-left"><strong>Prognose</strong></span>
+            </div>
+            <div id="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header active">
+                        <div class="infos">
+                            <div class="item date"><span class="monthday">Heute</span> | <span
+                                    class="weekday">N/A</span></div>
+                            <div class="item temp"><span class="max">N/A</span>/<span class="min">N/A</span></div>
+                            <div class="item condition">
+                                <img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                                <div class="conditionTxt">N/A</div>
+                            </div>
+                            <div class="item rain">
+                                <img class=" icon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/raindrop.svg" alt="Regentropfen">
+                                <div class="value">N/A</div>
+                            </div>
+                            <div class="item wind">
+                                <img class="dir" src="https://wetter-naarn.at/assets/img/dashboard/icons/winddir.svg" alt="Windrichtung">
+                                <div class="value"><span class="dirTxt">N/A</span> <span class="speed">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <img class="angle-down-icon"
+                            src="https://wetter-naarn.at/assets/img/dashboard/icons/angle-down.svg" alt="Navigationspfeil">
+                    </button>
+                    <div class="accordion-body active">
+                        <div class="day">
+                            <div class="time">Tag</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="night">
+                            <div class="time">Nacht</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid sun">
+                            <div class="item sunrise">
+                                <div>Sonnenaufgang</div>
+                                <div>N/A</div>
+                            </div>
+                            <div class="item sunset">
+                                <div>Sonnenuntergang</div>
+                                <div>N/A</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <div class="infos">
+                            <div class="item date"><span class="monthday">N/A</span> | <span class="weekday">N/A</span>
+                            </div>
+                            <div class="item temp"><span class="max">N/A</span>/<span class="min">N/A</span></div>
+                            <div class="item condition">
+                                <img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                                <div class="conditionTxt">N/A</div>
+                            </div>
+                            <div class="item rain">
+                                <img class="icon" src="https://wetter-naarn.at/assets/img/dashboard/icons/raindrop.svg" alt="Regentropfen">
+                                <div class="value">N/A</div>
+                            </div>
+                            <div class="item wind">
+                                <img class="dir" src="https://wetter-naarn.at/assets/img/dashboard/icons/winddir.svg" alt="Windrichtung">
+                                <div class="value"><span class="dirTxt">N/A</span> <span class="speed">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <img class="angle-down-icon"
+                            src="https://wetter-naarn.at/assets/img/dashboard/icons/angle-down.svg" alt="Navigationspfeil">
+                    </button>
+                    <div class="accordion-body">
+                        <div class="day">
+                            <div class="time">Tag</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="night">
+                            <div class="time">Nacht</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid sun">
+                            <div class="item sunrise">
+                                <div>Sonnenaufgang</div>
+                                <div>N/A</div>
+                            </div>
+                            <div class="item sunset">
+                                <div>Sonnenuntergang</div>
+                                <div>N/A</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <div class="infos">
+                            <div class="item date"><span class="monthday">N/A</span> | <span class="weekday">N/A</span>
+                            </div>
+                            <div class="item temp"><span class="max">N/A</span>/<span class="min">N/A</span></div>
+                            <div class="item condition">
+                                <img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                                <div class="conditionTxt">N/A</div>
+                            </div>
+                            <div class="item rain">
+                                <img class=" icon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/raindrop.svg" alt="Regentropfen">
+                                <div class="value">N/A</div>
+                            </div>
+                            <div class="item wind">
+                                <img class="dir" src="https://wetter-naarn.at/assets/img/dashboard/icons/winddir.svg" alt="Windrichtung">
+                                <div class="value"><span class="dirTxt">N/A</span> <span class="speed">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <img class="angle-down-icon"
+                            src="https://wetter-naarn.at/assets/img/dashboard/icons/angle-down.svg" alt="Navigationspfeil">
+                    </button>
+                    <div class="accordion-body">
+                        <div class="day">
+                            <div class="time">Tag</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="night">
+                            <div class="time">Nacht</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid sun">
+                            <div class="item sunrise">
+                                <div>Sonnenaufgang</div>
+                                <div>N/A</div>
+                            </div>
+                            <div class="item sunset">
+                                <div>Sonnenuntergang</div>
+                                <div>N/A</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <div class="infos">
+                            <div class="item date"><span class="monthday">N/A</span> | <span class="weekday">N/A</span>
+                            </div>
+                            <div class="item temp"><span class="max">N/A</span>/<span class="min">N/A</span></div>
+                            <div class="item condition">
+                                <img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                                <div class="conditionTxt">N/A</div>
+                            </div>
+                            <div class="item rain">
+                                <img class="icon" src="https://wetter-naarn.at/assets/img/dashboard/icons/raindrop.svg" alt="Regentropfen">
+                                <div class="value">N/A</div>
+                            </div>
+                            <div class="item wind">
+                                <img class="dir" src="https://wetter-naarn.at/assets/img/dashboard/icons/winddir.svg" alt="Windrichtung">
+                                <div class="value"><span class="dirTxt">N/A</span> <span class="speed">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <img class="angle-down-icon"
+                            src="https://wetter-naarn.at/assets/img/dashboard/icons/angle-down.svg" alt="Navigationspfeil">
+                    </button>
+                    <div class="accordion-body">
+                        <div class="day">
+                            <div class="time">Tag</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="night">
+                            <div class="time">Nacht</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid sun">
+                            <div class="item sunrise">
+                                <div>Sonnenaufgang</div>
+                                <div>N/A</div>
+                            </div>
+                            <div class="item sunset">
+                                <div>Sonnenuntergang</div>
+                                <div>N/A</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header bottom-round">
+                        <div class="infos">
+                            <div class="item date"><span class="monthday">N/A</span> | <span class="weekday">N/A</span>
+                            </div>
+                            <div class="item temp"><span class="max">N/A</span>/<span class="min">N/A</span></div>
+                            <div class="item condition">
+                                <img src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                                <div class="conditionTxt">N/A</div>
+                            </div>
+                            <div class="item rain">
+                                <img class="icon" src="https://wetter-naarn.at/assets/img/dashboard/icons/raindrop.svg" alt="Regentropfen">
+                                <div class="value">N/A</div>
+                            </div>
+                            <div class="item wind">
+                                <img class="dir" src="https://wetter-naarn.at/assets/img/dashboard/icons/winddir.svg" alt="Windrichtung">
+                                <div class="value"><span class="dirTxt">N/A</span> <span class="speed">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <img class="angle-down-icon"
+                            src="https://wetter-naarn.at/assets/img/dashboard/icons/angle-down.svg" alt="Navigationspfeil">
+                    </button>
+                    <div class="accordion-body bottom-round">
+                        <div class="day">
+                            <div class="time">Tag</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="night">
+                            <div class="time">Nacht</div>
+                            <div class="icon">
+                                <img class="daycycleIcon"
+                                    src="https://wetter-naarn.at/assets/img/dashboard/icons/NA.svg" alt="Wetterlage">
+                            </div>
+                            <div class="grid">
+                                <div class="item temp">
+                                    <div>Temperatur</div>
+                                    <div><span class="max">N/A</span> / <span class="min">N/A</span></div>
+                                </div>
+                                <div class="item wind">
+                                    <div>Wind</div>
+                                    <div><span class="deg">N/A</span> <span class="speed">N/A</span></div>
+                                </div>
+                                <div class="item rain">
+                                    <div>Regenwahrscheinlichkeit</div>
+                                    <div>N/A</div>
+                                </div>
+                                <div class="item clouds">
+                                    <div>Wolkenbedeckung</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid sun">
+                            <div class="item sunrise">
+                                <div>Sonnenaufgang</div>
+                                <div>N/A</div>
+                            </div>
+                            <div class="item sunset">
+                                <div>Sonnenuntergang</div>
+                                <div>N/A</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

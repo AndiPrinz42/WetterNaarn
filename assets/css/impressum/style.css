@@ -1,0 +1,14 @@
+#impressum {
+    font-family: Poppins, sans-serif;
+    padding: 10px 25px;
+    word-wrap: break-word;
+}
+
+#impressum a {
+    color: #0645AD;
+    text-decoration: none;
+}
+
+#impressum a:hover {
+    text-decoration: underline;
+}

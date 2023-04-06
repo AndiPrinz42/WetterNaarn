@@ -1,0 +1,41 @@
+<div class="inputWrapper">
+    <div class="input">
+        <div class="title">Tageswerte</div>
+        <div class="select">
+            <input type="date" id="day" name="day" min="" max="" onclick="this.showPicker()" class="datepicker">
+            <select data-placeholder="Sensoren auswählen..." id="sensors" class="sensors" multiple>
+                <optgroup label="Temperatur">
+                    <option selected>Temperatur</option>
+                    <option>Taupunkt</option>
+                    <option>Windchill</option>
+                </optgroup>
+                <option>Luftfeuchte</option>
+                <option>Luftdruck</option>
+                <option>Regen</option>
+                <optgroup label="Wind">
+                    <option>Windgeschwindigkeit</option>
+                    <option>Windböen</option>
+                    <option>Windrichtung</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="btnWrapper margin">
+            <div class="btn">
+                <button type="button" id="viewToggle" class="full_btn"><i id="viewTypeIcon" class='bx bx-table'></i>
+                    <span id="viewType">Tabellenansicht</span></i></button>
+                <button type="button" id="download" class="icon_btn"><i class='bx bxs-download'></i></button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="chartWrapper">
+    <canvas id="chartElement">No Canvas support</canvas>
+    <div class="loader">
+        Keine Javascript Unterstützung...
+    </div>
+</div>
+
+<div id="tableWrapper"></div>

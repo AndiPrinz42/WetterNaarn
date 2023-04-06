@@ -1,0 +1,201 @@
+#content {
+    font-family: 'Roboto', sans-serif;
+}
+
+#content #chartWrapper {
+    position: relative;
+    width: 80%;
+    margin: auto;
+}
+
+#content #chartElement {
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#content .loader {
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+#content .btn button {
+    height: 40px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#content .btn .full_btn {
+    background-color: #275efe;
+}
+
+#content .btn .icon_btn {
+    background-color: #184fee;
+    width: 40px;
+}
+
+#content .inputWrapper,
+#content .btnWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+#content .select,
+#content .btnWrapper {
+    margin-top: 10px;
+}
+
+#content .select input {
+    margin-right: 5px;
+}
+
+#content .select {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+#content .input {
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 14px;
+}
+
+#content .btn button:hover {
+    opacity: 0.95;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#content .title {
+    font-weight: 600;
+    font-size: 2em;
+    text-align: center;
+}
+
+#content .sensors {
+    width: min-content;
+}
+
+#content .dash_longtime {
+    font-size: 1.4em;
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+}
+
+
+
+#content #tableWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2em;
+}
+
+#content table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 90%;
+    table-layout: fixed;
+}
+
+#content table caption {
+    font-size: 1.5em;
+    margin: .5em 0 .75em;
+}
+
+#content table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+}
+
+#content table tr:nth-of-type(even) {
+    background-color: #f1f1f1;
+}
+
+#content table th,
+#content table td {
+    padding: .625em;
+    text-align: center;
+}
+
+#content table th {
+    background-color: #e0e0e0;
+    font-size: .85em;
+    text-transform: uppercase;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+    /* chart */
+    #content #chartWrapper {
+        width: 100%;
+    }
+
+    /* table */
+    #content table {
+        border: 0;
+        width: 100%;
+    }
+
+    #content table caption {
+        font-size: 1.3em;
+    }
+
+    #content table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    #content table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    #content table td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+    }
+
+    #content table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    #content table td:last-child {
+        border-bottom: 0;
+    }
+}
+
+@media screen and (max-width: 1230px) {
+    #content table th {
+        font-size: .55em;
+    }
+}

@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /assets/img/logo.svg
+Disallow: /assets/
+Disallow: /data/
+
+sitemap: https://wetter-naarn.at/sitemap.xml

@@ -37,7 +37,6 @@ file_put_contents("history.json", json_encode($data, true));
 
 // Convert array to numeric keys
 $data = array_values($data);
-
 $data = sumUp($data, $offset);
 $data = convertCelsius($data);
 $data = assignKeys($data);

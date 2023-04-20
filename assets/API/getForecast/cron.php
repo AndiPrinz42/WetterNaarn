@@ -26,7 +26,6 @@ $data = insertHistory($data, $history, $offset);
 $data = clearOld($data, $offset, '00:00:00');
 $data = clearNew($data);
 file_put_contents("history.json", json_encode($data, true));
-
 echo json_encode(["status" => "success"]);
 
 

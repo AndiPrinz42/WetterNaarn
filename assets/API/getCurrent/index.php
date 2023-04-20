@@ -20,6 +20,7 @@ $data['icon'] = $icon;
 $condition = getCondition($icon);
 // add condition to weather data
 $data['condition'] = $condition;
+
 // send weather data as json
 echo (json_encode($data, true));
 

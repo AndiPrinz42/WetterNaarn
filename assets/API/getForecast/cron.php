@@ -8,7 +8,7 @@ function exception_error_handler()
 set_error_handler("exception_error_handler");
 
 //get data
-$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=5810b2313c22dc7d29992e937192b33f");
+$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=".getenv("OPENWEATHERMAP_API_KEY"));
 $rawData = json_decode($rawData, true);
 
 $history = file_get_contents("history.json");

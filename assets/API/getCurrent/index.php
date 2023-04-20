@@ -9,7 +9,7 @@ $data = json_decode($data, true);
 // get current weather data
 $data = $data['current'];
 // get icon data from openweathermap.org
-$icon = file_get_contents("https://api.openweathermap.org/data/2.5/weather?lat=48.2261&lon=14.6049&appid=5810b2313c22dc7d29992e937192b33f");
+$icon = file_get_contents("https://api.openweathermap.org/data/2.5/weather?lat=48.2261&lon=14.6049&appid=".getenv('OPENWEATHERMAP_API_KEY'));
 // convert json to array
 $icon = json_decode($icon, true);
 // get icon

@@ -3,7 +3,7 @@ header("Content-Type: application/json;charset=utf-8");
 
 //get data
 // Get raw weather data from API
-$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=5810b2313c22dc7d29992e937192b33f");
+$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=".getenv("OPENWEATHERMAP_API_KEY"));
 
 // Decode the raw data to JSON format
 $rawData = json_decode($rawData, true);

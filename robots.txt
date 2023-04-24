@@ -2,5 +2,6 @@ User-Agent: *
 Allow: /assets/img/logo.svg
 Disallow: /assets/
 Disallow: /data/
+Disallow: /subdomains/dev/
 
 sitemap: https://wetter-naarn.at/sitemap.xml

@@ -142,21 +142,32 @@ function convertConditionText(icon) {
     }
 }
 
+function parseGermanDate(dateString) {
+    const dateParts = dateString.split(' ');
+    dateParts[0] = dateParts[0].replace('.', '');
+    const monthNames = ['Jänner', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    const month = monthNames.indexOf(dateParts[1]);
+    const day = parseInt(dateParts[0]);
+    const year = parseInt(dateParts[2]);
+    return new Date(year, month, day);
+  }
+  
+
 function weekdayStringToInt(weekday) {
     switch (weekday) {
-        case "Monday":
+        case "Montag":
             return 0;
-        case "Tuesday":
+        case "Dienstag":
             return 1;
-        case "Wednesday":
+        case "Mittwoch":
             return 2;
-        case "Thursday":
+        case "Donnerstag":
             return 3;
-        case "Friday":
+        case "Freitag":
             return 4;
-        case "Saturday":
+        case "Samstag":
             return 5;
-        case "Sunday":
+        case "Sonntag":
             return 6;
     }
 }
@@ -185,7 +196,8 @@ function turnArray(arrIn) {
     arrOut[0] = arrIn[1];
     arrOut[1] = arrIn[0];
     arrOut[2] = arrIn[2];
-    return arrOut;
+    // return arrOut;
+    return arrIn;
 }
 
 const generateUUID = () => {
@@ -270,7 +282,7 @@ fetch('https://wetter-naarn.at/assets/API/getCurrent/index.php?cache=' + UUID)
         date.splice(0, 1);
         date = turnArray(date);
         date = date.join(" ");
-        date = new Date(date);
+        date = parseGermanDate(date);
         date.setDate(date.getDate() + 1);
         for (i = 1; i < 5; i++) {
             document.querySelectorAll("#item4 .accordion-header .infos .date .monthday")[i].innerText = date.getDate();

@@ -219,7 +219,7 @@ const generateUUID = () => {
 const UUID = generateUUID();
 
 //get current data
-fetch('https://wetter-naarn.at/assets/API/getCurrent/index.php?cache=' + UUID)
+fetch('https://wetter-naarn.at/assets/api/getCurrent/index.php?cache=' + UUID)
     .then(response => response.json())
     .then(data => {
         //backgrounds
@@ -291,7 +291,7 @@ fetch('https://wetter-naarn.at/assets/API/getCurrent/index.php?cache=' + UUID)
     });
 
 //get forecast Data
-fetch('https://wetter-naarn.at/assets/API/getForecast/index.php?cache=' + UUID)
+fetch('https://wetter-naarn.at/assets/api/getForecast/index.php?cache=' + UUID)
     .then(response => response.json())
     .then(data => {
         data = data['forecast'];
@@ -381,7 +381,7 @@ fetch('https://wetter-naarn.at/assets/API/getForecast/index.php?cache=' + UUID)
         resizeForecast();
     });
 
-fetch('https://wetter-naarn.at/assets/API/getSunevents/index.php?cache=' + UUID)
+fetch('https://wetter-naarn.at/assets/api/getSunevents/index.php?cache=' + UUID)
     .then(response => response.json())
     .then(data => {
         for (i = 1; i <= 5; i++) {

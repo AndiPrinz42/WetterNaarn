@@ -3,7 +3,7 @@ function fetchData(dataArea) {
   LOADER.innerText = "Daten abrufen...";
   LOADER.style.display = "flex";
   fetch(
-    "https://wetter-naarn.at/assets/API/database/get/week/?week=" +
+    "https://wetter-naarn.at/assets/api/database/get/week/?week=" +
       dataArea[0] +
       "&year=" +
       dataArea[1]

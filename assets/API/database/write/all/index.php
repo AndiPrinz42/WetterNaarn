@@ -27,7 +27,7 @@ for ($i = 2020; $i <= date("Y"); $i++) {
         // If it isn't, print the current year to the console
         echo "$i ";
         // Call the write.php script to write the missing data to the database
-        include('https://wetter-naarn.at/assets/API/database/write?year=' . $i);
+        include('https://wetter-naarn.at/assets/api/database/write?year=' . $i);
     }
 }
 

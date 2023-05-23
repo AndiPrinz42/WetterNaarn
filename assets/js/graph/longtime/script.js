@@ -2,7 +2,7 @@ function fetchData(dataArea) {
     clearData();
     LOADER.innerText = "Daten abrufen...";
     LOADER.style.display = "flex";
-    fetch('https://wetter-naarn.at/assets/API/database/get/longtime/?df=' + dataArea[0] + '&dt=' + dataArea[1] + '&yf=' + dataArea[2] + '&yt=' + dataArea[3] + '&f=' + dataArea[4])
+    fetch('https://wetter-naarn.at/assets/api/database/get/longtime/?df=' + dataArea[0] + '&dt=' + dataArea[1] + '&yf=' + dataArea[2] + '&yt=' + dataArea[3] + '&f=' + dataArea[4])
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {

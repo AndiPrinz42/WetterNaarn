@@ -1,12 +1,13 @@
 <?php
 header("Content-Type: application/json;charset=utf-8");
 
+// Get database configuration from database.ini
+$dbcfg = parse_ini_file("/usr/www/users/wetterkk/config/database.ini", true)['db1'];
 
-// Get environment variables
-define('DB_SERVER', getenv('DB_SERVER'));
-define('DB_USER', getenv('DB_USER'));
-define('DB_PASSWORD', getenv('DB_PASSWORD'));
-define('DB_NAME', getenv('DB_NAME'));
+define('DB_SERVER', $dbcfg['host']);
+define('DB_USER', $dbcfg['username']);
+define('DB_PASSWORD', $dbcfg['password']);
+define('DB_NAME', $dbcfg['database']);
 
 
 $year = $_GET['year']; // Get the year from the url. The year is set in the url when the request is sent to the server.

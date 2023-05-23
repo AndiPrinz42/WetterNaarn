@@ -7,8 +7,11 @@ function exception_error_handler()
 }
 set_error_handler("exception_error_handler");
 
+// get apikey from apikey.ini
+$apikey = parse_ini_file("/usr/www/users/wetterkk/config/apikey.ini", true)['openweathermap'];
+
 //get data
-$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=".getenv("OPENWEATHERMAP_API_KEY"));
+$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=".$apikey);
 $rawData = json_decode($rawData, true);
 
 $history = file_get_contents("history.json");
@@ -26,6 +29,7 @@ $data = insertHistory($data, $history, $offset);
 $data = clearOld($data, $offset, '00:00:00');
 $data = clearNew($data);
 file_put_contents("history.json", json_encode($data, true));
+
 echo json_encode(["status" => "success"]);
 
 

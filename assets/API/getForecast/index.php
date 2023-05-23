@@ -1,9 +1,11 @@
 <?php
 header("Content-Type: application/json;charset=utf-8");
 
+// get apikey from apikey.ini
+$apikey = parse_ini_file("/usr/www/users/wetterkk/config/apikey.ini", true)['openweathermap'];
+
 //get data
-// Get raw weather data from API
-$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=".getenv("OPENWEATHERMAP_API_KEY"));
+$rawData = file_get_contents("https://api.openweathermap.org/data/2.5/forecast?lat=48.2261&lon=14.6049&appid=".$apikey);
 
 // Decode the raw data to JSON format
 $rawData = json_decode($rawData, true);
@@ -37,6 +39,7 @@ file_put_contents("history.json", json_encode($data, true));
 
 // Convert array to numeric keys
 $data = array_values($data);
+
 $data = sumUp($data, $offset);
 $data = convertCelsius($data);
 $data = assignKeys($data);

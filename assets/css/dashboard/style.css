@@ -362,6 +362,8 @@ html {
     border-bottom: 1px solid #363636;
     color: #f3f3f3;
     cursor: pointer;
+    container-type: inline-size;
+    container-name: item4;
 }
 
 #dashboard #item4 .accordion-header.active {
@@ -609,5 +611,15 @@ html {
     #dashboard #item3,
     #dashboard #item4 {
         width: 90%;
+    }
+}
+
+@container item4 (max-width: 750px) {
+    #dashboard #item4 .accordion-header .infos .item.wind {
+        display: none;
+    }
+
+    #dashboard #item4 .accordion-header .infos .item.condition .conditionTxt {
+        display: none;
     }
 }

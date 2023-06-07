@@ -26,7 +26,7 @@
     <script src="https://wetter-naarn.at/assets/js/navbar/script.js" defer></script>
     <script src="https://wetter-naarn.at/assets/js/graph/longtime/script.js" defer></script>
     <?php if(isset($_COOKIE['consent']) && json_decode($_COOKIE['consent'])[1] == 1) include 'https://wetter-naarn.at/assets/google_analytics/'?>
-    <title>Langzeitwerte | wetter-naarn.at</title>
+    <title>Langzeitwerte | Wetter Naarn</title>
 </head>
 
 <body>

@@ -22,7 +22,7 @@
     <!-- Scripts -->
     <script src="https://wetter-naarn.at/assets/js/navbar/script.js" defer></script>
     <?php if(isset($_COOKIE['consent']) && json_decode($_COOKIE['consent'])[1] == 1) include 'https://wetter-naarn.at/assets/google_analytics/'?>
-    <title>Impressum | wetter-naarn.at</title>
+    <title>Impressum | Wetter Naarn</title>
 </head>
 
 <body>

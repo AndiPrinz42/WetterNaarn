@@ -135,6 +135,10 @@ function updateChart() {
 
     const options = {
         responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
         scales: {
             temperature: {
                 type: 'linear',

@@ -12,11 +12,11 @@ function fetchData(dataArea) {
             }
 
             date_cleaned = Array.from(date);
-            if (date_cleaned[0].slice(date_cleaned[0].lastIndexOf("/") + 1, date_cleaned[0].lastIndexOf("/") + 3) == date_cleaned[date_cleaned.length - 1].slice(date_cleaned[date_cleaned.length - 1].lastIndexOf("/") + 1, date_cleaned[date_cleaned.length - 1].lastIndexOf("/") + 3)) {
+            if (date_cleaned[0].slice(date_cleaned[0].lastIndexOf(".") + 1, date_cleaned[0].lastIndexOf(".") + 3) == date_cleaned[date_cleaned.length - 1].slice(date_cleaned[date_cleaned.length - 1].lastIndexOf(".") + 1, date_cleaned[date_cleaned.length - 1].lastIndexOf(".") + 3)) {
                 date_cleaned = removeCentury(date_cleaned);
             }
 
-            if (date_cleaned[0].slice(date_cleaned[0].lastIndexOf("/")) == date_cleaned[date_cleaned.length - 1].slice(date_cleaned[date_cleaned.length - 1].lastIndexOf("/"))) {
+            if (date_cleaned[0].slice(date_cleaned[0].lastIndexOf(".")) == date_cleaned[date_cleaned.length - 1].slice(date_cleaned[date_cleaned.length - 1].lastIndexOf("."))) {
                 date_cleaned = removeYear(date_cleaned);
             }
 
@@ -540,14 +540,14 @@ function dayDifference(from = parseInt(from), to = parseInt(to)) {
 
 function removeYear(data) {
     for (let i = 0; i < data.length; i++) {
-        data[i] = data[i].slice(0, data[i].lastIndexOf("/"));
+        data[i] = data[i].slice(0, data[i].lastIndexOf("."));
     }
     return data;
 }
 
 function removeCentury(data) {
     for (let i = 0; i < data.length; i++) {
-        data[i] = data[i].slice(0, data[i].lastIndexOf("/") + 1) + data[i].slice(data[i].lastIndexOf("/") + 3);
+        data[i] = data[i].slice(0, data[i].lastIndexOf(".") + 1) + data[i].slice(data[i].lastIndexOf(".") + 3);
     }
     return data;
 }

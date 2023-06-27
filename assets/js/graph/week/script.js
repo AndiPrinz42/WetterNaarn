@@ -431,7 +431,7 @@ function dateTimeCombine(date, time) {
   let date_time = new Array();
   for (let i = 0; i < date.length; i++) {
     date_time[i] =
-      date[i].slice(0, date[i].lastIndexOf("/")) +
+      date[i].slice(0, date[i].lastIndexOf(".")) +
       " " +
       time[i].slice(0, time[i].lastIndexOf(":")) +
       "h";

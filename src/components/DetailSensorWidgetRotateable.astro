@@ -2,17 +2,17 @@
 const { name, value, text, rotation } = Astro.props;
 ---
 
-<div id="sensorWidgetRotateable">
+<div id="detailSensorWidgetRotateable">
   <div id="wrapper" style=`--rotationDeg: ${rotation}deg`>
     <div id="left">
       <div id="name">
-        {name}
-      </div>
-      <div id="value">
-        {value}
+        { name }
       </div>
       <div id="text">
-        {text}
+        { text }
+      </div>
+      <div id="value">
+        { value }
       </div>
     </div>
     <div id="right">
@@ -34,7 +34,7 @@ const { name, value, text, rotation } = Astro.props;
   $contrast_color: #808080;
   $background: #ecf3f8;
 
-  #sensorWidgetRotateable {
+  #detailSensorWidgetRotateable {
     background-color: $background;
     border-radius: 1em;
     padding: 1.6em;
@@ -68,15 +68,15 @@ const { name, value, text, rotation } = Astro.props;
         font-weight: 400;
         margin-bottom: 0.7em;
       }
-      #value {
-        font-size: 1.5em;
-        font-weight: 400;
-        margin-bottom: 0.6em;
-      }
       #text {
         font-size: 1.2em;
         font-weight: 400;
+        margin-bottom: 0.8em;
         color: $contrast_color;
+      }
+      #value {
+        font-size: 1.5em;
+        font-weight: 400;
       }
     }
   }

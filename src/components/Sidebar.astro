@@ -8,23 +8,41 @@
   <div id="logoContainer">
     <img src="assets/icons/logo/logo.svg" alt="Logo" id="logo" />
   </div>
-  <div class="menuitem first" (click)="toDashboard()">
-    <img class="icon" src="assets/icons/navigation/dashboard.svg" alt="Dashboard Icon" />
+  <a class="menuitem first" href="/">
+    <img
+      class="icon"
+      src="assets/icons/navigation/dashboard.svg"
+      alt="Dashboard Icon"
+    />
     <div class="text">Dashboard</div>
-  </div>
-  <div class="menuitem" (click)="toAllSensors()">
-    <img class="icon" src="assets/icons/navigation/allsensors.svg" alt="Alle Sensoren Icon" />
+  </a>
+  <a class="menuitem" href="/sensors">
+    <img
+      class="icon"
+      src="assets/icons/navigation/allsensors.svg"
+      alt="Alle Sensoren Icon"
+    />
     <div class="text">Alle Sensoren</div>
-  </div>
-  <div class="menuitem" (click)="toGraphs()">
-    <img class="icon" src="assets/icons/navigation/graph.svg" alt="Graphen Icon" />
+  </a>
+  <a class="menuitem" href="/graphs">
+    <img
+      class="icon"
+      src="assets/icons/navigation/graph.svg"
+      alt="Graphen Icon"
+    />
     <div class="text">Grafiken</div>
-  </div>
-  <a href="https://www.awekas.at/de/instrument.php?id=15211" target="_blank">
-    <div class="menuitem">
-      <img class="icon" src="assets/icons/navigation/awekasbw.svg" alt="AWEKAS Icon" />
-      <div class="text">AWEKAS</div>
-    </div>
+  </a>
+  <a
+    class="menuitem"
+    href="https://www.awekas.at/de/instrument.php?id=15211"
+    target="_blank"
+  >
+    <img
+      class="icon"
+      src="assets/icons/navigation/awekasbw.svg"
+      alt="AWEKAS Icon"
+    />
+    <div class="text">AWEKAS</div>
   </a>
 </div>
 
@@ -44,7 +62,7 @@
     border-right: 0.1em solid #e1e8ec;
     z-index: 1;
     @media (max-width: 1250px) {
-        border-right: none;
+      border-right: none;
     }
     * {
       @include global.disableSelect;

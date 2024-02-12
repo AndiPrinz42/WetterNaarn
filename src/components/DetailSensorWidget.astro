@@ -1,42 +1,44 @@
 ---
-const { name, value, text, rotation } = Astro.props;
+interface Props {
+  name: string;
+  text: string;
+  value: string;
+  icon: string;
+  iconAlt: string;
+}
+
+const { name, text, value, icon, iconAlt } = Astro.props;
 ---
 
-<div id="sensorWidgetRotateable">
-  <div id="wrapper" style=`--rotationDeg: ${rotation}deg`>
+<div id="detailSensorWidget">
+  <div id="wrapper">
     <div id="left">
       <div id="name">
-        {name}
+        { name }
       </div>
       <div id="value">
-        {value}
+        { value }
       </div>
       <div id="text">
-        {text}
+        { text }
       </div>
     </div>
     <div id="right">
-      <div id="icon">
-        <slot />
-      </div>
+      <img src={icon} alt={iconAlt} id="icon" />
     </div>
   </div>
 </div>
 
-<style lang="scss" is:inline>
-  #icon #rotateElement {
-    transform-origin: 50% 50%;
-    transform: rotate(100deg);
-  }
-</style>
-
 <style lang="scss">
+  @use "../styles/mixins" as global;
+
   $contrast_color: #808080;
   $background: #ecf3f8;
 
-  #sensorWidgetRotateable {
+  #detailSensorWidget {
     background-color: $background;
     border-radius: 1em;
+    height: 8.5em;
     padding: 1.6em;
   }
 
@@ -48,10 +50,10 @@ const { name, value, text, rotation } = Astro.props;
     #right {
       #icon {
         height: 6em;
-        width: 6em;
+        @include global.disableSelect;
+        @include global.disableDrag;
         @media (max-width: 420px) {
           height: 5em;
-          width: 5em;
         }
       }
       flex: 1;

@@ -1,5 +1,10 @@
 ---
 const YEAR = new Date().getFullYear();
+import { Image } from "astro:assets";
+import YoutubeIcon from "../assets/icons/socials/youtube.svg";
+import MapsIcon from "../assets/icons/socials/maps.svg";
+import FacebookIcon from "../assets/icons/socials/facebook.svg";
+import EnvelopeIcon from "../assets/icons/socials/envelope.svg";
 ---
 
 <div id="footer">
@@ -18,16 +23,16 @@ const YEAR = new Date().getFullYear();
     </div>
     <div id="socials">
       <a href="https://www.youtube.com/@wetternaarn7667" target="_blank"
-        ><img src="/assets/icons/socials/youtube.svg" alt="YouTube" /></a
+        ><Image src={YoutubeIcon} alt="YouTube" /></a
       >
       <a href="https://maps.app.goo.gl/QiH15zbNthr5mi5W8" target="_blank"
-        ><img src="/assets/icons/socials/maps.svg" alt="Google Maps" /></a
+        ><Image src={MapsIcon} alt="Google Maps" /></a
       >
       <a href="https://www.facebook.com/WetterNaarn" target="_blank"
-        ><img src="/assets/icons/socials/facebook.svg" alt="Facebook" /></a
+        ><Image src={FacebookIcon} alt="Facebook" /></a
       >
       <a href="mailto:hallo@wetter-naarn.at" target="_blank"
-        ><img src="/assets/icons/socials/envelope.svg" alt="Email" /></a
+        ><Image src={EnvelopeIcon} alt="Email" /></a
       >
     </div>
   </div>
@@ -45,7 +50,7 @@ const YEAR = new Date().getFullYear();
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      margin: 1em 2em 1em 2em;
+      padding: 1em 2em 1em 2em;
 
       #wetternaarn {
         font-size: 1.2em;

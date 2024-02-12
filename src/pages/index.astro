@@ -1,26 +1,535 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const data = {
+  date: "Heute, 12. Mai 2021",
+  outTemp: "20",
+  condition: "Sonnig",
+  icon: "01d",
+  forecasttoday: {
+    minTemp: "15",
+    maxTemp: "25",
+  },
+  appTemp: "22",
+  morningtemp: "15",
+  noontemp: "20",
+  eveningtemp: "18",
+  nighttemp: "12",
+  forecastin1d: {
+    name: "Morgen",
+    date: "13. Mai 2021",
+    minTemp: "14",
+    maxTemp: "24",
+    icon: "02d",
+    condition: "Wolkig",
+  },
+  forecastin2d: {
+    name: "Freitag",
+    date: "14. Mai 2021",
+    minTemp: "13",
+    maxTemp: "23",
+    icon: "03d",
+    condition: "Bewölkt",
+  },
+  forecastin3d: {
+    name: "Samstag",
+    date: "15. Mai 2021",
+    minTemp: "12",
+    maxTemp: "22",
+    icon: "04d",
+    condition: "Bewölkt",
+  },
+  forecastin4d: {
+    name: "Sonntag",
+    date: "16. Mai 2021",
+    minTemp: "11",
+    maxTemp: "21",
+    icon: "09d",
+    condition: "Regen",
+  },
+  outHumidity: "50",
+  barometer: "1013",
+  windspeed: "10",
+  winddir: "180",
+  rain: "0",
+  moonillumination: "50",
+  sunrise: "05:30",
+  sunset: "20:30",
+};
 ---
 
 <Layout title="Dashboard | Wetter Naarn">
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis quaerat
-  exercitationem sunt ratione inventore obcaecati numquam ut in? Expedita
-  temporibus voluptas officiis rerum dicta dignissimos ex facilis hic
-  consequuntur? Similique. Lorem ipsum dolor sit amet consectetur adipisicing
-  elit. Omnis quaerat exercitationem sunt ratione inventore obcaecati numquam ut
-  in? Expedita temporibus voluptas officiis rerum dicta dignissimos ex facilis
-  hic consequuntur? Similique. Lorem ipsum dolor sit amet consectetur
-  adipisicing elit. Omnis quaerat exercitationem sunt ratione inventore
-  obcaecati numquam ut in? Expedita temporibus voluptas officiis rerum dicta
-  dignissimos ex facilis hic consequuntur? Similique. Lorem ipsum dolor sit amet
-  consectetur adipisicing elit. Omnis quaerat exercitationem sunt ratione
-  inventore obcaecati numquam ut in? Expedita temporibus voluptas officiis rerum
-  dicta dignissimos ex facilis hic consequuntur? Similique. Lorem ipsum dolor
-  sit amet consectetur adipisicing elit. Omnis quaerat exercitationem sunt
-  ratione inventore obcaecati numquam ut in? Expedita temporibus voluptas
-  officiis rerum dicta dignissimos ex facilis hic consequuntur? Similique. Lorem
-  ipsum dolor sit amet consectetur adipisicing elit. Omnis quaerat
-  exercitationem sunt ratione inventore obcaecati numquam ut in? Expedita
-  temporibus voluptas officiis rerum dicta dignissimos ex facilis hic
-  consequuntur? Similique.
+  <div id="content">
+    <section id="mainWidgetWrapper">
+      <h2>Aktuelle Werte</h2>
+      <div id="mainWidget" class="widget"
+        [style.background-image]="data.icon !== '' ? 'url(assets/images/backgrounds/' + data.icon + '.jpg)' : ''">
+        <div>
+          <div id="rowSplitter">
+            <div id="row1">
+              <span class="stationtext">Wetter Naarn</span>
+              <span class="date">{ data.date }</span>
+            </div>
+            <div id="row2">
+              <div id="currentWrapper">
+                <div id="currentTemp">
+                  { data.outTemp }<span id="degreesymbol">°</span>
+                </div>
+                <div id="currentCondition">{ data.condition }</div>
+              </div>
+            </div>
+            <div id="row3">
+              <span id="maxmintemp">{ data.forecasttoday.minTemp }°/{
+                data.forecasttoday.maxTemp
+                }°</span>
+              <span id="feelsliketemp">
+                <img src="/assets/icons/temperaturefeelslike.svg" alt="Gefühlte Temperatur Icon" id="feelslikeicon" />
+                <div>{ data.appTemp }°</div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div id="tempchartwrapper">
+          <div id="tempchart">
+            <div id="temptextheader">Prognose heute</div>
+            <div id="daytempchart-outer-container">
+              <div id="daytempchart-middle-container">
+                <div id="daytempchart-inner-container">
+                  <canvas id="daytempchart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div id="charttext">
+                <div class="daytime">Morgen</div>
+                <div class="daytime">Mittag</div>
+                <div class="daytime">Abend</div>
+                <div class="daytime">Nacht</div>
+                <div class="temp">{ data.morningtemp }°</div>
+                <div class="temp">{ data.noontemp }°</div>
+                <div class="temp">{ data.eveningtemp }°</div>
+                <div class="temp">{ data.nighttemp }°</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <section id="forecastWidgetWrapper">
+      <h2>Vorhersage</h2>
+      <div id="forecastWidget" class="widget">
+        <div id="forecastdays">
+          <div class="day">
+            <span class="week">{ data.forecastin1d.name }</span>
+            <span class="date">{ data.forecastin1d.date }</span>
+          </div>
+          <div class="maxmintemp">
+            <span>{ data.forecastin1d.minTemp }°/{
+              data.forecastin1d.maxTemp
+              }°</span>
+          </div>
+          <div class="condition" *ngIf="data.forecastin1d.icon !== ''">
+            <img class="icon" src="/assets/icons/meteocons/static/conditions/{
+              data.forecastin1d.icon
+              }.svg" alt="{ data.forecastin1d.condition }" />
+          </div>
+  
+          <div class="day">
+            <span class="week">{ data.forecastin2d.name }</span>
+            <span class="date">{ data.forecastin2d.date }</span>
+          </div>
+          <div class="maxmintemp">
+            <span>{ data.forecastin2d.minTemp }°/{
+              data.forecastin2d.maxTemp
+              }°</span>
+          </div>
+          <div class="condition" *ngIf="data.forecastin2d.icon !== ''">
+            <img class="icon" src="/assets/icons/meteocons/static/conditions/{
+                data.forecastin2d.icon
+              }.svg" alt="{ data.forecastin2d.condition }" />
+          </div>
+  
+          <div class="day">
+            <span class="week">{ data.forecastin3d.name }</span>
+            <span class="date">{ data.forecastin3d.date }</span>
+          </div>
+          <div class="maxmintemp">
+            <span>{ data.forecastin3d.minTemp }°/{
+              data.forecastin3d.maxTemp
+              }°</span>
+          </div>
+          <div class="condition" *ngIf="data.forecastin3d.icon !== ''">
+            <img class="icon" src="/assets/icons/meteocons/static/conditions/{
+                data.forecastin3d.icon
+              }.svg" alt="{ data.forecastin3d.condition }" />
+          </div>
+  
+          <div class="day last">
+            <span class="week">{ data.forecastin4d.name }</span>
+            <span class="date">{ data.forecastin4d.date }</span>
+          </div>
+          <div class="maxmintemp last">
+            <span>{ data.forecastin4d.minTemp }°/{
+              data.forecastin4d.maxTemp
+              }°</span>
+          </div>
+          <div class="condition last" *ngIf="data.forecastin4d.icon !== ''">
+            <img class="icon" src="/assets/icons/meteocons/static/conditions/{
+                data.forecastin4d.icon
+              }.svg" alt="{ data.forecastin4d.condition }" />
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <h2 id="sensorheader">Sensoren</h2>
+    <app-widget-sensor-static class="sensor" [name]="'Luftfeuchte'" [text]="humidityText" [value]="data.outHumidity + '%'"
+      [icon]="'/assets/icons/meteocons/static/sensors/humidity.svg'"
+      [iconAlt]="'Luftfeuchte Icon'"></app-widget-sensor-static>
+  
+    <app-widget-sensor-static class="sensor" [name]="'Luftdruck'" [text]="barometerText" [value]="data.barometer + 'hPa'"
+      [icon]=barometerIcon [iconAlt]="'Luftdruck Icon'"></app-widget-sensor-static>
+  
+    <app-widget-sensor-rotateable class="sensor" [name]="'Wind'" [text]="windText" [value]="data.windspeed + 'km/h'"
+      [icon]="'/assets/icons/meteocons/rotateable/windcompass.svg'"
+      [rotation]="data.winddir"></app-widget-sensor-rotateable>
+  
+    <app-widget-sensor-static class="sensor" [name]="'Regen'" [text]="'Heutiger Regen'" [value]="data.rain + 'mm²'"
+      [icon]="'/assets/icons/meteocons/static/sensors/raindrops.svg'" [iconAlt]="'Regen Icon'"></app-widget-sensor-static>
+  
+    <app-widget-sensor-static class="sensor" [name]="'Mond'" [text]="moonPhase" [value]="data.moonillumination + '%'"
+      [icon]="moonIcon" [iconAlt]="'Mondphase Icon'"></app-widget-sensor-static>
+  
+    <app-widget-sensor-sun class="sensor" [name]="'Sonne'" [sunriseIcon]="'/assets/icons/meteocons/static/sun/sunrise.svg'"
+      [sunriseIconAlt]="'Sonnenaufgang Icon'" [sunriseTime]="data.sunrise"
+      [sunsetIcon]="'/assets/icons/meteocons/static/sun/sunset.svg'" [sunsetIconAlt]="'Sonnenuntergang Icon'"
+      [sunsetTime]="data.sunset"></app-widget-sensor-sun>
+  </div>
 </Layout>
+
+<style lang="scss">
+@use "../styles/mixins" as global;
+
+$main_color: #ffffff;
+$contrast_color: #808080;
+$forecast_background: #f7f7f7;
+$chart_background: rgba(255, 255, 255, 0.1);
+
+
+#content {
+  padding: 0.5em 2em 1.2em 2em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr;
+  grid-gap: 1.5em;
+
+  @media (max-height: 1000px) {
+    min-height: calc(100vh - 1.7em);
+  }
+
+  @media (max-width: 1250px) {
+    margin-left: 0;
+    margin-top: 3.75em;
+  }
+
+  @media (max-width: 1030px) {
+    grid-template-rows: auto auto auto;
+    margin-top: 3.75em;
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 420px) {
+    padding: 0.5em 1em 1.2em 1em;
+  }
+
+  @media (max-width: 310px) {
+    padding: 0.5em 0.2em 1.2em 0.1em;
+  }
+
+  h2 {
+    font-size: 2em;
+    font-weight: 500;
+    margin-bottom: 0.2em;
+  }
+
+  .widget {
+    padding: 1.5em;
+    border-radius: 1em;
+
+    @media (max-width: 420px) {
+      padding: 1em;
+    }
+  }
+
+  #sensorheader {
+    margin-bottom: -0.5em;
+
+    @media (min-width: 951px) {
+      display: none;
+    }
+  }
+
+  #mainWidgetWrapper {
+    grid-column: 1 / span 2;
+
+    @media (max-width: 1030px) {
+      grid-column: 1 / span 1;
+    }
+
+    #mainWidget {
+      background-position: center;
+      background-size: cover;
+      height: calc(100% - 6.4em);
+      min-height: 20em;
+      color: $main_color;
+      display: flex;
+      flex-direction: row;
+
+      @media (max-width: 1030px) {
+        min-height: 0;
+      }
+
+      @media (max-width: 800px) {
+        flex-direction: column;
+        height: fit-content;
+      }
+
+      div {
+        flex: 1;
+      }
+
+      #rowSplitter {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        #row1 {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          flex: 2;
+          margin-bottom: 1em;
+
+          .stationtext {
+            font-size: 1.6em;
+            font-weight: 500;
+
+            @media (max-width: 420px) {
+              font-size: 1.3em;
+            }
+          }
+
+          .date {
+            font-size: 1.1em;
+            font-weight: 300;
+
+            @media (max-width: 420px) {
+              font-size: 0.9em;
+            }
+          }
+        }
+
+        #row2 {
+          flex: 12;
+          display: flex;
+          align-items: center;
+        }
+
+        #row3 {
+          flex: 2;
+          font-size: 2em;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          font-weight: 300;
+
+          @media (max-width: 420px) {
+            margin-top: 0.5em;
+            font-size: 1.6em;
+          }
+
+          #feelsliketemp {
+            display: flex;
+            align-items: center;
+
+            #feelslikeicon {
+              margin-right: 0.2em;
+              height: 0.85em;
+              @include global.disableSelect;
+              @include global.disableDrag;
+            }
+          }
+        }
+      }
+
+      #chartwrapper {
+        height: 15em;
+        width: 100%;
+        background-color: $chart_background;
+      }
+
+      #currentTemp {
+        font-size: 9em;
+        line-height: 1;
+        transform: translateX(0.05em);
+
+        @media (max-width: 420px) {
+          font-size: 7em;
+        }
+
+        #degreesymbol {
+          font-size: 0.3em;
+          vertical-align: top;
+        }
+      }
+
+      #currentCondition {
+        font-size: 1.25em;
+        height: 1.25em !important;
+
+        @media (max-width: 420px) {
+          font-size: 1em;
+        }
+      }
+
+      #currentWrapper {
+        text-align: center;
+      }
+    }
+  }
+
+  #forecastWidgetWrapper {
+    height: 100%;
+
+    #forecastWidget {
+      background-color: $forecast_background;
+      height: calc(100% - 3.8em);
+      min-height: 20em;
+      padding-top: 0.2em;
+      padding-bottom: 0.2em;
+
+      #forecastdays {
+        display: grid;
+        grid-template-columns: auto auto 4.5em;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        height: 100%;
+
+        .day {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          border-bottom: 1px solid #e0e0e0;
+
+          .week {
+            font-size: 1.1em;
+            font-weight: 400;
+          }
+
+          .date {
+            color: $contrast_color;
+          }
+        }
+
+        .maxmintemp {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          border-bottom: 1px solid #e0e0e0;
+          font-size: 1.4em;
+          font-weight: 500;
+        }
+
+        .condition {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          border-bottom: 1px solid #e0e0e0;
+
+          .icon {
+            @include global.disableSelect;
+            @include global.disableDrag;
+          }
+        }
+
+        .day.last {
+          border-bottom: none;
+        }
+
+        .maxmintemp.last {
+          border-bottom: none;
+        }
+
+        .condition.last {
+          border-bottom: none;
+        }
+      }
+
+      .icon {
+        height: 3em;
+      }
+    }
+  }
+}
+
+#tempchartwrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 1.5em;
+  backdrop-filter: blur(8px);
+  background: rgba(215, 215, 215, 0.3);
+  border-radius: 0.8em;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+
+  #tempchart {
+    padding: 1em;
+
+    #daytempchart-outer-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+
+      #daytempchart-middle-container {
+        width: 80%;
+
+        #daytempchart-inner-container {
+          #mainWidget {
+            #daytempchart {
+              height: 11.25em;
+            }
+          }
+        }
+      }
+    }
+
+    #charttext {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      width: 100%;
+
+      .daytime {
+        text-align: center;
+        font-size: 0.9em;
+        font-weight: 400;
+      }
+
+      .temp {
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: 500;
+      }
+    }
+  }
+
+  #temptextheader {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+  }
+}
+
+</style>

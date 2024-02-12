@@ -1,6 +1,5 @@
 ---
 const { name, value, text, icon, rotation } = Astro.props;
-const { default: innerHTML } = await import(`${icon}?raw`);
 ---
 
 <div id="sensorWidgetRotateable">
@@ -18,7 +17,7 @@ const { default: innerHTML } = await import(`${icon}?raw`);
     </div>
     <div id="right">
       <div id="icon">
-        <Fragment set:html={innerHTML} />
+        <slot />
       </div>
     </div>
   </div>
@@ -38,7 +37,6 @@ const { default: innerHTML } = await import(`${icon}?raw`);
   #sensorWidgetRotateable {
     background-color: $background;
     border-radius: 1em;
-    height: 8.5em;
     padding: 1.6em;
   }
 

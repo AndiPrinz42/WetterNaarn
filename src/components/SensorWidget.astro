@@ -1,0 +1,86 @@
+---
+interface Props {
+  name: string;
+  text: string;
+  value: string;
+  icon: string;
+  iconAlt: string;
+}
+
+const { name, text, value, icon, iconAlt } = Astro.props;
+---
+
+<div id="sensorWidget">
+  <div id="wrapper">
+    <div id="left">
+      <div id="name">
+        {name}
+      </div>
+      <div id="text">
+        {text}
+      </div>
+      <div id="value">
+        {value}
+      </div>
+    </div>
+    <div id="right">
+      <img src={ icon } alt={iconAlt} id="icon" />
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../styles/mixins" as global;
+
+  $contrast_color: #808080;
+  $background: #ecf3f8;
+
+  #sensorWidget {
+    background-color: $background;
+    border-radius: 1em;
+    padding: 1.6em;
+  }
+
+  #wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    #right {
+      #icon {
+        height: 6em;
+        width: 6em;
+        @include global.disableSelect;
+        @include global.disableDrag;
+        @media (max-width: 420px) {
+          height: 5em;
+          width: 5em;
+        }
+      }
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    #left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      #name {
+        font-size: 1.5em;
+        font-weight: 400;
+        margin-bottom: 0.7em;
+      }
+      #text {
+        font-size: 1.2em;
+        font-weight: 400;
+        margin-bottom: 0.8em;
+        color: $contrast_color;
+      }
+      #value {
+        font-size: 1.5em;
+        font-weight: 400;
+      }
+    }
+  }
+</style>

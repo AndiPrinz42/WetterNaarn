@@ -1,12 +1,6 @@
----
-import "../styles/_mixins.scss";
-import { Image } from "astro:assets";
-import HamburgerIcon from "../assets/icons/navigation/hamburger.svg";
----
-
 <div id="topbar">
   <div id="hamburgerwrapper" (click)="toggleSidebar()">
-    <Image src={HamburgerIcon} alt="Hamburger Icon" id="hamburgericon" />
+    <img src="assets/icons/navigation/hamburger.svg" alt="Hamburger Icon" id="hamburgericon" />
   </div>
   <div id="textwrapper">
     <h1 id="text">Wetter Naarn</h1>
@@ -35,6 +29,9 @@ import HamburgerIcon from "../assets/icons/navigation/hamburger.svg";
     display: flex;
     align-items: center;
     justify-content: center;
+    #text {
+      font-size: 1.5em;
+    }
   }
 
   #hamburgericon {

@@ -1,39 +1,28 @@
----
-import "../styles/_mixins.scss";
-import { Image } from "astro:assets";
-import HamburgerClose from "../assets/icons/navigation/hamburgerclose.svg";
-import Logo from "../assets/icons/logo/logo.svg";
-import DashboardIcon from "../assets/icons/navigation/dashboard.svg";
-import SensorsIcon from "../assets/icons/navigation/allsensors.svg";
-import GraphsIcon from "../assets/icons/navigation/graph.svg";
-import AwekasIcon from "../assets/icons/navigation/awekasbw.svg";
----
-
 <div id="sidebar">
-  <Image
+  <img
     id="hamburgerclose"
-    src={HamburgerClose}
+    src="assets/icons/navigation/hamburgerclose.svg"
     alt="Hamburger close Icon"
     (click)="toggleSidebar()"
   />
   <div id="logoContainer">
-    <Image src={Logo} alt="Logo" id="logo" />
+    <img src="assets/icons/logo/logo.svg" alt="Logo" id="logo" />
   </div>
   <div class="menuitem first" (click)="toDashboard()">
-    <Image class="icon" src={DashboardIcon} alt="Dashboard Icon" />
+    <img class="icon" src="assets/icons/navigation/dashboard.svg" alt="Dashboard Icon" />
     <div class="text">Dashboard</div>
   </div>
   <div class="menuitem" (click)="toAllSensors()">
-    <Image class="icon" src={SensorsIcon} alt="Alle Sensoren Icon" />
+    <img class="icon" src="assets/icons/navigation/allsensors.svg" alt="Alle Sensoren Icon" />
     <div class="text">Alle Sensoren</div>
   </div>
   <div class="menuitem" (click)="toGraphs()">
-    <Image class="icon" src={GraphsIcon} alt="Graphen Icon" />
+    <img class="icon" src="assets/icons/navigation/graph.svg" alt="Graphen Icon" />
     <div class="text">Grafiken</div>
   </div>
   <a href="https://www.awekas.at/de/instrument.php?id=15211" target="_blank">
     <div class="menuitem">
-      <Image class="icon" src={AwekasIcon} alt="AWEKAS Icon" />
+      <img class="icon" src="assets/icons/navigation/awekasbw.svg" alt="AWEKAS Icon" />
       <div class="text">AWEKAS</div>
     </div>
   </a>

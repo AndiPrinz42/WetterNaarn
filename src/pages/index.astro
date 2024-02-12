@@ -63,9 +63,9 @@ const humidityText = "hoch";
 
 const barometerText = "normal";
 const barometerIcon =
-  "../../public/assets/icons/meteocons/static/sensors/barometer/barometer.svg";
+  "/assets/icons/meteocons/static/sensors/barometer/barometer.svg";
 const moonIcon =
-  "../../public/assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg";
+  "/assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg";
 const moonPhase = "zunehmend";
 
 const windText = "leichter Zug";
@@ -152,7 +152,7 @@ const windText = "leichter Zug";
           </div>
           <div class="condition" *ngIf="data.forecastin1d.icon !== ''">
             <img
-              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
+              src=`/assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
               alt={data.forecastin1d.condition}
               class="icon"
             />
@@ -169,7 +169,7 @@ const windText = "leichter Zug";
           </div>
           <div class="condition" *ngIf="data.forecastin2d.icon !== ''">
             <img
-              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
+              src=`/assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
               alt={data.forecastin2d.condition}
               class="icon"
             />
@@ -186,7 +186,7 @@ const windText = "leichter Zug";
           </div>
           <div class="condition" *ngIf="data.forecastin3d.icon !== ''">
             <img
-              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
+              src=`/assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
               alt={data.forecastin3d.condition}
               class="icon"
             />
@@ -203,7 +203,7 @@ const windText = "leichter Zug";
           </div>
           <div class="condition last" *ngIf="data.forecastin4d.icon !== ''">
             <img
-              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
+              src=`/assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
               alt={data.forecastin4d.condition}
               class="icon"
             />
@@ -217,7 +217,7 @@ const windText = "leichter Zug";
       name="Luftfeuchte"
       text=`${humidityText}`
       value=`${data.outHumidity}%`
-      icon="../../public/assets/icons/meteocons/static/sensors/humidity.svg"
+      icon="/assets/icons/meteocons/static/sensors/humidity.svg"
       iconAlt="Luftfeuchte Icon"
     />
 
@@ -233,7 +233,7 @@ const windText = "leichter Zug";
       name="Wind"
       text=`${windText}`
       value=`${data.windspeed}km/h`
-      icon="../../public/assets/icons/meteocons/rotateable/windcompass.svg"
+      icon="/assets/icons/meteocons/rotateable/windcompass.svg"
       rotation=`${data.winddir}`
     />
 
@@ -241,7 +241,7 @@ const windText = "leichter Zug";
       name="Regen"
       text="Heutiger Regen"
       value=`${data.rain}mm²`
-      icon="../../public/assets/icons/meteocons/static/sensors/raindrops.svg"
+      icon="/assets/icons/meteocons/static/sensors/raindrops.svg"
       iconAlt="Regen Icon"
     />
 
@@ -255,10 +255,10 @@ const windText = "leichter Zug";
 
     <SunWidget
     name="Sonne"
-    sunriseIcon="../../public/assets/icons/meteocons/static/sun/sunrise.svg"
+    sunriseIcon="/assets/icons/meteocons/static/sun/sunrise.svg"
     sunriseIconAlt="Sonnenaufgang Icon"
     sunriseTime=`${data.sunrise}`
-    sunsetIcon="../../public/assets/icons/meteocons/static/sun/sunset.svg"
+    sunsetIcon="/assets/icons/meteocons/static/sun/sunset.svg"
     sunsetIconAlt="Sonnenuntergang Icon"
     sunsetTime=`${data.sunset}`
     />

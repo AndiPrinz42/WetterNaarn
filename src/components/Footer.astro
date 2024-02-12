@@ -1,0 +1,93 @@
+---
+const YEAR = new Date().getFullYear();
+---
+
+<div id="footer">
+  <div id="wrapper">
+    <div id="wetternaarn">© {YEAR} Wetter Naarn</div>
+    <div>
+      <div>
+        <a href="https://status.wetter-naarn.at" target="_blank">Onlinestatus</a
+        >
+      </div>
+      <div id="cookies" (click)="openCookies()">Cookies</div>
+    </div>
+    <div id="rights">
+      <div (click)="toImprint()">Impressum</div>
+      <div (click)="toPrivacyPolicy()">DSGVO</div>
+    </div>
+    <div id="socials">
+      <a href="https://www.youtube.com/@wetternaarn7667" target="_blank"
+        ><img src="/assets/icons/socials/youtube.svg" alt="YouTube" /></a
+      >
+      <a href="https://maps.app.goo.gl/QiH15zbNthr5mi5W8" target="_blank"
+        ><img src="/assets/icons/socials/maps.svg" alt="Google Maps" /></a
+      >
+      <a href="https://www.facebook.com/WetterNaarn" target="_blank"
+        ><img src="/assets/icons/socials/facebook.svg" alt="Facebook" /></a
+      >
+      <a href="mailto:hallo@wetter-naarn.at" target="_blank"
+        ><img src="/assets/icons/socials/envelope.svg" alt="Email" /></a
+      >
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../styles/mixins" as global;
+
+  #footer {
+    background-color: #f7f7f7;
+    border-top: 1px solid #ebebeb;
+
+    #wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1em 2em 1em 2em;
+
+      #wetternaarn {
+        font-size: 1.2em;
+        @media (max-width: 685px) {
+          width: 100%;
+          margin-bottom: 0.25em;
+        }
+      }
+
+      #cookies {
+        cursor: pointer;
+      }
+
+      #rights {
+        div {
+          cursor: pointer;
+        }
+      }
+
+      #socials {
+        display: flex;
+        align-items: center;
+
+        img {
+          height: 1.5em;
+          width: 1.5em;
+          margin-left: 1em;
+          @include global.disableSelect();
+          @include global.disableDrag();
+          @include global.disableHighlight();
+        }
+        @media (max-width: 455px) {
+          margin-top: 1.5em;
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+</style>

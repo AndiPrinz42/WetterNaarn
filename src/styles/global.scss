@@ -1,7 +1,8 @@
 @use "./mixins" as global;
 @import url("./fonts.scss");
+
 html {
-  --sidebar-width: 16em;
+  --sidebar-width: 16em;  
 }
 
 * {

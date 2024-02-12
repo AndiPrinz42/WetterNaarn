@@ -1,7 +1,10 @@
 ---
+import Sidebar from "../components/Sidebar.astro";
+import Topbar from "../components/Topbar.astro";
+import Footer from "../components/Footer.astro";
 import "../styles/global.scss";
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -9,44 +12,76 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<!-- <meta name="description" content="Astro description" /> -->
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<!-- <meta name="generator" content={Astro.generator} /> -->
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta name="description" content="Astro description" /> -->
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- <meta name="generator" content={Astro.generator} /> -->
+    <title>{title}</title>
+  </head>
+  <body>
+    <header id="topbar">
+      <Topbar />
+    </header>
+
+    <nav id="sidebar">
+      <Sidebar />
+    </nav>
+    <main id="content">
+      <slot />
+    </main>
+
+    <footer id="footer">
+      <Footer />
+    </footer>
+  </body>
 </html>
-<!-- <style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style> -->
+
+<style lang="scss">
+  #topbar {
+    display: none;
+
+    @media (max-width: 1250px) {
+      display: block;
+    }
+  }
+
+  #sidebar {
+    position: fixed;
+    top: 0;
+    width: var(--sidebar-width);
+    transition: margin-left 0.25s ease-in-out;
+	z-index: 1;
+
+    @media (max-width: 1250px) {
+      margin-left: calc(var(--sidebar-width) * -1);
+
+      &.active {
+        margin-left: 0;
+        box-shadow:
+          rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+          rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+      }
+    }
+  }
+
+  #content {
+    margin-left: var(--sidebar-width);
+    @media (max-width: 1250px) {
+      margin-left: 0;
+    }
+  }
+
+  #footer {
+    margin-top: 2em;
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+    position: absolute;
+
+    @media (max-width: 1250px) {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+</style>

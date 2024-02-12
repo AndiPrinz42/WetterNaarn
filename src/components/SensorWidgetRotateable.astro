@@ -1,80 +1,85 @@
 ---
 const { name, value, text, icon, rotation } = Astro.props;
+const { default: innerHTML } = await import(`${icon}?raw`);
 ---
 
-<div id="wrapper" style="--rotationDeg: {{ rotation }}deg">
+<div id="sensorWidgetRotateable">
+  <div id="wrapper" style=`--rotationDeg: ${rotation}deg`>
     <div id="left">
       <div id="name">
-        {{ name }}
+        {name}
       </div>
       <div id="value">
-        {{ value }}
+        {value}
       </div>
       <div id="text">
-        {{ text }}
+        {text}
       </div>
     </div>
     <div id="right">
-      <app-native-svg id="icon" path="{{ icon }}"></app-native-svg>
+      <div id="icon">
+        <Fragment set:html={innerHTML} />
+      </div>
     </div>
   </div>
-  
-  <style lang="scss">
-    :host ::ng-deep #rotateElement {
-      transform-origin: 50% 50%;
-      transform: rotate(var(--rotationDeg));
+</div>
+
+<style lang="scss" is:inline>
+  #icon #rotateElement {
+    transform-origin: 50% 50%;
+    transform: rotate(100deg);
+  }
+</style>
+
+<style lang="scss">
+  $contrast_color: #808080;
+  $background: #ecf3f8;
+
+  #sensorWidgetRotateable {
+    background-color: $background;
+    border-radius: 1em;
+    height: 8.5em;
+    padding: 1.6em;
+  }
+
+  #wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    #right {
+      #icon {
+        height: 6em;
+        width: 6em;
+        @media (max-width: 420px) {
+          height: 5em;
+          width: 5em;
+        }
+      }
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
     }
-
-    $contrast_color: #808080;
-$background: #ecf3f8;
-
-:host {
-  background-color: $background;
-  border-radius: 1em;
-  height: 8.5em;
-  padding: 1.6em;
-}
-
-#wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  #right {
-    #icon {
-      height: 6em;
-      width: 6em;
-      @media (max-width: 420px) {
-        height: 5em;
-        width: 5em;
+    #left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      #name {
+        font-size: 1.5em;
+        font-weight: 400;
+        margin-bottom: 0.7em;
+      }
+      #value {
+        font-size: 1.5em;
+        font-weight: 400;
+        margin-bottom: 0.6em;
+      }
+      #text {
+        font-size: 1.2em;
+        font-weight: 400;
+        color: $contrast_color;
       }
     }
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
   }
-  #left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    #name {
-      font-size: 1.5em;
-      font-weight: 400;
-      margin-bottom: 0.7em;
-    }
-    #value {
-      font-size: 1.5em;
-      font-weight: 400;
-      margin-bottom: 0.6em;
-    }
-    #text {
-      font-size: 1.2em;
-      font-weight: 400;
-      color: $contrast_color;
-    }
-  }
-}
-
-  </style>
-  
+</style>

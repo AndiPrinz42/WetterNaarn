@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import SensorWidget from "../components/SensorWidget.astro";
+import SensorWidgetRotateable from "../components/SensorWidgetRotateable.astro";
+import SunWidget from "../components/SunWidget.astro";
 
 const data = {
   date: "Heute 20:30",
@@ -61,10 +63,12 @@ const humidityText = "hoch";
 
 const barometerText = "normal";
 const barometerIcon =
-  "../assets/icons/meteocons/static/sensors/barometer/barometer.svg";
+  "../../public/assets/icons/meteocons/static/sensors/barometer/barometer.svg";
 const moonIcon =
-  "../assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg";
+  "../../public/assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg";
 const moonPhase = "zunehmend";
+
+const windText = "leichter Zug";
 ---
 
 <Layout title="Dashboard | Wetter Naarn">
@@ -148,7 +152,7 @@ const moonPhase = "zunehmend";
           </div>
           <div class="condition" *ngIf="data.forecastin1d.icon !== ''">
             <img
-              src=`../assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
+              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
               alt={data.forecastin1d.condition}
               class="icon"
             />
@@ -165,7 +169,7 @@ const moonPhase = "zunehmend";
           </div>
           <div class="condition" *ngIf="data.forecastin2d.icon !== ''">
             <img
-              src=`../assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
+              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
               alt={data.forecastin2d.condition}
               class="icon"
             />
@@ -182,7 +186,7 @@ const moonPhase = "zunehmend";
           </div>
           <div class="condition" *ngIf="data.forecastin3d.icon !== ''">
             <img
-              src=`../assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
+              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
               alt={data.forecastin3d.condition}
               class="icon"
             />
@@ -199,7 +203,7 @@ const moonPhase = "zunehmend";
           </div>
           <div class="condition last" *ngIf="data.forecastin4d.icon !== ''">
             <img
-              src=`../assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
+              src=`../../public/assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
               alt={data.forecastin4d.condition}
               class="icon"
             />
@@ -213,7 +217,7 @@ const moonPhase = "zunehmend";
       name="Luftfeuchte"
       text=`${humidityText}`
       value=`${data.outHumidity}%`
-      icon="../assets/icons/meteocons/static/sensors/humidity.svg"
+      icon="../../public/assets/icons/meteocons/static/sensors/humidity.svg"
       iconAlt="Luftfeuchte Icon"
     />
 
@@ -225,19 +229,19 @@ const moonPhase = "zunehmend";
       iconAlt="Luftfeuchte Icon"
     />
 
-    <app-widget-sensor-rotateable
-      class="sensor"
-      [name]="'Wind'"
-      [text]="windText"
-      [value]="data.windspeed + 'km/h'"
-      [icon]="'/assets/icons/meteocons/rotateable/windcompass.svg'"
-      [rotation]="data.winddir"></app-widget-sensor-rotateable>
+    <SensorWidgetRotateable
+      name="Wind"
+      text=`${windText}`
+      value=`${data.windspeed}km/h`
+      icon="../../public/assets/icons/meteocons/rotateable/windcompass.svg"
+      rotation=`${data.winddir}`
+    />
 
     <SensorWidget
       name="Regen"
       text="Heutiger Regen"
       value=`${data.rain}mm²`
-      icon="../assets/icons/meteocons/static/sensors/raindrops.svg"
+      icon="../../public/assets/icons/meteocons/static/sensors/raindrops.svg"
       iconAlt="Regen Icon"
     />
 
@@ -247,6 +251,16 @@ const moonPhase = "zunehmend";
       value=`${data.moonillumination}%`
       icon=`${moonIcon}`
       iconAlt="Mondphase Icon"
+    />
+
+    <SunWidget
+    name="Sonne"
+    sunriseIcon="../../public/assets/icons/meteocons/static/sun/sunrise.svg"
+    sunriseIconAlt="Sonnenaufgang Icon"
+    sunriseTime=`${data.sunrise}`
+    sunsetIcon="../../public/assets/icons/meteocons/static/sun/sunset.svg"
+    sunsetIconAlt="Sonnenuntergang Icon"
+    sunsetTime=`${data.sunset}`
     />
 
     <app-widget-sensor-sun

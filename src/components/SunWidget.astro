@@ -1,0 +1,111 @@
+---
+const {
+  sunriseTime,
+  sunsetTime,
+  name,
+  sunriseIcon,
+  sunriseIconAlt,
+  sunsetIcon,
+  sunsetIconAlt,
+} = Astro.props;
+
+let icon = "";
+let iconAlt = "";
+if (sunIsUp(sunriseTime, sunsetTime)) {
+  icon = sunriseIcon;
+  iconAlt = sunriseIconAlt;
+} else {
+  icon = sunsetIcon;
+  iconAlt = sunsetIconAlt;
+}
+
+function sunIsUp(sunrise: string, sunset: string): boolean {
+  const [hours1, minutes1] = sunrise.split(":").map(Number);
+  const [hours2, minutes2] = sunset.split(":").map(Number);
+  const date1 = new Date(0, 0, 0, hours1, minutes1);
+  const date2 = new Date(0, 0, 0, hours2, minutes2);
+  const now = new Date(0, 0, 0, new Date().getHours(), new Date().getMinutes());
+  return now >= date1 && now <= date2;
+}
+---
+
+<div id="sunWidget">
+  <div id="wrapper">
+    <div id="left">
+      <div id="name">
+        {name}
+      </div>
+      <div id="sunrise">
+        <img id="icon" src={sunriseIcon} alt={sunriseIconAlt} />
+        <div id="time">{sunriseTime}</div>
+      </div>
+      <div id="sunset">
+        <img id="icon" src={sunsetIcon} alt={sunsetIconAlt} />
+        <div id="time">{sunsetTime}</div>
+      </div>
+    </div>
+    <div id="right">
+      <img src={ icon } alt={ iconAlt } id="icon" />
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../styles/mixins" as global;
+
+  $contrast_color: #808080;
+  $background: #ecf3f8;
+
+  #sunWidget {
+    background-color: $background;
+    border-radius: 1em;
+    padding: 1.6em;
+  }
+
+  #wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    #right {
+      #icon {
+        height: 5em;
+        @include global.disableSelect;
+        @include global.disableDrag;
+        @media (max-width: 420px) {
+          height: 5em;
+        }
+      }
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    #left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      #name {
+        font-size: 1.5em;
+        font-weight: 400;
+        margin-bottom: 0.4em;
+      }
+      #sunrise,
+      #sunset {
+        font-size: 1.5em;
+        font-weight: 400;
+        margin-bottom: 0.5em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        #icon {
+          height: 1.5em;
+          width: 1.5em;
+          margin-right: 0.5em;
+          @include global.disableSelect;
+          @include global.disableDrag;
+        }
+      }
+    }
+  }
+</style>

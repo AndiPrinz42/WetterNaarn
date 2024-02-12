@@ -63,9 +63,9 @@ const humidityText = "hoch";
 
 const barometerText = "normal";
 const barometerIcon =
-  "/assets/icons/meteocons/static/sensors/barometer/barometer.svg";
+  "assets/icons/meteocons/static/sensors/barometer/barometer.svg";
 const moonIcon =
-  "/assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg";
+  "assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg";
 const moonPhase = "zunehmend";
 
 const windText = "leichter Zug";
@@ -217,7 +217,7 @@ const windText = "leichter Zug";
       name="Luftfeuchte"
       text=`${humidityText}`
       value=`${data.outHumidity}%`
-      icon="/assets/icons/meteocons/static/sensors/humidity.svg"
+      icon="assets/icons/meteocons/static/sensors/humidity.svg"
       iconAlt="Luftfeuchte Icon"
     />
 
@@ -233,7 +233,7 @@ const windText = "leichter Zug";
       name="Wind"
       text=`${windText}`
       value=`${data.windspeed}km/h`
-      icon="/assets/icons/meteocons/rotateable/windcompass.svg"
+      icon="../../public/assets/icons/meteocons/rotateable/windcompass.svg"
       rotation=`${data.winddir}`
     />
 
@@ -241,7 +241,7 @@ const windText = "leichter Zug";
       name="Regen"
       text="Heutiger Regen"
       value=`${data.rain}mm²`
-      icon="/assets/icons/meteocons/static/sensors/raindrops.svg"
+      icon="assets/icons/meteocons/static/sensors/raindrops.svg"
       iconAlt="Regen Icon"
     />
 
@@ -255,10 +255,10 @@ const windText = "leichter Zug";
 
     <SunWidget
     name="Sonne"
-    sunriseIcon="/assets/icons/meteocons/static/sun/sunrise.svg"
+    sunriseIcon="assets/icons/meteocons/static/sun/sunrise.svg"
     sunriseIconAlt="Sonnenaufgang Icon"
     sunriseTime=`${data.sunrise}`
-    sunsetIcon="/assets/icons/meteocons/static/sun/sunset.svg"
+    sunsetIcon="assets/icons/meteocons/static/sun/sunset.svg"
     sunsetIconAlt="Sonnenuntergang Icon"
     sunsetTime=`${data.sunset}`
     />

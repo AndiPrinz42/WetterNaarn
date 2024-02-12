@@ -1,10 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Sidebar from '../components/Sidebar.astro';
+import "../styles/global.scss";
 ---
 
 <Layout title="Welcome to Astro.">
-	<main>
+
+	<Sidebar></Sidebar>
+	<!-- <main>
 		<svg
 			class="astro-a"
 			width="495"
@@ -60,10 +63,10 @@ import Card from '../components/Card.astro';
 				body="Come say hi to our amazing Discord community. ❤️"
 			/>
 		</ul>
-	</main>
+	</main> -->
 </Layout>
 
-<style>
+<!-- <style>
 	main {
 		margin: auto;
 		padding: 1rem;
@@ -120,4 +123,4 @@ import Card from '../components/Card.astro';
 		gap: 2rem;
 		padding: 0;
 	}
-</style>
+</style> -->

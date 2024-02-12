@@ -1,0 +1,141 @@
+---
+import "../styles/_mixins.scss";
+import { Image } from 'astro:assets';
+import HamburgerClose from "../assets/icons/navigation/hamburgerclose.svg";
+import Logo from "../assets/icons/logo/logo.svg";
+import DashboardIcon from "../assets/icons/navigation/dashboard.svg";
+import SensorsIcon from "../assets/icons/navigation/allsensors.svg";
+import GraphsIcon from "../assets/icons/navigation/graph.svg";
+import AwekasIcon from "../assets/icons/navigation/awekasbw.svg";
+---
+
+<div id="sidebar">
+  <Image
+    id="hamburgerclose"
+    src={HamburgerClose}
+    alt="Hamburger close Icon"
+    (click)="toggleSidebar()"
+  />
+  <div id="logoContainer">
+    <Image src={Logo} alt="Logo" id="logo" />
+  </div>
+  <div class="menuitem first" (click)="toDashboard()">
+    <Image
+      class="icon"
+      src={DashboardIcon}
+      alt="Dashboard Icon"
+    />
+    <div class="text">Dashboard</div>
+  </div>
+  <div class="menuitem" (click)="toAllSensors()">
+    <Image
+      class="icon"
+      src={SensorsIcon}
+      alt="Alle Sensoren Icon"
+    />
+    <div class="text">Alle Sensoren</div>
+  </div>
+  <div class="menuitem" (click)="toGraphs()">
+    <Image
+      class="icon"
+      src={GraphsIcon}
+      alt="Graphen Icon"
+    />
+    <div class="text">Grafiken</div>
+  </div>
+  <a href="https://www.awekas.at/de/instrument.php?id=15211" target="_blank">
+    <div class="menuitem">
+      <Image
+        class="icon"
+        src={AwekasIcon}
+        alt="AWEKAS Icon"
+      />
+      <div class="text">AWEKAS</div>
+    </div>
+  </a>
+</div>
+
+<style lang="scss">
+  @use "../styles/mixins" as global;
+
+  $background: #ffffff;
+  $hover_background: #f0f0f0;
+  $click_background: #e0e0e0;
+
+  #sidebar {
+    width: var(--sidebar-width);
+    max-width: 100%;
+    background-color: $background;
+    min-height: 100vh;
+    min-height: 100dvh;
+    border-right: 0.1em solid #e1e8ec;
+    z-index: 1;
+    * {
+      @include global.disableSelect;
+      @include global.disableDrag;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  #hamburgerclose {
+    display: none;
+    height: 2em;
+    width: 2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 1em;
+    margin-top: 1em;
+    cursor: pointer;
+    @media (max-width: 1250px) {
+      display: block;
+    }
+  }
+
+  #logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media (max-width: 1250px) {
+      margin-top: 2em;
+    }
+    #logo {
+      height: 8.4375em;
+      width: 8.4375em;
+      margin-top: 1.63em;
+    }
+  }
+
+  .menuitem {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    .icon {
+      height: 1.3em;
+      width: 1.3em;
+      margin-left: 3.4em;
+    }
+    .text {
+      margin-left: 0.8em;
+      font-size: 1em;
+    }
+    &.first {
+      margin-top: 1.5em;
+    }
+    &:hover {
+      background-color: $hover_background;
+    }
+    &:active {
+      background-color: $click_background;
+    }
+  }
+</style>

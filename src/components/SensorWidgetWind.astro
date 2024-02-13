@@ -1,5 +1,12 @@
 ---
+interface Props {
+  name: string;
+  value: string;
+  text: string;
+  rotation: number;
+}
 const { name, value, text, rotation } = Astro.props;
+import svg from "../../public/assets/icons/meteocons/rotateable/windcompass.svg?raw";
 ---
 
 <div id="sensorWidgetRotateable">
@@ -17,7 +24,7 @@ const { name, value, text, rotation } = Astro.props;
     </div>
     <div id="right">
       <div id="icon">
-        <slot />
+        <Fragment set:html={svg} />
       </div>
     </div>
   </div>

@@ -86,3 +86,15 @@ const { title } = Astro.props;
     }
   }
 </style>
+
+<script>
+  const hamburgerOpen = document.querySelector("#topbar #hamburgerwrapper") as HTMLDivElement;
+  const hamburgerClose = document.querySelector("#sidebar #hamburgerclose") as HTMLDivElement;
+  const sidebar = document.querySelector("#sidebar") as HTMLElement;
+  hamburgerOpen.addEventListener("click", () => {
+    sidebar.classList.add("active");
+  });
+  hamburgerClose.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+  });
+</script>

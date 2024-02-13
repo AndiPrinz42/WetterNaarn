@@ -2,81 +2,151 @@
 import Layout from "../layouts/Layout.astro";
 import DetailSensorWidget from "../components/DetailSensorWidget.astro";
 import DetailSensorWidgetWind from "../components/DetailSensorWidgetWind.astro";
+import SunWidget from "../components/SunWidget.astro";
 
 const data = {
   outTemp: {
-    current: 20.5,
-    avg: 20.5,
-    min: 19.5,
-    minTime: "00:10",
-    max: 22.5,
-    maxTime: "00:25",
+    current: 0.6,
+    avg: 6.9,
+    min: 0.6,
+    minTime: "22:07",
+    max: 10.6,
+    maxTime: "15:34",
   },
   appTemp: {
-    current: 20.5,
-    avg: 20.5,
-    min: 20.5,
-    minTime: "00:00",
-    max: 20.5,
-    maxTime: "00:00",
+    current: -1.5,
+    avg: 4.8,
+    min: -1.5,
+    minTime: "22:07",
+    max: 9.2,
+    maxTime: "15:37",
   },
   dewpoint: {
-    current: 20.5,
-    avg: 20.5,
-    min: 20.5,
-    minTime: "00:00",
-    max: 20.5,
-    maxTime: "00:00",
+    current: -0.7,
+    avg: 3.9,
+    min: -0.8,
+    minTime: "22:07",
+    max: 5.4,
+    maxTime: "09:58",
   },
   outHumidity: {
-    current: 20.5,
-    avg: 20.5,
-    min: 20.5,
-    minTime: "00:00",
-    max: 20.5,
-    maxTime: "00:00",
+    current: 91,
+    avg: 81,
+    min: 60,
+    minTime: "15:47",
+    max: 93,
+    maxTime: "02:34",
   },
   barometer: {
-    current: 20.5,
-    avg: 20.5,
-    min: 20.5,
+    current: 1025.7,
+    avg: 1021.4,
+    min: 1015.1,
     minTime: "00:00",
-    max: 20.5,
-    maxTime: "00:00",
+    max: 1025.8,
+    maxTime: "22:08",
   },
   wind: {
-    current: 20.5,
-    avg: 20.5,
-    max: 20.5,
-    currentDir: 120,
-    maxTime: "06:40",
-    maxDir: 60,
-    maxGust: 20.5,
-    maxGustTime: "07:00",
-    maxGustDir: 75,
+    current: 0,
+    avg: 4.2,
+    max: 10.5,
+    maxTime: "10:40",
+    currentDir: 4,
+    maxDir: 292.5,
+    maxGust: 24.1,
+    maxGustTime: "15:03",
+    maxGustDir: 270,
   },
   rain: {
-    day: 20.5,
-    week: 20.5,
-    weekBefore: 20.5,
-    month: 20.5,
-    monthBefore: 20.5,
-    last: "00:00",
+    day: 0.4,
+    last: "Heute 02:30",
+    week: 1,
+    weekBefore: 10.2,
+    month: 15.4,
+    monthBefore: 55.6,
   },
   suntoday: {
-    sunrise: "00:00",
-    sunset: "00:00",
+    sunrise: "07:10",
+    sunset: "17:20",
   },
   suntomorrow: {
-    sunrise: "00:00",
-    sunset: "00:00",
+    sunrise: "07:09",
+    sunset: "17:22",
   },
-  daylength: "00:00",
-  daylengthdiff: "00:00",
+  daylength: "11h 09m",
+  daylengthdiff: "3m länger als gestern",
   moon: {
-    illumination: 20.5,
+    phase: 15,
+    illumination: 21,
+    nextFullMoon: "24.02.2024",
+    nextFullMoonDays: 11,
+    nextNewMoon: "10.03.2024",
+    nextNewMoonDays: 25,
   },
 };
+
+const moonindex = getMoonIndex(data.moon.illumination);
+const moonIcon = getMoonIcon(moonindex);
+const moonPhase = getMoonName(moonindex);
+
+function getMoonIcon(index: number): string {
+  if (index < 0 || index > 7) {
+    throw new Error("moonindex must be between 0 and 7");
+  }
+
+  const moonicons: string[] = [
+    "assets/icons/meteocons/static/moon/moon-new.svg",
+    "assets/icons/meteocons/static/moon/moon-waxing-crescent.svg",
+    "assets/icons/meteocons/static/moon/moon-first-quarter.svg",
+    "assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg",
+    "assets/icons/meteocons/static/moon/moon-full.svg",
+    "assets/icons/meteocons/static/moon/moon-waning-gibbous.svg",
+    "assets/icons/meteocons/static/moon/moon-last-quarter.svg",
+    "assets/icons/meteocons/static/moon/moon-waning-crescent.svg",
+  ];
+
+  return moonicons[index];
+}
+
+function getMoonName(index: number): string {
+  if (index < 0 || index > 7) {
+    throw new Error("moonindex must be between 0 and 7");
+  }
+
+  const phasenames: string[] = [
+    "Neumond",
+    "zunehmend",
+    "zunehmender Halbmond",
+    "zunehmend",
+    "Vollmond",
+    "abnehmend",
+    "abnehmender Halbmond",
+    "abnehmend",
+  ];
+
+  return phasenames[index];
+}
+
+function getMoonIndex(moonpercent: number): number {
+  if (moonpercent === 0 || moonpercent === 100) {
+    return 0;
+  } else if (moonpercent > 0 && moonpercent < 25) {
+    return 1;
+  } else if (moonpercent === 25) {
+    return 2;
+  } else if (moonpercent > 25 && moonpercent < 50) {
+    return 3;
+  } else if (moonpercent === 50) {
+    return 4;
+  } else if (moonpercent > 50 && moonpercent < 75) {
+    return 5;
+  } else if (moonpercent === 75) {
+    return 6;
+  } else if (moonpercent > 75 && moonpercent < 100) {
+    return 7;
+  } else {
+    throw new Error("Moonpercent out of range: " + moonpercent);
+  }
+}
 ---
 
 <Layout title="Sensoren | Wetter Naarn">
@@ -149,282 +219,296 @@ const data = {
           />
         </div>
       </div>
+    </section>
+
+    <section>
+      <h2>Taupunkt</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            text=`Ø ${data.dewpoint.avg}°`
+            value=`${data.dewpoint.current}°`
+            icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer.svg"
+            iconAlt="Taupunkt Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Min"
+            value=`${data.dewpoint.min}°`
+            text={data.dewpoint.minTime}
+            icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-colder.svg"
+            iconAlt="Taupunkt Min Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Max"
+            value=`${data.dewpoint.max}°`
+            text={data.dewpoint.maxTime}
+            icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-warmer.svg"
+            iconAlt="Taupunkt Max Icon"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Luftfeuchte</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            text=`Ø ${data.outHumidity.avg}%`
+            value=`${data.outHumidity.current}%`
+            icon="assets/icons/meteocons/static/sensors/humidity/humidity.svg"
+            iconAlt="Luftfeuchte Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Min"
+            value=`${data.outHumidity.min}%`
+            text={data.outHumidity.minTime}
+            icon="assets/icons/meteocons/static/sensors/humidity/humidity-min.svg"
+            iconAlt="Luftfeuchte Min Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Max"
+            value=`${data.outHumidity.max}%`
+            text={data.outHumidity.maxTime}
+            icon="assets/icons/meteocons/static/sensors/humidity/humidity-max.svg"
+            iconAlt="Luftfeuchte Max Icon"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Luftdruck</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            text=`Ø ${data.barometer.avg}hPa`
+            value=`${data.barometer.current}hPa`
+            icon="assets/icons/meteocons/static/sensors/barometer/barometer.svg"
+            iconAlt="Luftdruck Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Min"
+            value=`${data.barometer.min}hPa`
+            text={data.barometer.minTime}
+            icon="assets/icons/meteocons/static/sensors/barometer/barometer-min.svg"
+            iconAlt="Luftdruck Min Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Max"
+            value=`${data.barometer.max}hPa`
+            text={data.barometer.maxTime}
+            icon="assets/icons/meteocons/static/sensors/barometer/barometer-max.svg"
+            iconAlt="Luftdruck Max Icon"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Wind</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidgetWind
+            name="Aktuell"
+            text=`Ø ${data.wind.avg}km/h`
+            value=`${data.wind.current}km/h`
+            rotation={data.wind.currentDir}
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidgetWind
+            name="Max"
+            value=`${data.wind.max}km/h`
+            text={data.wind.maxTime}
+            rotation={data.wind.maxDir}
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidgetWind
+            name="Böen Max"
+            value=`${data.wind.maxGust}km/h`
+            text={data.wind.maxGustTime}
+            rotation={data.wind.maxGustDir}
+          />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Regen</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Heute"
+            value=`${data.rain.day}mm²`
+            text={`Letzter Regen:​ ${data.rain.last}`}
+            icon="assets/icons/meteocons/static/sensors/rain/rain-day.svg"
+            iconAlt="Regen Tag Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Woche"
+            value=`${data.rain.week}mm²`
+            text={`Vorwoche:​ ${data.rain.weekBefore}mm²`}
+            icon="assets/icons/meteocons/static/sensors/rain/rain-week.svg"
+            iconAlt="Regen Woche Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Monat"
+            value=`${data.rain.month}mm²`
+            text={`Vormonat:​ ${data.rain.monthBefore}mm²`}
+            icon="assets/icons/meteocons/static/sensors/rain/rain-month.svg"
+            iconAlt="Regen Monat Icon"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Sonne</h2>
+      <div class="row">
+        <div class="sensor">
+          <SunWidget
+            name="Heute"
+            sunriseIcon="assets/icons/meteocons/static/sun/sunrise.svg"
+            sunriseIconAlt="Sonnenaufgang Icon"
+            sunriseTime={data.suntoday.sunrise}
+            sunsetIcon="assets/icons/meteocons/static/sun/sunset.svg"
+            sunsetIconAlt="Sonnenuntergang Icon"
+            sunsetTime={data.suntoday.sunset}
+          />
+        </div>
+        <div class="sensor">
+          <SunWidget
+            name="Morgen"
+            sunriseIcon="assets/icons/meteocons/static/sun/sunrise.svg"
+            sunriseIconAlt="Sonnenaufgang Icon"
+            sunriseTime={data.suntomorrow.sunrise}
+            sunsetIcon="assets/icons/meteocons/static/sun/sunset.svg"
+            sunsetIconAlt="Sonnenuntergang Icon"
+            sunsetTime={data.suntomorrow.sunset}
+          />
+        </div>
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Tageslänge"
+            value={data.daylength}
+            text={data.daylengthdiff}
+            icon="assets/icons/meteocons/static/conditions/09d.svg"
+            iconAlt="Tageslänge Icon"
+          />
+        </div>
+      </div>
 
       <section>
-        <h2>Taupunkt</h2>
+        <h2>Mond</h2>
         <div class="row">
           <div class="sensor">
             <DetailSensorWidget
               name="Aktuell"
-              text=`Ø ${data.dewpoint.avg}°`
-              value=`${data.dewpoint.current}°`
-              icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer.svg"
-              iconAlt="Taupunkt Icon"
+              value={data.moon.illumination + "%"}
+              text={moonPhase}
+              icon={moonIcon}
+              iconAlt="Mondphase Icon"
             />
           </div>
 
           <div class="sensor">
             <DetailSensorWidget
-              name="Min"
-              value=`${data.dewpoint.min}°`
-              text={data.dewpoint.minTime}
-              icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-colder.svg"
-              iconAlt="Taupunkt Min Icon"
+              name="Nächster Vollmond"
+              value={data.moon.nextFullMoon}
+              text={`in ${data.moon.nextFullMoonDays} ${data.moon.nextFullMoonDays !== 1 ? "Tagen" : "Tag"}`}
+              icon="assets/icons/meteocons/static/moon/moon-full.svg"
+              iconAlt="Vollmond Icon"
             />
           </div>
 
           <div class="sensor">
             <DetailSensorWidget
-              name="Max"
-              value=`${data.dewpoint.max}°`
-              text={data.dewpoint.maxTime}
-              icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-warmer.svg"
-              iconAlt="Taupunkt Max Icon"
+              name="Nächster Neumond"
+              value={data.moon.nextNewMoon}
+              text={`in ${data.moon.nextNewMoonDays} ${data.moon.nextNewMoonDays !== 1 ? "Tagen" : "Tag"}`}
+              icon="assets/icons/meteocons/static/moon/moon-new.svg"
+              iconAlt="Neumond Icon"
             />
           </div>
         </div>
 
-        <section>
-          <h2>Luftfeuchte</h2>
-          <div class="row">
-            <div class="sensor">
-              <DetailSensorWidget
-                name="Aktuell"
-                text=`Ø ${data.outHumidity.avg}%`
-                value=`${data.outHumidity.current}%`
-                icon="assets/icons/meteocons/static/sensors/humidity/humidity.svg"
-                iconAlt="Luftfeuchte Icon"
-              />
-            </div>
-
-            <div class="sensor">
-              <DetailSensorWidget
-                name="Min"
-                value=`${data.outHumidity.min}%`
-                text={data.outHumidity.minTime}
-                icon="assets/icons/meteocons/static/sensors/humidity/humidity-min.svg"
-                iconAlt="Luftfeuchte Min Icon"
-              />
-            </div>
-
-            <div class="sensor">
-              <DetailSensorWidget
-                name="Max"
-                value=`${data.outHumidity.max}%`
-                text={data.outHumidity.maxTime}
-                icon="assets/icons/meteocons/static/sensors/humidity/humidity-max.svg"
-                iconAlt="Luftfeuchte Max Icon"
-              />
-            </div>
-          </div>
-
-          <section>
-            <h2>Luftdruck</h2>
-            <div class="row">
-              <div class="sensor">
-                <DetailSensorWidget
-                  name="Aktuell"
-                  text=`Ø ${data.barometer.avg}hPa`
-                  value=`${data.barometer.current}hPa`
-                  icon="assets/icons/meteocons/static/sensors/barometer/barometer.svg"
-                  iconAlt="Luftdruck Icon"
-                />
-              </div>
-
-              <div class="sensor">
-                <DetailSensorWidget
-                  name="Min"
-                  value=`${data.barometer.min}hPa`
-                  text={data.barometer.minTime}
-                  icon="assets/icons/meteocons/static/sensors/barometer/barometer-min.svg"
-                  iconAlt="Luftdruck Min Icon"
-                />
-              </div>
-
-              <div class="sensor">
-                <DetailSensorWidget
-                  name="Max"
-                  value=`${data.barometer.max}hPa`
-                  text={data.barometer.maxTime}
-                  icon="assets/icons/meteocons/static/sensors/barometer/barometer-max.svg"
-                  iconAlt="Luftdruck Max Icon"
-                />
-              </div>
-            </div>
-
-            <section>
-              <h2>Wind</h2>
-              <div class="row">
-                <div class="sensor">
-                  <DetailSensorWidgetWind
-                    name="Aktuell"
-                    text=`Ø ${data.wind.avg}km/h`
-                    value=`${data.wind.current}km/h`
-                    rotation={data.wind.currentDir}
-                  />
-                </div>
-
-                <div class="sensor">
-                  <DetailSensorWidgetWind
-                    name="Max"
-                    value=`${data.wind.max}km/h`
-                    text={data.wind.maxTime}
-                    rotation={data.wind.maxDir}
-                  />
-                </div>
-
-                <div class="sensor">
-                  <DetailSensorWidgetWind
-                    name="Böen Max"
-                    value=`${data.wind.maxGust}km/h`
-                    text={data.wind.maxGustTime}
-                    rotation={data.wind.maxGustDir}
-                  />
-                </div>
-              </div>
-
-              <section>
-                <h2>Regen</h2>
-                <div class="row">
-                  <div class="sensor">
-                    <DetailSensorWidget
-                      name="Heute"
-                      value=`${data.rain.day}mm²`
-                      text={`Letzter Regen:​ ${data.rain.last}`}
-                      icon="assets/icons/meteocons/static/sensors/rain/rain-day.svg"
-                      iconAlt="Regen Tag Icon"
-                    />
-                  </div>
-
-                  <div class="sensor">
-                    <DetailSensorWidget
-                      name="Woche"
-                      value=`${data.rain.week}mm²`
-                      text={`Vorwoche:​ ${data.rain.weekBefore}mm²`}
-                      icon="assets/icons/meteocons/static/sensors/rain/rain-week.svg"
-                      iconAlt="Regen Woche Icon"
-                    />
-                  </div>
-
-                  <div class="sensor">
-                    <DetailSensorWidget
-                      name="Monat"
-                      value=`${data.rain.month}mm²`
-                      text={`Vormonat:​ ${data.rain.monthBefore}mm²`}
-                      icon="assets/icons/meteocons/static/sensors/rain/rain-month.svg"
-                      iconAlt="Regen Monat Icon"
-                    />
-                  </div>
-                </div>
-
-                <!-- <section>
-      <h2>Sonne</h2>
-      <div class="row">
-        <app-widget-sensor-sun
-          class="sensor"
-          [name]="'Heute'"
-          [sunriseIcon]="'/assets/icons/meteocons/static/sun/sunrise.svg'"
-          [sunriseIconAlt]="'Sonnenaufgang Icon'"
-          [sunriseTime]="data.suntoday.sunrise"
-          [sunsetIcon]="'/assets/icons/meteocons/static/sun/sunset.svg'"
-          [sunsetIconAlt]="'Sonnenuntergang Icon'"
-          [sunsetTime]="data.suntoday.sunset"></app-widget-sensor-sun>
-        <app-widget-sensor-sun
-          class="sensor"
-          [name]="'Morgen'"
-          [sunriseIcon]="'/assets/icons/meteocons/static/sun/sunrise.svg'"
-          [sunriseIconAlt]="'Sonnenaufgang Icon'"
-          [sunriseTime]="data.suntomorrow.sunrise"
-          [sunsetIcon]="'/assets/icons/meteocons/static/sun/sunset.svg'"
-          [sunsetIconAlt]="'Sonnenuntergang Icon'"
-          [sunsetTime]="data.suntomorrow.sunset"></app-widget-sensor-sun>
-        <app-widget-detail-sensor-static
-          class="sensor"
-          [name]="'Tageslänge'"
-          [value]="data.daylength"
-          [text]="data.daylengthdiff"
-          [icon]="'/assets/icons/meteocons/static/conditions/09d.svg'"
-          [iconAlt]="'Tageslänge Icon'"></app-widget-detail-sensor-static>
-      </div>
-    </section> -->
-
-                <!-- <section>
-      <h2>Mond</h2>
-      <div class="row">
-        <app-widget-detail-sensor-static
-          class="sensor"
-          [name]="'Aktuell'"
-          [value]="data.moon.illumination + '%'"
-          [text]="moonPhase"
-          [icon]="moonIcon"
-          [iconAlt]="'Mondphase Icon'"></app-widget-detail-sensor-static>
-        <app-widget-detail-sensor-static
-          class="sensor"
-          [name]="'Nächster Vollmond'"
-          [value]="data.moon.nextFullMoon"
-          [text]="'in ' + data.moon.nextFullMoonDays + (data.moon.nextFullMoonDays !== 1 ? ' Tagen' : ' Tag')"
-          [icon]="'/assets/icons/meteocons/static/moon/moon-full.svg'"
-          [iconAlt]="'Vollmond Icon'"></app-widget-detail-sensor-static>
-        <app-widget-detail-sensor-static
-          class="sensor"
-          [name]="'Nächster Neumond'"
-          [value]="data.moon.nextNewMoon"
-          [text]="'in ' + data.moon.nextNewMoonDays + (data.moon.nextNewMoonDays !== 1 ? ' Tagen' : ' Tag')"
-          [icon]="'/assets/icons/meteocons/static/moon/moon-new.svg'"
-          [iconAlt]="'Neumond Icon'"></app-widget-detail-sensor-static>
-      </div>
-    </section> -->
-              </section>
-            </section>
-
-            <style lang="scss">
-              #content {
-                padding: 0.5em 2em 1.2em 2em;
-                min-height: calc(100vh - 1.7em);
-                @media (max-width: 1250px) {
-                  margin-left: 0;
-                  margin-top: 3.75em;
-                }
-                @media (max-width: 420px) {
-                  padding: 0.5em 1em 1.2em 1em;
-                }
-                .widget {
-                  padding: 1.5em;
-                  border-radius: 1em;
-                }
-                h2 {
-                  font-size: 2em;
-                  font-weight: 500;
-                  margin-bottom: 0.2em;
-                }
-                section {
-                  margin-bottom: 1em;
-                }
-                .row {
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: space-between;
-                  @media (max-width: 950px) {
-                    flex-direction: column;
-                  }
-                  .sensor {
-                    // padding: 1.5em;
-                    border-radius: 1em;
-                    flex: 1;
-                    margin-right: 1.5em;
-                    @media (max-width: 950px) {
-                      margin-bottom: 1.5em;
-                      width: 100%;
-                    }
-                  }
-                  .sensor:last-child {
-                    margin-right: 0;
-                  }
+        <style lang="scss">
+          #content {
+            padding: 0.5em 2em 1.2em 2em;
+            min-height: calc(100vh - 1.7em);
+            @media (max-width: 1250px) {
+              margin-left: 0;
+              margin-top: 3.75em;
+            }
+            @media (max-width: 420px) {
+              padding: 0.5em 1em 1.2em 1em;
+            }
+            .widget {
+              padding: 1.5em;
+              border-radius: 1em;
+            }
+            h2 {
+              font-size: 2em;
+              font-weight: 500;
+              margin-bottom: 0.2em;
+            }
+            section {
+              margin-bottom: 1em;
+            }
+            .row {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              @media (max-width: 950px) {
+                flex-direction: column;
+              }
+              .sensor {
+                // padding: 1.5em;
+                border-radius: 1em;
+                flex: 1;
+                margin-right: 1.5em;
+                @media (max-width: 950px) {
+                  margin-bottom: 1.5em;
+                  width: 100%;
                 }
               }
-            </style>
-          </section>
-        </section>
+              .sensor:last-child {
+                margin-right: 0;
+              }
+            }
+          }
+        </style>
       </section>
     </section>
   </div>

@@ -110,6 +110,7 @@ const windText = getWindText(data.windspeed);
                 <img
                   src="/assets/icons/temperaturefeelslike.svg"
                   alt="Gefühlte Temperatur Icon"
+                  id="feelslikeicon"
                 />
                 <div>{data.appTemp}°</div>
               </span>
@@ -428,6 +429,7 @@ const windText = getWindText(data.windspeed);
               #feelslikeicon {
                 margin-right: 0.2em;
                 height: 0.85em;
+                width: 0.91em;
                 @include global.disableSelect;
                 @include global.disableDrag;
               }

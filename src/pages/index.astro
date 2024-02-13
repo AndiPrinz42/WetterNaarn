@@ -3,71 +3,78 @@ import Layout from "../layouts/Layout.astro";
 import SensorWidget from "../components/SensorWidget.astro";
 import SensorWidgetRotateable from "../components/SensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
+import { getHumidityText, getBarometerText, getBarometerIcon, getMoonIndex, getMoonIcon, getMoonName, getWindText } from "../scripts/utils.ts";
 
 const data = {
-  date: "Heute 20:30",
-  outTemp: "20",
-  condition: "Sonnig",
-  icon: "01d",
+  date: "Heute 22:25",
+  icon: "06n",
+  condition: "stark bewölkt",
+  outTemp: 0,
+  appTemp: -2,
+  outHumidity: 92,
+  barometer: 1025.8,
+  windspeed: 0,
+  winddir: 246,
+  rain: 0.4,
+  morningtemp: 7,
+  noontemp: 9,
+  eveningtemp: 6,
+  nighttemp: 3,
   forecasttoday: {
-    minTemp: "15",
-    maxTemp: "25",
+    maxTemp: 9,
+    minTemp: 3,
+    name: "Heute",
+    date: "13. Feb",
+    icon: "05n",
+    condition: "Regenschauer",
   },
-  appTemp: "22",
-  morningtemp: "15",
-  noontemp: "20",
-  eveningtemp: "18",
-  nighttemp: "12",
   forecastin1d: {
+    maxTemp: 10,
+    minTemp: 2,
     name: "Morgen",
-    date: "13. Mai 2021",
-    minTemp: "14",
-    maxTemp: "24",
-    icon: "02d",
-    condition: "Wolkig",
+    date: "14. Feb",
+    icon: "06n",
+    condition: "stark bewölkt",
   },
   forecastin2d: {
-    name: "Freitag",
-    date: "14. Mai 2021",
-    minTemp: "13",
-    maxTemp: "23",
-    icon: "03d",
-    condition: "Bewölkt",
+    maxTemp: 13,
+    minTemp: 6,
+    name: "Donnerstag",
+    date: "15. Feb",
+    icon: "06n",
+    condition: "stark bewölkt",
   },
   forecastin3d: {
-    name: "Samstag",
-    date: "15. Mai 2021",
-    minTemp: "12",
-    maxTemp: "22",
-    icon: "04d",
-    condition: "Bewölkt",
+    maxTemp: 13,
+    minTemp: 7,
+    name: "Freitag",
+    date: "16. Feb",
+    icon: "07n",
+    condition: "bewölkt",
   },
   forecastin4d: {
-    name: "Sonntag",
-    date: "16. Mai 2021",
-    minTemp: "11",
-    maxTemp: "21",
-    icon: "09d",
-    condition: "Regen",
+    maxTemp: 9,
+    minTemp: 6,
+    name: "Samstag",
+    date: "17. Feb",
+    icon: "06n",
+    condition: "stark bewölkt",
   },
-  outHumidity: "50",
-  barometer: "1013",
-  windspeed: "10",
-  winddir: 180,
-  rain: "0",
-  moonillumination: "50",
-  sunrise: "05:30",
-  sunset: "20:30",
+  sunrise: "07:10",
+  sunset: "17:20",
+  moonphase: 15,
+  moonillumination: 21,
 };
-const humidityText = "hoch";
 
-const barometerText = "normal";
-const barometerIcon =
-  "assets/icons/meteocons/static/sensors/barometer/barometer.svg";
-const moonIcon = "assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg";
-const moonPhase = "zunehmend";
+const humidityText = getHumidityText(data.outHumidity);
+const barometerText = getBarometerText(data.barometer);
+const barometerIcon = getBarometerIcon(data.barometer);
 
-const windText = "leichter Zug";
+const moonindex = getMoonIndex(data.moonillumination);
+const moonIcon = getMoonIcon(moonindex);
+const moonPhase = getMoonName(moonindex);
+
+const windText = getWindText(data.windspeed);
 ---
 
 <Layout title="Dashboard | Wetter Naarn">

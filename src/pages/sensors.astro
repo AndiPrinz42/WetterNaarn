@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import DetailSensorWidget from "../components/DetailSensorWidget.astro";
 import DetailSensorWidgetWind from "../components/DetailSensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
+import { getMoonIndex, getMoonIcon, getMoonName } from "../scripts/utils.ts";
 
 const data = {
   outTemp: {
@@ -58,7 +59,7 @@ const data = {
   },
   rain: {
     day: 0.4,
-    last: "Heute 02:30",
+    last: "Heute\u00A002:30",
     week: 1,
     weekBefore: 10.2,
     month: 15.4,
@@ -87,66 +88,6 @@ const data = {
 const moonindex = getMoonIndex(data.moon.illumination);
 const moonIcon = getMoonIcon(moonindex);
 const moonPhase = getMoonName(moonindex);
-
-function getMoonIcon(index: number): string {
-  if (index < 0 || index > 7) {
-    throw new Error("moonindex must be between 0 and 7");
-  }
-
-  const moonicons: string[] = [
-    "assets/icons/meteocons/static/moon/moon-new.svg",
-    "assets/icons/meteocons/static/moon/moon-waxing-crescent.svg",
-    "assets/icons/meteocons/static/moon/moon-first-quarter.svg",
-    "assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg",
-    "assets/icons/meteocons/static/moon/moon-full.svg",
-    "assets/icons/meteocons/static/moon/moon-waning-gibbous.svg",
-    "assets/icons/meteocons/static/moon/moon-last-quarter.svg",
-    "assets/icons/meteocons/static/moon/moon-waning-crescent.svg",
-  ];
-
-  return moonicons[index];
-}
-
-function getMoonName(index: number): string {
-  if (index < 0 || index > 7) {
-    throw new Error("moonindex must be between 0 and 7");
-  }
-
-  const phasenames: string[] = [
-    "Neumond",
-    "zunehmend",
-    "zunehmender Halbmond",
-    "zunehmend",
-    "Vollmond",
-    "abnehmend",
-    "abnehmender Halbmond",
-    "abnehmend",
-  ];
-
-  return phasenames[index];
-}
-
-function getMoonIndex(moonpercent: number): number {
-  if (moonpercent === 0 || moonpercent === 100) {
-    return 0;
-  } else if (moonpercent > 0 && moonpercent < 25) {
-    return 1;
-  } else if (moonpercent === 25) {
-    return 2;
-  } else if (moonpercent > 25 && moonpercent < 50) {
-    return 3;
-  } else if (moonpercent === 50) {
-    return 4;
-  } else if (moonpercent > 50 && moonpercent < 75) {
-    return 5;
-  } else if (moonpercent === 75) {
-    return 6;
-  } else if (moonpercent > 75 && moonpercent < 100) {
-    return 7;
-  } else {
-    throw new Error("Moonpercent out of range: " + moonpercent);
-  }
-}
 ---
 
 <Layout title="Sensoren | Wetter Naarn">

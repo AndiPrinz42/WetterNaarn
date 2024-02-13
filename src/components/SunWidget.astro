@@ -55,7 +55,7 @@ function sunIsUp(sunrise: string, sunset: string): boolean {
       </div>
     </div>
     <div id="right">
-      <img src={ icon } alt={ iconAlt } id="icon" />
+      <img src={icon} alt={iconAlt} id="icon" />
     </div>
   </div>
 </div>
@@ -71,50 +71,49 @@ function sunIsUp(sunrise: string, sunset: string): boolean {
     background-color: $background;
     border-radius: 1em;
     padding: 1.6em;
-  }
-
-  #wrapper {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
-    #right {
-      #icon {
-        height: 5em;
-        @include global.disableSelect;
-        @include global.disableDrag;
-        @media (max-width: 420px) {
-          height: 5em;
-        }
-      }
-      flex: 1;
+    #wrapper {
       display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    #left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      #name {
-        font-size: 1.5em;
-        font-weight: 400;
-        margin-bottom: 0.4em;
-      }
-      #sunrise,
-      #sunset {
-        font-size: 1.5em;
-        font-weight: 400;
-        margin-bottom: 0.5em;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      #right {
         #icon {
-          height: 1.5em;
-          width: 1.5em;
-          margin-right: 0.5em;
+          height: 5em;
           @include global.disableSelect;
           @include global.disableDrag;
+          @media (max-width: 420px) {
+            height: 5em;
+          }
+        }
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      #left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        #name {
+          font-size: 1.5em;
+          font-weight: 400;
+          margin-bottom: 0.4em;
+        }
+        #sunrise,
+        #sunset {
+          font-size: 1.5em;
+          font-weight: 400;
+          margin-bottom: 0.5em;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          #icon {
+            height: 1.5em;
+            width: 1.5em;
+            margin-right: 0.5em;
+            @include global.disableSelect;
+            @include global.disableDrag;
+          }
         }
       }
     }

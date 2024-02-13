@@ -428,88 +428,87 @@ function getMoonIndex(moonpercent: number): number {
           />
         </div>
       </div>
+    </section>
 
-      <section>
-        <h2>Mond</h2>
-        <div class="row">
-          <div class="sensor">
-            <DetailSensorWidget
-              name="Aktuell"
-              value={data.moon.illumination + "%"}
-              text={moonPhase}
-              icon={moonIcon}
-              iconAlt="Mondphase Icon"
-            />
-          </div>
-
-          <div class="sensor">
-            <DetailSensorWidget
-              name="Nächster Vollmond"
-              value={data.moon.nextFullMoon}
-              text={`in ${data.moon.nextFullMoonDays} ${data.moon.nextFullMoonDays !== 1 ? "Tagen" : "Tag"}`}
-              icon="assets/icons/meteocons/static/moon/moon-full.svg"
-              iconAlt="Vollmond Icon"
-            />
-          </div>
-
-          <div class="sensor">
-            <DetailSensorWidget
-              name="Nächster Neumond"
-              value={data.moon.nextNewMoon}
-              text={`in ${data.moon.nextNewMoonDays} ${data.moon.nextNewMoonDays !== 1 ? "Tagen" : "Tag"}`}
-              icon="assets/icons/meteocons/static/moon/moon-new.svg"
-              iconAlt="Neumond Icon"
-            />
-          </div>
+    <section>
+      <h2>Mond</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            value={data.moon.illumination + "%"}
+            text={moonPhase}
+            icon={moonIcon}
+            iconAlt="Mondphase Icon"
+          />
         </div>
 
-        <style lang="scss">
-          #content {
-            padding: 0.5em 2em 1.2em 2em;
-            min-height: calc(100vh - 1.7em);
-            @media (max-width: 1250px) {
-              margin-left: 0;
-              margin-top: 3.75em;
-            }
-            @media (max-width: 420px) {
-              padding: 0.5em 1em 1.2em 1em;
-            }
-            .widget {
-              padding: 1.5em;
-              border-radius: 1em;
-            }
-            h2 {
-              font-size: 2em;
-              font-weight: 500;
-              margin-bottom: 0.2em;
-            }
-            section {
-              margin-bottom: 1em;
-            }
-            .row {
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              @media (max-width: 950px) {
-                flex-direction: column;
-              }
-              .sensor {
-                // padding: 1.5em;
-                border-radius: 1em;
-                flex: 1;
-                margin-right: 1.5em;
-                @media (max-width: 950px) {
-                  margin-bottom: 1.5em;
-                  width: 100%;
-                }
-              }
-              .sensor:last-child {
-                margin-right: 0;
-              }
-            }
-          }
-        </style>
-      </section>
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Nächster Vollmond"
+            value={data.moon.nextFullMoon}
+            text={`in ${data.moon.nextFullMoonDays} ${data.moon.nextFullMoonDays !== 1 ? "Tagen" : "Tag"}`}
+            icon="assets/icons/meteocons/static/moon/moon-full.svg"
+            iconAlt="Vollmond Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Nächster Neumond"
+            value={data.moon.nextNewMoon}
+            text={`in ${data.moon.nextNewMoonDays} ${data.moon.nextNewMoonDays !== 1 ? "Tagen" : "Tag"}`}
+            icon="assets/icons/meteocons/static/moon/moon-new.svg"
+            iconAlt="Neumond Icon"
+          />
+        </div>
+      </div>
     </section>
   </div>
 </Layout>
+
+<style lang="scss">
+  #content {
+    padding: 0.5em 2em 1.2em 2em;
+    min-height: calc(100vh - 1.7em);
+    @media (max-width: 1250px) {
+      margin-left: 0;
+      margin-top: 3.75em;
+    }
+    @media (max-width: 420px) {
+      padding: 0.5em 1em 1.2em 1em;
+    }
+    .widget {
+      padding: 1.5em;
+      border-radius: 1em;
+    }
+    h2 {
+      font-size: 2em;
+      font-weight: 500;
+      margin-bottom: 0.2em;
+    }
+    section {
+      margin-bottom: 1em;
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      @media (max-width: 950px) {
+        flex-direction: column;
+      }
+      .sensor {
+        border-radius: 1em;
+        flex: 1;
+        margin-right: 1.5em;
+        @media (max-width: 950px) {
+          margin-bottom: 1.5em;
+          width: 100%;
+        }
+      }
+      .sensor:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+</style>

@@ -1,14 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import DetailSensorWidget from "../components/DetailSensorWidget.astro";
+
 const data = {
   outTemp: {
     current: 20.5,
     avg: 20.5,
-    min: 20.5,
-    minTime: "00:00",
-    max: 20.5,
-    maxTime: "00:00",
+    min: 19.5,
+    minTime: "00:10",
+    max: 22.5,
+    maxTime: "00:25",
   },
   appTemp: {
     current: 20.5,
@@ -84,8 +85,8 @@ const data = {
         <div class="sensor">
           <DetailSensorWidget
             name="Aktuell"
-            text="Ø 20.5°"
-            value="20.5°"
+            text=`Ø ${data.outTemp.avg}°`
+            value=`${data.outTemp.current}°`
             icon="assets/icons/meteocons/static/sensors/thermometer/thermometer.svg"
             iconAlt="Temperatur Icon"
           />
@@ -94,8 +95,8 @@ const data = {
         <div class="sensor">
           <DetailSensorWidget
             name="Min"
-            value="20.5°"
-            text="00:00"
+            value=`${data.outTemp.min}°`
+            text={data.outTemp.minTime}
             icon="assets/icons/meteocons/static/sensors/thermometer/thermometer-colder.svg"
             iconAlt="Temperatur Min Icon"
           />
@@ -104,17 +105,21 @@ const data = {
         <div class="sensor">
           <DetailSensorWidget
             name="Max"
-            value="20.5°"
-            text="00:00"
+            value=`${data.outTemp.max}°`
+            text={data.outTemp.maxTime}
             icon="assets/icons/meteocons/static/sensors/thermometer/thermometer-warmer.svg"
             iconAlt="Temperatur Max Icon"
           />
         </div>
       </div>
+      </section>
 
       <!-- <section>
       <h2>Gefühlte Temperatur</h2>
       <div class="row">
+        <div class="sensor">
+          <DetailSensor
+        </div>
         <app-widget-detail-sensor-static
           class="sensor"
           [name]="'Aktuell'"
@@ -146,9 +151,44 @@ const data = {
           [iconAlt]="'Gefühlte Temperatur Max Icon'"
         ></app-widget-detail-sensor-static>
       </div>
-    </section>
+    </section> -->
+
 
     <section>
+      <h2>Gefühlte Temperatur</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            text=`Ø ${data.appTemp.avg}°`
+            value=`${data.appTemp.current}°`
+            icon="assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer.svg"
+            iconAlt="Gefühlte Temperatur Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Min"
+            value=`${data.appTemp.min}°`
+            text={data.appTemp.minTime}
+            icon="assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer-colder.svg"
+            iconAlt="Gefühlte Temperatur Min Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Max"
+            value=`${data.appTemp.max}°`
+            text={data.appTemp.maxTime}
+            icon="assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer-warmer.svg"
+            iconAlt="Gefühlte Temperatur Max Icon"
+          />
+        </div>
+    </section>
+
+    <!-- <section>
       <h2>Taupunkt</h2>
       <div class="row">
         <app-widget-detail-sensor-static
@@ -179,9 +219,43 @@ const data = {
               "
           [iconAlt]="'Taupunkt Max Icon'"></app-widget-detail-sensor-static>
       </div>
-    </section>
+    </section> -->
 
     <section>
+      <h2>Taupunkt</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            text=`Ø ${data.dewpoint.avg}°`
+            value=`${data.dewpoint.current}°`
+            icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer.svg"
+            iconAlt="Taupunkt Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Min"
+            value=`${data.dewpoint.min}°`
+            text={data.dewpoint.minTime}
+            icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-colder.svg"
+            iconAlt="Taupunkt Min Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Max"
+            value=`${data.dewpoint.max}°`
+            text={data.dewpoint.maxTime}
+            icon="assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-warmer.svg"
+            iconAlt="Taupunkt Max Icon"
+          />
+        </div>
+    </section>
+
+    <!-- <section>
       <h2>Luftfeuchte</h2>
       <div class="row">
         <app-widget-detail-sensor-static
@@ -210,9 +284,43 @@ const data = {
               "
           [iconAlt]="'Luftfeuchte Max Icon'"></app-widget-detail-sensor-static>
       </div>
-    </section>
+    </section> -->
 
     <section>
+      <h2>Luftfeuchte</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            text=`Ø ${data.outHumidity.avg}%`
+            value=`${data.outHumidity.current}%`
+            icon="assets/icons/meteocons/static/sensors/humidity/humidity.svg"
+            iconAlt="Luftfeuchte Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Min"
+            value=`${data.outHumidity.min}%`
+            text={data.outHumidity.minTime}
+            icon="assets/icons/meteocons/static/sensors/humidity/humidity-min.svg"
+            iconAlt="Luftfeuchte Min Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Max"
+            value=`${data.outHumidity.max}%`
+            text={data.outHumidity.maxTime}
+            icon="assets/icons/meteocons/static/sensors/humidity/humidity-max.svg"
+            iconAlt="Luftfeuchte Max Icon"
+          />
+        </div>
+    </section>
+
+    <!-- <section>
       <h2>Luftdruck</h2>
       <div class="row">
         <app-widget-detail-sensor-static
@@ -241,9 +349,43 @@ const data = {
               "
           [iconAlt]="'Luftdruck Max Icon'"></app-widget-detail-sensor-static>
       </div>
-    </section>
+    </section> -->
 
     <section>
+      <h2>Luftdruck</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Aktuell"
+            text=`Ø ${data.barometer.avg}hPa`
+            value=`${data.barometer.current}hPa`
+            icon="assets/icons/meteocons/static/sensors/barometer/barometer.svg"
+            iconAlt="Luftdruck Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Min"
+            value=`${data.barometer.min}hPa`
+            text={data.barometer.minTime}
+            icon="assets/icons/meteocons/static/sensors/barometer/barometer-min.svg"
+            iconAlt="Luftdruck Min Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Max"
+            value=`${data.barometer.max}hPa`
+            text={data.barometer.maxTime}
+            icon="assets/icons/meteocons/static/sensors/barometer/barometer-max.svg"
+            iconAlt="Luftdruck Max Icon"
+          />
+        </div>
+    </section>
+
+    <!-- <section>
       <h2>Wind</h2>
       <div class="row">
         <app-widget-detail-sensor-rotateable
@@ -270,9 +412,43 @@ const data = {
           [rotation]="data.wind.maxGustDir"
         ></app-widget-detail-sensor-rotateable>
       </div>
-    </section>
+    </section> -->
 
-    <section>
+    <!-- <section>
+      <h2>Wind</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorRotateable
+            name="Aktuell"
+            text=`Ø ${data.wind.avg}km/h`
+            value=`${data.wind.current}km/h`
+            icon="assets/icons/meteocons/rotateable/windcompass.svg"
+            rotation={data.wind.currentDir}
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorRotateable
+            name="Max"
+            value=`${data.wind.max}km/h`
+            text={data.wind.maxTime}
+            icon="assets/icons/meteocons/rotateable/windcompass.svg"
+            rotation={data.wind.maxDir}
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorRotateable
+            name="Böen Max"
+            value=`${data.wind.maxGust}km/h`
+            text={data.wind.maxGustTime}
+            icon="assets/icons/meteocons/rotateable/windcompass.svg"
+            rotation={data.wind.maxGustDir}
+          />
+        </div>
+    </section> -->
+
+    <!-- <section>
       <h2>Regen</h2>
       <div class="row">
         <app-widget-detail-sensor-static
@@ -297,9 +473,43 @@ const data = {
           [icon]="'/assets/icons/meteocons/static/sensors/rain/rain-month.svg'"
           [iconAlt]="'Regen Monat Icon'"></app-widget-detail-sensor-static>
       </div>
-    </section>
+    </section> -->
 
     <section>
+      <h2>Regen</h2>
+      <div class="row">
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Heute"
+            value=`${data.rain.day}mm²`
+            text={`Letzter Regen:​ ${data.rain.last}`}
+            icon="assets/icons/meteocons/static/sensors/rain/rain-day.svg"
+            iconAlt="Regen Tag Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Woche"
+            value=`${data.rain.week}mm²`
+            text={`Vorwoche:​ ${data.rain.weekBefore}mm²`}
+            icon="assets/icons/meteocons/static/sensors/rain/rain-week.svg"
+            iconAlt="Regen Woche Icon"
+          />
+        </div>
+
+        <div class="sensor">
+          <DetailSensorWidget
+            name="Monat"
+            value=`${data.rain.month}mm²`
+            text={`Vormonat:​ ${data.rain.monthBefore}mm²`}
+            icon="assets/icons/meteocons/static/sensors/rain/rain-month.svg"
+            iconAlt="Regen Monat Icon"
+          />
+        </div>
+    </section>
+
+    <!-- <section>
       <h2>Sonne</h2>
       <div class="row">
         <app-widget-sensor-sun
@@ -328,9 +538,9 @@ const data = {
           [icon]="'/assets/icons/meteocons/static/conditions/09d.svg'"
           [iconAlt]="'Tageslänge Icon'"></app-widget-detail-sensor-static>
       </div>
-    </section>
+    </section> -->
 
-    <section>
+    <!-- <section>
       <h2>Mond</h2>
       <div class="row">
         <app-widget-detail-sensor-static
@@ -355,8 +565,7 @@ const data = {
           [icon]="'/assets/icons/meteocons/static/moon/moon-new.svg'"
           [iconAlt]="'Neumond Icon'"></app-widget-detail-sensor-static>
       </div>
-    </section> -->
-    </section>
+    </section> -->    
   </div>
 </Layout>
 

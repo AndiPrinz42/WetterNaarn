@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
-
 import vue from "@astrojs/vue";
+
+import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,5 +9,12 @@ export default defineConfig({
   adapter: node({
     mode: "standalone"
   }),
-  integrations: [vue()]
+  integrations: [vue({
+    appEntrypoint: '/src/pages/_app'
+  })],
+  vite: {
+    ssr: {
+      noExternal: ['vuetify']
+    }
+  },
 });

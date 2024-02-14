@@ -217,6 +217,8 @@
 </template>
   
 <script>
+import 'vuetify/styles';
+
 export default {
   name: 'Graphs',
   data() {

@@ -3,9 +3,19 @@ import Layout from "../layouts/Layout.astro";
 import SensorWidget from "../components/SensorWidget.astro";
 import SensorWidgetRotateable from "../components/SensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
-import { getHumidityText, getBarometerText, getBarometerIcon, getMoonIndex, getMoonIcon, getMoonName, getWindText } from "../scripts/utils.ts";
+import DashboardChart from "../components/DashboardChart.vue";
+import {
+  getHumidityText,
+  getBarometerText,
+  getBarometerIcon,
+  getMoonIndex,
+  getMoonIcon,
+  getMoonName,
+  getWindText,
+} from "../scripts/utils.ts";
 
-import { exec } from 'child_process';
+import { exec } from "child_process";
+import type test from "node:test";
 const script = "C:\\xampp\\php\\php.exe D:\\test.php";
 const { stdout, stderr } = await exec(script);
 const scriptOutput = stdout;
@@ -128,7 +138,15 @@ const windText = getWindText(data.windspeed);
             <div id="daytempchart-outer-container">
               <div id="daytempchart-middle-container">
                 <div id="daytempchart-inner-container">
-                  <canvas id="daytempchart"></canvas>
+                  <div id="daytempchart">
+                    <DashboardChart
+                      client:load
+                      morningtemp={data.morningtemp}
+                      noontemp={data.noontemp}
+                      eveningtemp={data.eveningtemp}
+                      nighttemp={data.nighttemp}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

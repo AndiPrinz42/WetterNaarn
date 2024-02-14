@@ -42,7 +42,6 @@
 
     <section id="sensorSelection">
       <h2>Sensoren</h2>
-      {{ selectedSensors }}
       <v-chip-group v-model="selectedSensors" column multiple @change="this.selectionChange()">
         <div id="sensorGroups">
           <div class="sensorGroup">

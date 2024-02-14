@@ -162,7 +162,7 @@ const windText = getWindText(data.windspeed);
               >{data.forecastin1d.minTemp}°/{data.forecastin1d.maxTemp}°</span
             >
           </div>
-          <div class="condition" *ngIf="data.forecastin1d.icon !== ''">
+          <div class="condition">
             <img
               src=`/assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
               alt={data.forecastin1d.condition}
@@ -179,7 +179,7 @@ const windText = getWindText(data.windspeed);
               >{data.forecastin2d.minTemp}°/{data.forecastin2d.maxTemp}°</span
             >
           </div>
-          <div class="condition" *ngIf="data.forecastin2d.icon !== ''">
+          <div class="condition">
             <img
               src=`/assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
               alt={data.forecastin2d.condition}
@@ -196,7 +196,7 @@ const windText = getWindText(data.windspeed);
               >{data.forecastin3d.minTemp}°/{data.forecastin3d.maxTemp}°</span
             >
           </div>
-          <div class="condition" *ngIf="data.forecastin3d.icon !== ''">
+          <div class="condition">
             <img
               src=`/assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
               alt={data.forecastin3d.condition}
@@ -213,7 +213,7 @@ const windText = getWindText(data.windspeed);
               >{data.forecastin4d.minTemp}°/{data.forecastin4d.maxTemp}°</span
             >
           </div>
-          <div class="condition last" *ngIf="data.forecastin4d.icon !== ''">
+          <div class="condition last">
             <img
               src=`/assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
               alt={data.forecastin4d.condition}

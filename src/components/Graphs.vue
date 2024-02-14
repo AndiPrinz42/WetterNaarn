@@ -59,109 +59,109 @@
 
     <section id="sensorSelection">
       <h2>Sensoren</h2>
-      <mat-chip-listbox multiple v-model="selectedSensors" @change="this.selectionChange()">
+      {{ selectedSensors }}
+      <v-chip-group v-model="selectedSensors" column multiple @change="this.selectionChange()">
         <div id="sensorGroups">
           <div class="sensorGroup">
             <h3>Temperatur</h3>
             <div class="chipgroup">
-              <mat-chip-option disableRipple="true" value="temperature">
+              <v-chip filter color="primary">
                 <span class="averagetext"><span>Durchschnitt</span></span>
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="temperaturemin">
+              </v-chip>
+              <v-chip filter color="primary">
                 Min (Tag)
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="temperaturemax">
+              </v-chip>
+              <v-chip filter color="primary">
                 Max (Tag)
-              </mat-chip-option>
+              </v-chip>
             </div>
           </div>
 
           <div class="sensorGroup">
             <h3 id="feelsliketempheader">Gefühlte T</h3>
             <div class="chipgroup">
-              <mat-chip-option disableRipple="true" value="feelsliketemp">
+              <v-chip filter color="primary">
                 <span class="averagetext"><span>Durchschnitt</span></span>
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="feelsliketempmin">
+              </v-chip>
+              <v-chip filter color="primary">
                 Min (Tag)
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="feelsliketempmax">
+              </v-chip>
+              <v-chip filter color="primary">
                 Max (Tag)
-              </mat-chip-option>
+              </v-chip>
             </div>
           </div>
 
           <div class="sensorGroup">
             <h3>Taupunkt</h3>
             <div class="chipgroup">
-              <mat-chip-option disableRipple="true" value="dewpoint">
+              <v-chip filter color="primary">
                 <span class="averagetext"><span>Durchschnitt</span></span>
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="dewpointmin">
+              </v-chip>
+              <v-chip filter color="primary">
                 Min (Tag)
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="dewpointmax">
+              </v-chip>
+              <v-chip filter color="primary">
                 Max (Tag)
-              </mat-chip-option>
+              </v-chip>
             </div>
           </div>
 
           <div class="sensorGroup">
             <h3>Luftfeuchte</h3>
             <div class="chipgroup">
-              <mat-chip-option disableRipple="true" value="humidity">
+              <v-chip filter color="primary">
                 <span class="averagetext"><span>Durchschnitt</span></span>
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="humiditymin">
+              </v-chip>
+              <v-chip filter color="primary">
                 Min (Tag)
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="humiditymax">
+              </v-chip>
+              <v-chip filter color="primary">
                 Max (Tag)
-              </mat-chip-option>
-
+              </v-chip>
             </div>
           </div>
 
           <div class="sensorGroup">
             <h3>Luftdruck</h3>
             <div class="chipgroup">
-              <mat-chip-option disableRipple="true" value="pressure">
+              <v-chip filter color="primary">
                 <span class="averagetext"><span>Durchschnitt</span></span>
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="pressuremin">
+              </v-chip>
+              <v-chip filter color="primary">
                 Min (Tag)
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="pressuremax">
+              </v-chip>
+              <v-chip filter color="primary">
                 Max (Tag)
-              </mat-chip-option>
+              </v-chip>
             </div>
           </div>
 
           <div class="sensorGroup">
             <h3>Wind</h3>
             <div class="chipgroup">
-              <mat-chip-option disableRipple="true" value="windspeed">
+              <v-chip filter color="primary">
                 <span class="averagetext"><span>Durchschnitt</span></span>
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="windspeedmax">
+              </v-chip>
+              <v-chip filter color="primary">
                 Max (Tag)
-              </mat-chip-option>
-              <mat-chip-option disableRipple="true" value="winddirection">
+              </v-chip>
+              <v-chip filter color="primary">
                 Richtung
-              </mat-chip-option>
+              </v-chip>
             </div>
           </div>
 
           <div class="sensorGroup">
             <h3>Regen</h3>
             <div class="chipgroup">
-              <mat-chip-option disableRipple="true" value="rain">
+              <v-chip filter color="primary">
                 Menge
-              </mat-chip-option>
+              </v-chip>
             </div>
           </div>
         </div>
-      </mat-chip-listbox>
+      </v-chip-group>
 
       <mat-form-field id="mobileSensorSelector">
         <mat-label>Sensoren wählen...</mat-label>
@@ -215,49 +215,6 @@
 
     </section>
   </div>
-
-  <v-chip-group
-        v-model="neighborhoods"
-        column
-        multiple
-      >
-        <v-chip
-          filter
-          variant="outlined"
-        >
-          Snowy Rock Place
-        </v-chip>
-        <v-chip
-          filter
-          variant="outlined"
-        >
-          Honeylane Circle
-        </v-chip>
-        <v-chip
-          filter
-          variant="outlined"
-        >
-          Donna Drive
-        </v-chip>
-        <v-chip
-          filter
-          variant="outlined"
-        >
-          Elaine Street
-        </v-chip>
-        <v-chip
-          filter
-          variant="outlined"
-        >
-          Court Street
-        </v-chip>
-        <v-chip
-          filter
-          variant="outlined"
-        >
-          Kennedy Park
-        </v-chip>
-      </v-chip-group>
 </template>
 
 <script>
@@ -271,7 +228,7 @@ export default {
       neighborhoods: [1],
       showChart: true,
       timespanButtonsSelected: [false, false, false, false],
-      selectedSensors: ['temperature'],
+      selectedSensors: [],
       mobileSelectorText: '',
       sensorNames: {
         temperature: 'Temp',
@@ -332,6 +289,7 @@ export default {
 
   mounted() {
     this.timespanSetDay();
+    this.selectedSensors.push(0);
   },
 
   methods: {
@@ -462,7 +420,7 @@ export default {
             borderColor: 'rgb(255, 64, 0)',
             backgroundColor: 'rgba(255, 64, 0, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('temperature'),
+            hidden: !this.selectedSensors.includes(0),
             pointRadius: 0,
             order: 1,
           },
@@ -473,7 +431,7 @@ export default {
             borderColor: 'rgb(255, 128, 0)',
             backgroundColor: 'rgba(255, 128, 0, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('temperaturemin'),
+            hidden: !this.selectedSensors.includes(1),
             pointRadius: 0,
             order: 2,
           },
@@ -484,7 +442,7 @@ export default {
             borderColor: 'rgb(255, 0, 0)',
             backgroundColor: 'rgba(255, 0, 0, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('temperaturemax'),
+            hidden: !this.selectedSensors.includes(2),
             pointRadius: 0,
             order: 3,
           },
@@ -495,7 +453,7 @@ export default {
             borderColor: 'rgb(255, 232, 0)',
             backgroundColor: 'rgba(255, 232, 0, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('feelsliketemp'),
+            hidden: !this.selectedSensors.includes(3),
             pointRadius: 0,
             order: 4,
           },
@@ -506,7 +464,7 @@ export default {
             borderColor: 'rgb(255, 255, 0)',
             backgroundColor: 'rgba(255, 255, 0, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('feelsliketempmin'),
+            hidden: !this.selectedSensors.includes(4),
             pointRadius: 0,
             order: 5,
           },
@@ -517,7 +475,7 @@ export default {
             borderColor: 'rgb(255, 200, 0)',
             backgroundColor: 'rgba(255, 200, 0, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('feelsliketempmax'),
+            hidden: !this.selectedSensors.includes(5),
             pointRadius: 0,
             order: 6,
           },
@@ -528,7 +486,7 @@ export default {
             borderColor: 'rgb(0, 192, 100)',
             backgroundColor: 'rgba(0, 192, 100, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('dewpoint'),
+            hidden: !this.selectedSensors.includes(6),
             pointRadius: 0,
             order: 7,
           },
@@ -539,7 +497,7 @@ export default {
             borderColor: 'rgb(0, 255, 200)',
             backgroundColor: 'rgba(0, 255, 200, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('dewpointmin'),
+            hidden: !this.selectedSensors.includes(7),
             pointRadius: 0,
             order: 8,
           },
@@ -550,7 +508,7 @@ export default {
             borderColor: 'rgb(0, 128, 100)',
             backgroundColor: 'rgba(0, 128, 100, 0.8)',
             yAxisID: 'temperature',
-            hidden: !this.selectedSensors.includes('dewpointmax'),
+            hidden: !this.selectedSensors.includes(8),
             pointRadius: 0,
             order: 9,
           },
@@ -561,7 +519,7 @@ export default {
             borderColor: 'rgb(0, 64, 255)',
             backgroundColor: 'rgba(0, 64, 255, 0.8)',
             yAxisID: 'humidity',
-            hidden: !this.selectedSensors.includes('humidity'),
+            hidden: !this.selectedSensors.includes(9),
             pointRadius: 0,
             order: 10,
           },
@@ -572,7 +530,7 @@ export default {
             borderColor: 'rgb(0, 128, 255)',
             backgroundColor: 'rgba(0, 128, 255, 0.8)',
             yAxisID: 'humidity',
-            hidden: !this.selectedSensors.includes('humiditymin'),
+            hidden: !this.selectedSensors.includes(10),
             pointRadius: 0,
             order: 11,
           },
@@ -583,7 +541,7 @@ export default {
             borderColor: 'rgb(0, 0, 255)',
             backgroundColor: 'rgba(0, 0, 255, 0.8)',
             yAxisID: 'humidity',
-            hidden: !this.selectedSensors.includes('humiditymax'),
+            hidden: !this.selectedSensors.includes(11),
             pointRadius: 0,
             order: 12,
           },
@@ -594,7 +552,7 @@ export default {
             borderColor: 'rgb(24, 144, 0)',
             backgroundColor: 'rgba(24, 144, 0, 0.8)',
             yAxisID: 'pressure',
-            hidden: !this.selectedSensors.includes('pressure'),
+            hidden: !this.selectedSensors.includes(12),
             pointRadius: 0,
             order: 13,
           },
@@ -605,7 +563,7 @@ export default {
             borderColor: 'rgb(32, 192, 0)',
             backgroundColor: 'rgba(32, 192, 0, 0.8)',
             yAxisID: 'pressure',
-            hidden: !this.selectedSensors.includes('pressuremin'),
+            hidden: !this.selectedSensors.includes(13),
             pointRadius: 0,
             order: 14,
           },
@@ -616,7 +574,7 @@ export default {
             borderColor: 'rgb(16, 96, 0)',
             backgroundColor: 'rgba(16, 96, 0, 0.8)',
             yAxisID: 'pressure',
-            hidden: !this.selectedSensors.includes('pressuremax'),
+            hidden: !this.selectedSensors.includes(14),
             pointRadius: 0,
             order: 15,
           },
@@ -627,7 +585,7 @@ export default {
             borderColor: 'rgb(32, 32, 32)',
             backgroundColor: 'rgb(32, 32, 32, 0.8)',
             yAxisID: 'wind',
-            hidden: !this.selectedSensors.includes('windspeed'),
+            hidden: !this.selectedSensors.includes(15),
             pointRadius: 0,
             order: 16,
           },
@@ -638,7 +596,7 @@ export default {
             borderColor: 'rgb(0, 0, 0)',
             backgroundColor: 'rgb(0, 0, 0, 0.8)',
             yAxisID: 'wind',
-            hidden: !this.selectedSensors.includes('windspeedmax'),
+            hidden: !this.selectedSensors.includes(16),
             pointRadius: 0,
             order: 17,
           },
@@ -649,7 +607,7 @@ export default {
             borderColor: 'rgb(128, 128, 128)',
             backgroundColor: 'rgb(128, 128, 128, 0.8)',
             yAxisID: 'winddir',
-            hidden: !this.selectedSensors.includes('winddirection'),
+            hidden: !this.selectedSensors.includes(17),
             order: 20,
           },
           {
@@ -659,7 +617,7 @@ export default {
             borderColor: 'rgb(0, 94, 255)',
             backgroundColor: 'rgb(0, 94, 255, 0.8)',
             yAxisID: 'rain',
-            hidden: !this.selectedSensors.includes('rain'),
+            hidden: !this.selectedSensors.includes(18),
             pointRadius: 0,
             order: 21,
           },
@@ -1130,4 +1088,13 @@ export default {
   }
 }
 </style>
-  
+
+<style lang="scss" is:inline>
+.v-chip {
+  width: 100%;
+}
+
+.v-chip__content {
+  color: #000000;
+}
+</style>

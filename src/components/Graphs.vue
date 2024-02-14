@@ -4,55 +4,38 @@
       <h2>Zeitraum</h2>
       <div id="timespanButtons">
         <div id="predefined">
-          <div class="custombutton" @click="timespanSetDay" :class="{
-            selected
-              : timespanButtonsSelected[0]
-          }">
-            <img src="../../public/assets/icons/calendar/calendar-day.svg" alt="Tageskalender" id="icon" />
+          <div class="custombutton" @click="timespanSetDay" :class="{ selected: timespanButtonsSelected[0] }">
+            <img src="../assets/icons/calendar/calendar-day.svg" alt="Tageskalender" id="icon" />
             <span id="text">24 Stunden</span>
             <span id="textShortened">24h</span>
           </div>
 
-          <div class="custombutton" @click="timespanSetWeek" :class="{
-            selected
-              : timespanButtonsSelected[1]
-          }">
-            <img src="../../public/assets/icons/calendar/calendar-week.svg" alt="Wochenkalender" id="icon" />
+          <div class="custombutton" @click="timespanSetWeek" :class="{ selected: timespanButtonsSelected[1] }">
+            <img src="../assets/icons/calendar/calendar-week.svg" alt="Wochenkalender" id="icon" />
             <span id="text">7 Tage</span>
             <span id="textShortened">7d</span>
           </div>
 
-          <div id="month" class="custombutton" @click="timespanSetMonth" :class="{
-            selected
-              : timespanButtonsSelected[2]
-          }">
-            <img src="../../public/assets/icons/calendar/calendar-month.svg" alt="Monatskalender" id="icon" />
+          <div id="month" class="custombutton" @click="timespanSetMonth"
+            :class="{ selected: timespanButtonsSelected[2] }">
+            <img src="../assets/icons/calendar/calendar-month.svg" alt="Monatskalender" id="icon" />
             <span id="text">31 Tage</span>
             <span id="textShortened">31d</span>
           </div>
         </div>
 
         <div id="custom">
-          <div id="customselect" class="custombutton" @click="timespanSetCustom" :class="{
-            selected
-              : timespanButtonsSelected[3]
-          }">
-            <img src="../../public/assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender"
+          <div id="customselect" class="custombutton" @click="timespanSetCustom"
+            :class="{ selected: timespanButtonsSelected[3] }">
+            <img src="../assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender"
               id="icon" />
             <span id="text">Benutzerdefiniert</span>
             <span id="textShortened">Benutzerdefiniert</span>
           </div>
 
-          <mat-form-field id="datepicker" v-if="timespanButtonsSelected[3]" color="primary" @click="picker.open()">
-            <mat-label>Zeitraum auswählen</mat-label>
-            <mat-date-range-input rangePicker="picker" formGroup="datepicker.range" min="datepicker.min"
-              max="datepicker.max">
-              <input matStartDate formControlName="start" />
-              <input matEndDate formControlName="end" />
-            </mat-date-range-input>
-            <mat-datepicker-toggle matIconSuffix for="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker (closed)="updateCustom()"></mat-date-range-picker>
-          </mat-form-field>
+          <Datepicker v-if="timespanButtonsSelected[3]" v-model="datepicker" range :enable-time-picker="false"
+            :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" modeHeight="1000"
+            :year-range="[2019, new Date().getFullYear()]" />
         </div>
       </div>
     </section>
@@ -217,10 +200,17 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css'
+import { ref } from 'vue';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import { de } from 'date-fns/locale';
+</script>
 
+<script>
+const datepicker = ref();
 export default {
   name: 'Graphs',
   data() {
@@ -273,14 +263,7 @@ export default {
         windspeedMax: [],
         rain: [],
       },
-      datepicker: {
-        // range: new FormGroup({
-        //   start: new FormControl < Date | null > (null),
-        //   end: new FormControl < Date | null > (null),
-        // }),
-        min: new Date(2019, 2, 10),
-        max: new Date(new Date().setDate(new Date().getDate())),
-      },
+
       fetchError: false,
       fromTimestamp: 0,
       toTimestamp: 0,
@@ -332,10 +315,9 @@ export default {
         from = today - 2592000;
         to = today + 86399;
       }
-      this.datepicker.range.setValue({
-        start: new Date(from * 1000),
-        end: new Date(to * 1000),
-      });
+      const startDate = new Date(from * 1000);
+      const endDate = new Date(to * 1000);
+      datepicker.value = [startDate, endDate];
       this.clearTimespanButtonsSelected();
       this.timespanButtonsSelected[3] = true;
     },
@@ -1096,5 +1078,9 @@ export default {
 
 .v-chip__content {
   color: #000000;
+}
+
+.dp__input {
+  height: 3.5em;
 }
 </style>

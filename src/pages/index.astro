@@ -113,7 +113,7 @@ const windText = getWindText(data.windspeed);
               >
               <span id="feelsliketemp">
                 <img
-                  src="/assets/icons/temperaturefeelslike.svg"
+                  src="../assets/icons/temperaturefeelslike.svg"
                   alt="Gefühlte Temperatur Icon"
                   id="feelslikeicon"
                 />
@@ -164,7 +164,7 @@ const windText = getWindText(data.windspeed);
           </div>
           <div class="condition">
             <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
+              src=`../assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
               alt={data.forecastin1d.condition}
               class="icon"
             />
@@ -181,7 +181,7 @@ const windText = getWindText(data.windspeed);
           </div>
           <div class="condition">
             <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
+              src=`../assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
               alt={data.forecastin2d.condition}
               class="icon"
             />
@@ -198,7 +198,7 @@ const windText = getWindText(data.windspeed);
           </div>
           <div class="condition">
             <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
+              src=`../assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
               alt={data.forecastin3d.condition}
               class="icon"
             />
@@ -215,7 +215,7 @@ const windText = getWindText(data.windspeed);
           </div>
           <div class="condition last">
             <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
+              src=`../assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
               alt={data.forecastin4d.condition}
               class="icon"
             />
@@ -229,7 +229,7 @@ const windText = getWindText(data.windspeed);
       name="Luftfeuchte"
       text=`${humidityText}`
       value=`${data.outHumidity}%`
-      icon="/assets/icons/meteocons/static/sensors/humidity.svg"
+      icon="../assets/icons/meteocons/static/sensors/humidity.svg"
       iconAlt="Luftfeuchte Icon"
     />
 
@@ -252,7 +252,7 @@ const windText = getWindText(data.windspeed);
       name="Regen"
       text="Heutiger Regen"
       value=`${data.rain}mm²`
-      icon="/assets/icons/meteocons/static/sensors/raindrops.svg"
+      icon="../assets/icons/meteocons/static/sensors/raindrops.svg"
       iconAlt="Regen Icon"
     />
 
@@ -266,10 +266,10 @@ const windText = getWindText(data.windspeed);
 
     <SunWidget
       name="Sonne"
-      sunriseIcon="/assets/icons/meteocons/static/sun/sunrise.svg"
+      sunriseIcon="../assets/icons/meteocons/static/sun/sunrise.svg"
       sunriseIconAlt="Sonnenaufgang Icon"
       sunriseTime=`${data.sunrise}`
-      sunsetIcon="/assets/icons/meteocons/static/sun/sunset.svg"
+      sunsetIcon="../assets/icons/meteocons/static/sun/sunset.svg"
       sunsetIconAlt="Sonnenuntergang Icon"
       sunsetTime=`${data.sunset}`
     />
@@ -277,10 +277,10 @@ const windText = getWindText(data.windspeed);
     <app-widget-sensor-sun
       class="sensor"
       [name]="'Sonne'"
-      [sunriseIcon]="'/assets/icons/meteocons/static/sun/sunrise.svg'"
+      [sunriseIcon]="'../assets/icons/meteocons/static/sun/sunrise.svg'"
       [sunriseIconAlt]="'Sonnenaufgang Icon'"
       [sunriseTime]="data.sunrise"
-      [sunsetIcon]="'/assets/icons/meteocons/static/sun/sunset.svg'"
+      [sunsetIcon]="'../assets/icons/meteocons/static/sun/sunset.svg'"
       [sunsetIconAlt]="'Sonnenuntergang Icon'"
       [sunsetTime]="data.sunset"></app-widget-sensor-sun>
   </div>

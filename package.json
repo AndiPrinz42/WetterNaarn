@@ -13,6 +13,7 @@
     "@astrojs/check": "^0.5.4",
     "@astrojs/node": "^8.2.0",
     "@astrojs/vue": "^4.0.8",
+    "@mdi/font": "^7.4.47",
     "astro": "^4.3.7",
     "sass": "^1.70.0",
     "typescript": "^5.3.3",

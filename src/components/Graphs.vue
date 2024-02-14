@@ -37,7 +37,8 @@
             selected
               : timespanButtonsSelected[3]
           }">
-            <img src="../../public/assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender" id="icon" />
+            <img src="../../public/assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender"
+              id="icon" />
             <span id="text">Benutzerdefiniert</span>
             <span id="textShortened">Benutzerdefiniert</span>
           </div>
@@ -214,15 +215,60 @@
 
     </section>
   </div>
+
+  <v-chip-group
+        v-model="neighborhoods"
+        column
+        multiple
+      >
+        <v-chip
+          filter
+          variant="outlined"
+        >
+          Snowy Rock Place
+        </v-chip>
+        <v-chip
+          filter
+          variant="outlined"
+        >
+          Honeylane Circle
+        </v-chip>
+        <v-chip
+          filter
+          variant="outlined"
+        >
+          Donna Drive
+        </v-chip>
+        <v-chip
+          filter
+          variant="outlined"
+        >
+          Elaine Street
+        </v-chip>
+        <v-chip
+          filter
+          variant="outlined"
+        >
+          Court Street
+        </v-chip>
+        <v-chip
+          filter
+          variant="outlined"
+        >
+          Kennedy Park
+        </v-chip>
+      </v-chip-group>
 </template>
-  
+
 <script>
 import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css'
 
 export default {
   name: 'Graphs',
   data() {
     return {
+      neighborhoods: [1],
       showChart: true,
       timespanButtonsSelected: [false, false, false, false],
       selectedSensors: ['temperature'],
@@ -283,6 +329,11 @@ export default {
       toTimestamp: 0,
     }
   },
+
+  mounted() {
+    this.timespanSetDay();
+  },
+
   methods: {
     timespanSetDay() {
       if (this.timespanButtonsSelected[0]) return;
@@ -341,17 +392,17 @@ export default {
       this.updateData();
     },
     updateData() {
-      this.fetchError = false;
-      this.showChart = false;
-      this.apiService.fetchGraphData(this.fromTimestamp, this.toTimestamp + 86399).then((data) => {
-        this.data = data;
-        this.normalizeMaxMin();
-        this.drawChart();
-        this.showChart = true;
-      })
-        .catch((error) => {
-          this.fetchError = true;
-        });
+      // this.fetchError = false;
+      // this.showChart = false;
+      // this.apiService.fetchGraphData(this.fromTimestamp, this.toTimestamp + 86399).then((data) => {
+      //   this.data = data;
+      //   this.normalizeMaxMin();
+      //   this.drawChart();
+      //   this.showChart = true;
+      // })
+      //   .catch((error) => {
+      //     this.fetchError = true;
+      //   });
     },
     normalizeMaxMin() {
       const maxminfields = [
@@ -806,11 +857,6 @@ export default {
         return 'NW';
       }
       return '';
-    },
-
-    mounted() {
-      // Your component initialization code goes here
-      this.timespanSetDay();
     }
   }
 };

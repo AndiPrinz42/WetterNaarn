@@ -5,6 +5,11 @@ import SensorWidgetRotateable from "../components/SensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
 import { getHumidityText, getBarometerText, getBarometerIcon, getMoonIndex, getMoonIcon, getMoonName, getWindText } from "../scripts/utils.ts";
 
+import { exec } from 'child_process';
+const script = "C:\\xampp\\php\\php.exe D:\\test.php";
+const { stdout, stderr } = await exec(script);
+const scriptOutput = stdout;
+
 const data = {
   date: "Heute 22:25",
   icon: "06n",

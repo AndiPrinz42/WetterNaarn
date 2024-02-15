@@ -253,14 +253,10 @@
 
 
     <section id="graph">
-      <div id="chartWrapper">
-        <div id="loading-spinner" v-if="(data.dateTime.length === 0 || !showChart)">
-          <!-- <mat-spinner></mat-spinner> -->
-        </div>
-        <canvas id="chart"
-          :style="{ opacity: (data.dateTime.length !== 0 && showChart) ? 1 : 0, height: (data.dateTime.length !== 0 && showChart) ? '' : 0 }"></canvas>
-      </div>
-
+        <!-- <div id="loading-spinner" v-if="(data.dateTime.length === 0 || !showChart)">
+          <mat-spinner></mat-spinner>
+        </div> -->
+        <GraphChart id="chartWrapper" v-if="showChart" :data="data" :selectedSensors="selectedSensors" :key="chartRef"/>
     </section>
   </div>
 </template>
@@ -268,20 +264,22 @@
 <script setup>
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css'
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { de } from 'date-fns/locale';
+import GraphChart from './GraphChart.vue';
 </script>
 
 <script>
 const datepicker = ref();
+const chartRef = ref(0);
 export default {
   name: 'Graphs',
   data() {
     return {
       neighborhoods: [1],
-      showChart: true,
+      showChart: false,
       timespanButtonsSelected: [false, false, false, false],
       selectedSensors: [],
       mobileSelectorText: '',
@@ -306,28 +304,7 @@ export default {
         'Windricht.',
         'Regen'
       ],
-      data: {
-        dateTime: [],
-        outTemp: [],
-        outTempMin: [],
-        outTempMax: [],
-        appTemp: [],
-        appTempMin: [],
-        appTempMax: [],
-        dewpoint: [],
-        dewpointMin: [],
-        dewpointMax: [],
-        outHumidity: [],
-        outHumidityMin: [],
-        outHumidityMax: [],
-        barometer: [],
-        barometerMin: [],
-        barometerMax: [],
-        windDir: [],
-        windspeed: [],
-        windspeedMax: [],
-        rain: [],
-      },
+      data: null,
 
       fetchError: false,
       fromTimestamp: 0,
@@ -390,6 +367,8 @@ export default {
       const startDate = new Date(from * 1000);
       const endDate = new Date(to * 1000);
       datepicker.value = [startDate, endDate];
+      this.fromTimestamp = from;
+      this.toTimestamp = to;
       this.clearTimespanButtonsSelected();
       this.timespanButtonsSelected[3] = true;
     },
@@ -401,18 +380,12 @@ export default {
     updateCustom() {
       this.updateData();
     },
-    updateData() {
-      // this.fetchError = false;
-      // this.showChart = false;
-      // this.apiService.fetchGraphData(this.fromTimestamp, this.toTimestamp + 86399).then((data) => {
-      //   this.data = data;
-      //   this.normalizeMaxMin();
-      //   this.drawChart();
-      //   this.showChart = true;
-      // })
-      //   .catch((error) => {
-      //     this.fetchError = true;
-      //   });
+    async updateData() {
+      this.showChart = false;
+      this.data = await fetch(`https://wetter-naarn.at/api/graphs/?from=${this.fromTimestamp}&to=${this.toTimestamp}`);
+      this.data = await this.data.json();
+      this.normalizeMaxMin();
+      this.showChart = true;
     },
     normalizeMaxMin() {
       const maxminfields = [
@@ -444,10 +417,9 @@ export default {
         });
       }
     },
-    selectionChange() {
+    async selectionChange() {
       this.updateMobileSelectorText();
-      return;
-      this.drawChart();
+      chartRef.value += 1;
     },
     updateMobileSelectorText() {
       this.mobileSelectorText = '';

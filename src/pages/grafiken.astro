@@ -1,8 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Graphs from "../components/Graphs.vue";
+import GraphChart from "../components/GraphChart.vue";
+
+let data = await fetch(
+  "https://wetter-naarn.at/api/graphs/?from=1707938950&to=1708111749"
+);
+data = await data.json();
+const selectedSensors = [0, 4];
 ---
 
 <Layout title="Grafiken | Wetter Naarn">
-    <Graphs client:load/>
+  <Graphs client:load/>
+  <!-- <GraphChart data={data} selectedSensors={selectedSensors} client:load /> -->
 </Layout>

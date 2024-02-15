@@ -35,8 +35,8 @@
           </div>
 
           <Datepicker v-if="timespanButtonsSelected[3]" v-model="datepicker" range :enable-time-picker="false"
-            :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" :max-date="new Date()" modeHeight="1000"
-            :year-range="[2019, new Date().getFullYear()]" @update:model-value="updateCustom()" />
+            :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" :max-date="new Date()"
+            modeHeight="1000" :year-range="[2019, new Date().getFullYear()]" @update:model-value="updateCustom()" />
         </div>
       </div>
     </section>
@@ -253,10 +253,10 @@
 
 
     <section id="graph">
-        <!-- <div id="loading-spinner" v-if="(data.dateTime.length === 0 || !showChart)">
-          <mat-spinner></mat-spinner>
-        </div> -->
-        <GraphChart id="chartWrapper" v-if="showChart" :data="data" :selectedSensors="selectedSensors" :key="chartRef"/>
+      <div id="loading-spinner" v-if="!showChart">
+        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+      </div>
+      <GraphChart id="chart" v-if="showChart" :data="data" :selectedSensors="selectedSensors" :key="chartRef" />
     </section>
   </div>
 </template>
@@ -264,7 +264,7 @@
 <script setup>
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css'
-import { nextTick, ref } from 'vue';
+import { ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { de } from 'date-fns/locale';
@@ -383,7 +383,7 @@ export default {
       this.data = await fetch(`https://wetter-naarn.at/api/graphs/?from=${this.fromTimestamp}&to=${this.toTimestamp}`);
       this.data = await this.data.json();
       this.normalizeMaxMin();
-      this.showChart = true;
+      this.showChart = true
     },
     normalizeMaxMin() {
       const maxminfields = [
@@ -426,26 +426,6 @@ export default {
         this.mobileSelectorText += this.sensorNames[this.selectedSensors[i]] + ', ';
       }
       this.mobileSelectorText = this.mobileSelectorText.slice(0, -2);
-    },
-    winddirDegreeToString(degree) {
-      if (degree >= 337.5 || degree < 22.5) {
-        return 'N';
-      } else if (degree >= 22.5 && degree < 67.5) {
-        return 'NO';
-      } else if (degree >= 67.5 && degree < 112.5) {
-        return 'O';
-      } else if (degree >= 112.5 && degree < 157.5) {
-        return 'SO';
-      } else if (degree >= 157.5 && degree < 202.5) {
-        return 'S';
-      } else if (degree >= 202.5 && degree < 247.5) {
-        return 'SW';
-      } else if (degree >= 247.5 && degree < 292.5) {
-        return 'W';
-      } else if (degree >= 292.5 && degree < 337.5) {
-        return 'NW';
-      }
-      return '';
     }
   }
 };
@@ -704,16 +684,15 @@ export default {
   }
 
   #graph {
-    #chartWrapper {
+    #loading-spinner {
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+    }
+    #chart {
       min-height: 25em;
       height: calc(100vh - 25em);
-
-      #loading-spinner {
-        display: flex;
-        justify-content: center;
-        height: 100%;
-        width: 100%;
-      }
     }
   }
 }

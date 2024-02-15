@@ -15,7 +15,6 @@ import {
 } from "../scripts/utils.ts";
 
 import { exec } from "child_process";
-import type test from "node:test";
 const script = "C:\\xampp\\php\\php.exe D:\\test.php";
 const { stdout, stderr } = await exec(script);
 const scriptOutput = stdout;
@@ -92,7 +91,15 @@ const moonPhase = getMoonName(moonindex);
 const windText = getWindText(data.windspeed);
 ---
 
-<Layout title="Dashboard | Wetter Naarn">
+<Layout
+  title="Dashboard | Wetter Naarn"
+  description="Wie wird das Wetter heute und morgen in Naarn im Machlande? Mit detaillierten Wetterdaten, Prognosen und anschaulichen Grafiken bist du immer bestens informiert."
+  keywords="Wetter, Naarn im Machlande, Aktuelle Wetterwerte, Wettervorhersage"
+  ogTitle="Wetter Naarn | Dashboard"
+  ogDescription="Detaillierte Wetterdaten, Prognosen und anschauliche Grafiken für das Wetter in Naarn im Machlande."
+  ogImage="https://wetter-naarn.at/assets/icons/logo/og-image.png"
+  ogUrl="https://wetter-naarn.at"
+  >
   <div id="content">
     <section id="mainWidgetWrapper">
       <h2>Aktuelle Werte</h2>

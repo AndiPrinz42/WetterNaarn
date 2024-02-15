@@ -3,6 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import Graphs from "../components/Graphs.vue";
 ---
 
-<Layout title="Grafiken | Wetter Naarn">
-  <Graphs client:load/>
+<Layout
+  title="Grafiken | Wetter Naarn"
+  description="Analysiere vergangene Jahre mit präzisen Grafiken und erhalte faszinierende Einblicke in Naarns Langzeit-Wettertrends - von Temperaturverläufen bis zu Niederschlagsdaten."
+  keywords="Wetter, Naarn im Machlande, Grafiken, Graphen, Verlauf, Langzeitwerte, Wetterhistorie"
+  ogTitle="Wetter Naarn | Grafiken"
+  ogDescription="Präzise Grafiken über die Daten der letzten Jahre aus Naarn - von Temperaturverläufen bis zu Niederschlagsdaten."
+  ogImage="https://wetter-naarn.at/assets/icons/logo/og-image.png"
+  ogUrl="https://wetter-naarn.at/grafiken"
+>
+  <Graphs client:load />
 </Layout>

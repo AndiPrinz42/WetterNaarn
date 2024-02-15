@@ -372,6 +372,7 @@ export default {
       );
     },
     updateCustom() {
+      if (!datepicker.value[0] || !datepicker.value[1]) return;
       this.fromTimestamp = Math.floor(datepicker.value[0] / 1000);
       this.toTimestamp = Math.floor(datepicker.value[1] / 1000);
       this.updateData();

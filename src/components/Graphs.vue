@@ -1,7 +1,6 @@
 
 <template>
   <div id="content">
-    <br />
     <section>
       <h2>Zeitraum</h2>
       <div id="timespanButtons">
@@ -436,7 +435,7 @@ export default {
 
 #content {
   padding: 0.5em 1.5em 1.2em 2em;
-  min-height: calc(100vh - 1.7em);
+  min-height: 100vh;
 
   @media (max-width: 1250px) {
     margin-left: 0;
@@ -601,14 +600,6 @@ export default {
         grid-template-columns: 1fr;
       }
     }
-
-    mat-form-field * {
-      font-family: Roboto, "Helvetica Neue", sans-serif;
-    }
-
-    mat-label {
-      color: #adadad;
-    }
   }
 
   #sensorSelection {
@@ -628,31 +619,11 @@ export default {
       margin-bottom: 2em;
 
       .sensorGroup {
-        .chipgroup {
-          width: 100%;
-          max-width: 200px;
-        }
-
-        mat-chip-option {
-          width: 100%;
-          background-color: #ecf3f8;
-          transition: background-color 0.2s ease-in-out;
-
-          &:hover {
-            background-color: #e2ecf5;
-          }
-
-          &.mat-mdc-chip-selected {
-            background-color: #c9e2f5;
-          }
-        }
-
         .averagetext {
           @media (max-width: 1480px) {
             &::after {
               content: "Durschn.";
             }
-
             span {
               display: none;
             }
@@ -671,11 +642,6 @@ export default {
 
     #mobileSensorSelector {
       display: none;
-
-      mat-label {
-        color: #adadad;
-      }
-
       @media (max-width: 615px) {
         display: block;
         margin-bottom: 1em;

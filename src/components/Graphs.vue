@@ -1,5 +1,7 @@
+
 <template>
   <div id="content">
+    <br />
     <section>
       <h2>Zeitraum</h2>
       <div id="timespanButtons">
@@ -27,22 +29,21 @@
         <div id="custom">
           <div id="customselect" class="custombutton" @click="timespanSetCustom"
             :class="{ selected: timespanButtonsSelected[3] }">
-            <img src="../assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender"
-              id="icon" />
+            <img src="../assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender" id="icon" />
             <span id="text">Benutzerdefiniert</span>
             <span id="textShortened">Benutzerdefiniert</span>
           </div>
 
           <Datepicker v-if="timespanButtonsSelected[3]" v-model="datepicker" range :enable-time-picker="false"
             :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" modeHeight="1000"
-            :year-range="[2019, new Date().getFullYear()]" />
+            :year-range="[2019, new Date().getFullYear()]" @update:model-value="updateCustom()" />
         </div>
       </div>
     </section>
 
     <section id="sensorSelection">
       <h2>Sensoren</h2>
-      <v-chip-group v-model="selectedSensors" column multiple @change="this.selectionChange()">
+      <v-chip-group v-model="selectedSensors" column multiple>
         <div id="sensorGroups">
           <div class="sensorGroup">
             <h3>Temperatur</h3>
@@ -145,51 +146,116 @@
         </div>
       </v-chip-group>
 
-      <mat-form-field id="mobileSensorSelector">
-        <mat-label>Sensoren wählen...</mat-label>
-        <mat-select multiple v-model="selectedSensors" @change="this.selectionChange()">
-          <mat-select-trigger>{{ mobileSelectorText }}</mat-select-trigger>
-          <mat-optgroup label="Temperatur">
-            <mat-option value="temperature">Durchschnitt</mat-option>
-            <mat-option value="temperaturemin">Min (Tag)</mat-option>
-            <mat-option value="temperaturemax">Max (Tag)</mat-option>
-          </mat-optgroup>
-          <mat-optgroup label="Gefühlte Temperatur">
-            <mat-option value="feelsliketemp">Durchschnitt</mat-option>
-            <mat-option value="feelsliketempmin">Min (Tag)</mat-option>
-            <mat-option value="feelsliketempmax">Max (Tag)</mat-option>
-          </mat-optgroup>
-          <mat-optgroup label="Taupunkt">
-            <mat-option value="dewpoint">Durchschnitt</mat-option>
-            <mat-option value="dewpointmin">Min (Tag)</mat-option>
-            <mat-option value="dewpointmax">Max (Tag)</mat-option>
-          </mat-optgroup>
-          <mat-optgroup label="Luftfeuchte">
-            <mat-option value="humidity">Durchschnitt</mat-option>
-            <mat-option value="humiditymin">Min (Tag)</mat-option>
-            <mat-option value="humiditymax">Max (Tag)</mat-option>
-          </mat-optgroup>
-          <mat-optgroup label="Luftdruck">
-            <mat-option value="pressure">Durchschnitt</mat-option>
-            <mat-option value="pressuremin">Min (Tag)</mat-option>
-            <mat-option value="pressuremax">Max (Tag)</mat-option>
-          </mat-optgroup>
-          <mat-optgroup label="Wind">
-            <mat-option value="windspeed">Durchschnitt</mat-option>
-            <mat-option value="windspeedmax">Max (Tag)</mat-option>
-            <mat-option value="winddirection">Richtung</mat-option>
-          </mat-optgroup>
-          <mat-optgroup label="Regen">
-            <mat-option value="rain">Menge</mat-option>
-          </mat-optgroup>
-        </mat-select>
-      </mat-form-field>
+      <div id="mobileSensorSelector">
+        <v-select v-model="mobileSelectorText" label="Sensoren wählen..." :items="[
+          { props: { header: 'Temperatur' } },
+          {
+            title: 'Durchschnitt',
+            value: 0,
+          },
+          {
+            title: 'Min (Tag)',
+            value: 1,
+          },
+          {
+            title: 'Max (Tag)',
+            value: 2,
+          },
+          { props: { divider: true } },
+          { props: { header: 'Gefühlte Temperatur' } },
+          {
+            title: 'Durchschnitt',
+            value: 3,
+          },
+          {
+            title: 'Min (Tag)',
+            value: 4,
+          },
+          {
+            title: 'Max (Tag)',
+            value: 5,
+          },
+          { props: { divider: true } },
+          { props: { header: 'Taupunkt' } },
+          {
+            title: 'Durchschnitt',
+            value: 6,
+          },
+          {
+            title: 'Min (Tag)',
+            value: 7,
+          },
+          {
+            title: 'Max (Tag)',
+            value: 8,
+          },
+          { props: { divider: true } },
+          { props: { header: 'Luftfeuchte' } },
+          {
+            title: 'Durchschnitt',
+            value: 9,
+          },
+          {
+            title: 'Min (Tag)',
+            value: 10,
+          },
+          {
+            title: 'Max (Tag)',
+            value: 11,
+          },
+          { props: { divider: true } },
+          { props: { header: 'Luftdruck' } },
+          {
+            title: 'Durchschnitt',
+            value: 12,
+          },
+          {
+            title: 'Min (Tag)',
+            value: 13,
+          },
+          {
+            title: 'Max (Tag)',
+            value: 14,
+          },
+          { props: { divider: true } },
+          { props: { header: 'Wind' } },
+          {
+            title: 'Durchschnitt',
+            value: 15,
+          },
+          {
+            title: 'Max (Tag)',
+            value: 16,
+          },
+          {
+            title: 'Richtung',
+            value: 17,
+          },
+          { props: { divider: true } },
+          { props: { header: 'Regen' } },
+          {
+            title: 'Menge',
+            value: 18,
+          }
+        ]">
+          <template #item="{ props, item }">
+            <v-list-subheader v-if="props.header">
+              {{ props.header }}
+            </v-list-subheader>
+            <v-divider v-else-if="props.divider" class="mt-2" />
+            <div v-else>
+              <v-checkbox color="primary" v-ripple v-model="selectedSensors" :label="item.title" :value="item.value" />
+            </div>
+          </template>
+        </v-select>
+      </div>
     </section>
+
 
     <section id="graph">
       <div id="chartWrapper">
         <div id="loading-spinner" v-if="(data.dateTime.length === 0 || !showChart)">
-          <mat-spinner></mat-spinner>
+          <!-- <mat-spinner></mat-spinner> -->
         </div>
         <canvas id="chart"
           :style="{ opacity: (data.dateTime.length !== 0 && showChart) ? 1 : 0, height: (data.dateTime.length !== 0 && showChart) ? '' : 0 }"></canvas>
@@ -219,27 +285,27 @@ export default {
       timespanButtonsSelected: [false, false, false, false],
       selectedSensors: [],
       mobileSelectorText: '',
-      sensorNames: {
-        temperature: 'Temp',
-        temperaturemin: 'Temp Min',
-        temperaturemax: 'Temp Max',
-        feelsliketemp: 'Gefühlt. T.',
-        feelsliketempmin: 'Gefühlt. T. Min',
-        feelsliketempmax: 'Gefühlt. T. Max',
-        dewpoint: 'Taup.',
-        dewpointmin: 'Taup. Min',
-        dewpointmax: 'Taup. Max',
-        humidity: 'Luftf.',
-        humiditymin: 'Luftf. Min',
-        humiditymax: 'Luftf. Max',
-        pressure: 'Druck',
-        pressuremin: 'Druck Min',
-        pressuremax: 'Druck Max',
-        windspeed: 'Wind',
-        windspeedmax: 'Wind Max',
-        winddirection: 'Windricht.',
-        rain: 'Regen',
-      },
+      sensorNames: [
+        'Temp',
+        'Temp Min',
+        'Temp Max',
+        'Gefühlt. T.',
+        'Gefühlt. T. Min',
+        'Gefühlt. T. Max',
+        'Taup.',
+        'Taup. Min',
+        'Taup. Max',
+        'Luftf.',
+        'Luftf. Min',
+        'Luftf. Max',
+        'Druck',
+        'Druck Min',
+        'Druck Max',
+        'Wind',
+        'Wind Max',
+        'Windricht.',
+        'Regen'
+      ],
       data: {
         dateTime: [],
         outTemp: [],
@@ -272,6 +338,13 @@ export default {
   mounted() {
     this.timespanSetDay();
     this.selectedSensors.push(0);
+    this.selectionChange();
+  },
+
+  watch: {
+    selectedSensors() {
+      this.selectionChange();
+    }
   },
 
   methods: {
@@ -326,8 +399,6 @@ export default {
       );
     },
     updateCustom() {
-      this.fromTimestamp = this.datepicker.range.value.start.getTime() / 1000;
-      this.toTimestamp = this.datepicker.range.value.end.getTime() / 1000;
       this.updateData();
     },
     updateData() {
@@ -375,12 +446,14 @@ export default {
     },
     selectionChange() {
       this.updateMobileSelectorText();
+      return;
       this.drawChart();
     },
     updateMobileSelectorText() {
       this.mobileSelectorText = '';
-      for (let sensor of this.selectedSensors) {
-        this.mobileSelectorText += this.sensorNames[sensor] + ', ';
+      this.selectedSensors.sort((a, b) => a - b);
+      for (let i = 0; i < this.selectedSensors.length; i++) {
+        this.mobileSelectorText += this.sensorNames[this.selectedSensors[i]] + ', ';
       }
       this.mobileSelectorText = this.mobileSelectorText.slice(0, -2);
     },
@@ -1081,5 +1154,18 @@ export default {
 
 .dp__input {
   height: 3.5em;
+}
+
+.v-input__details {
+  display: none;
+}
+
+.v-checkbox-btn {
+  margin-left: 0.5em;
+}
+
+.v-label {
+  width: 100%;
+  opacity: 1;
 }
 </style>

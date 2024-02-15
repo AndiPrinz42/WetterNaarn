@@ -281,8 +281,8 @@ const moonPhase = getMoonName(moonindex);
         <div class="sensor">
           <DetailSensorWidgetWind
             name="Aktuell"
-            text=`Ø ${data.wind.avg}km/h`
-            value=`${data.wind.current}km/h`
+            text=`${data.wind.current}km/h`
+            value=`Ø ${data.wind.avg}km/h`
             rotation={data.wind.currentDir}
           />
         </div>

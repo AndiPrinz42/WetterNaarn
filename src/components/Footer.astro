@@ -1,5 +1,6 @@
 ---
 const YEAR = new Date().getFullYear();
+const path = Astro.url.pathname;
 ---
 
 <div id="footer">
@@ -13,8 +14,8 @@ const YEAR = new Date().getFullYear();
       <div id="cookies" (click)="openCookies()">Cookies</div>
     </div>
     <div id="rights">
-      <a href="/impressum"><div>Impressum</div></a>
-      <a href="/datenschutzerklaerung"><div>DSGVO</div></a>
+      <a href={path !== "/impressum" && path !== "/impressum/"  ? '/impressum' : '#'}><div>Impressum</div></a>
+      <a href={path !== "/datenschutzerklaerung" && path !== "/datenschutzerklaerung/" ? '/datenschutzerklaerung' : '#'}><div>DSGVO</div></a>
     </div>
     <div id="socials">
       <a href="https://www.youtube.com/@wetternaarn7667" target="_blank"

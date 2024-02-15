@@ -1,13 +1,19 @@
+---
+const path = Astro.url.pathname;
+---
+
 <div id="sidebar">
   <img
     id="hamburgerclose"
     src="/assets/icons/navigation/hamburgerclose.svg"
     alt="Hamburger close Icon"
   />
-  <div id="logoContainer">
-    <img src="/assets/icons/logo/logo.svg" alt="Logo" id="logo" />
-  </div>
-  <a class="menuitem first" href="/">
+  <a href={path !== "/" ? '/' : '#'}>
+    <div id="logoContainer">
+      <img src="/assets/icons/logo/logo.svg" alt="Logo" id="logo" />
+    </div>
+  </a>
+  <a class="menuitem first" href={path !== "/" ? '/' : '#'}>
     <img
       class="icon"
       src="/assets/icons/navigation/dashboard.svg"
@@ -15,7 +21,7 @@
     />
     <div class="text">Dashboard</div>
   </a>
-  <a class="menuitem" href="/sensors">
+  <a class="menuitem" href={path !== "/sensors" && path !== "/sensors/" ? '/sensors' : '#'}>
     <img
       class="icon"
       src="/assets/icons/navigation/allsensors.svg"
@@ -23,7 +29,7 @@
     />
     <div class="text">Alle Sensoren</div>
   </a>
-  <a class="menuitem" href="/grafiken">
+  <a class="menuitem" href={path !== "/grafiken" && path !== "/grafiken/"  ? '/grafiken' : '#'}>
     <img
       class="icon"
       src="/assets/icons/navigation/graph.svg"

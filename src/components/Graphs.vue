@@ -35,7 +35,7 @@
           </div>
 
           <Datepicker v-if="timespanButtonsSelected[3]" v-model="datepicker" range :enable-time-picker="false"
-            :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" modeHeight="1000"
+            :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" :max-date="new Date()" modeHeight="1000"
             :year-range="[2019, new Date().getFullYear()]" @update:model-value="updateCustom()" />
         </div>
       </div>
@@ -367,8 +367,6 @@ export default {
       const startDate = new Date(from * 1000);
       const endDate = new Date(to * 1000);
       datepicker.value = [startDate, endDate];
-      this.fromTimestamp = from;
-      this.toTimestamp = to;
       this.clearTimespanButtonsSelected();
       this.timespanButtonsSelected[3] = true;
     },
@@ -378,6 +376,8 @@ export default {
       );
     },
     updateCustom() {
+      this.fromTimestamp = Math.floor(datepicker.value[0] / 1000);
+      this.toTimestamp = Math.floor(datepicker.value[1] / 1000);
       this.updateData();
     },
     async updateData() {

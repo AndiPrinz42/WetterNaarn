@@ -6,20 +6,20 @@
       <div id="timespanButtons">
         <div id="predefined">
           <div class="custombutton" @click="timespanSetDay" :class="{ selected: timespanButtonsSelected[0] }">
-            <img src="../assets/icons/calendar/calendar-day.svg" alt="Tageskalender" id="icon" />
+            <img src="/assets/icons/calendar/calendar-day.svg" alt="Tageskalender" id="icon" />
             <span id="text">24 Stunden</span>
             <span id="textShortened">24h</span>
           </div>
 
           <div class="custombutton" @click="timespanSetWeek" :class="{ selected: timespanButtonsSelected[1] }">
-            <img src="../assets/icons/calendar/calendar-week.svg" alt="Wochenkalender" id="icon" />
+            <img src="/assets/icons/calendar/calendar-week.svg" alt="Wochenkalender" id="icon" />
             <span id="text">7 Tage</span>
             <span id="textShortened">7d</span>
           </div>
 
           <div id="month" class="custombutton" @click="timespanSetMonth"
             :class="{ selected: timespanButtonsSelected[2] }">
-            <img src="../assets/icons/calendar/calendar-month.svg" alt="Monatskalender" id="icon" />
+            <img src="/assets/icons/calendar/calendar-month.svg" alt="Monatskalender" id="icon" />
             <span id="text">31 Tage</span>
             <span id="textShortened">31d</span>
           </div>
@@ -28,7 +28,7 @@
         <div id="custom">
           <div id="customselect" class="custombutton" @click="timespanSetCustom"
             :class="{ selected: timespanButtonsSelected[3] }">
-            <img src="../assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender" id="icon" />
+            <img src="/assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender" id="icon" />
             <span id="text">Benutzerdefiniert</span>
             <span id="textShortened">Benutzerdefiniert</span>
           </div>

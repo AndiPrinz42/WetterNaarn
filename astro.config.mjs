@@ -10,7 +10,12 @@ export default defineConfig({
     mode: "standalone"
   }),
   integrations: [vue({
-    appEntrypoint: '/src/pages/_app'
+    appEntrypoint: '/src/pages/_app',
+    template: {
+      transformAssetUrls: {
+        includeAbsolute: false,
+      },
+    },
   })],
   vite: {
     ssr: {

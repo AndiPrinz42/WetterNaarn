@@ -14,14 +14,14 @@ function getMoonIcon(index: number): string {
   }
 
   const moonicons: string[] = [
-    "../assets/icons/meteocons/static/moon/moon-new.svg",
-    "../assets/icons/meteocons/static/moon/moon-waxing-crescent.svg",
-    "../assets/icons/meteocons/static/moon/moon-first-quarter.svg",
-    "../assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg",
-    "../assets/icons/meteocons/static/moon/moon-full.svg",
-    "../assets/icons/meteocons/static/moon/moon-waning-gibbous.svg",
-    "../assets/icons/meteocons/static/moon/moon-last-quarter.svg",
-    "../assets/icons/meteocons/static/moon/moon-waning-crescent.svg",
+    "/assets/icons/meteocons/static/moon/moon-new.svg",
+    "/assets/icons/meteocons/static/moon/moon-waxing-crescent.svg",
+    "/assets/icons/meteocons/static/moon/moon-first-quarter.svg",
+    "/assets/icons/meteocons/static/moon/moon-waxing-gibbous.svg",
+    "/assets/icons/meteocons/static/moon/moon-full.svg",
+    "/assets/icons/meteocons/static/moon/moon-waning-gibbous.svg",
+    "/assets/icons/meteocons/static/moon/moon-last-quarter.svg",
+    "/assets/icons/meteocons/static/moon/moon-waning-crescent.svg",
   ];
 
   return moonicons[index];
@@ -93,12 +93,12 @@ function getBarometerText(barometer: number): string {
 
 function getBarometerIcon(barometer: number): string {
   if (barometer < 1010) {
-    return "../assets/icons/meteocons/static/sensors/barometer/barometer-min.svg";
+    return "/assets/icons/meteocons/static/sensors/barometer/barometer-min.svg";
   }
   if (barometer < 1020) {
-    return "../assets/icons/meteocons/static/sensors/barometer/barometer.svg";
+    return "/assets/icons/meteocons/static/sensors/barometer/barometer.svg";
   }
-  return "../assets/icons/meteocons/static/sensors/barometer/barometer-max.svg";
+  return "/assets/icons/meteocons/static/sensors/barometer/barometer-max.svg";
 }
 
 function getWindText(windspeed: number): string {

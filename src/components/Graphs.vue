@@ -303,7 +303,6 @@ export default {
         'Regen'
       ],
       data: null,
-      fetchError: false,
       fromTimestamp: 0,
       toTimestamp: 0,
     }

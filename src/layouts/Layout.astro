@@ -1,8 +1,10 @@
 ---
+import "../styles/global.scss";
 import Sidebar from "../components/Sidebar.astro";
 import Topbar from "../components/Topbar.astro";
 import Footer from "../components/Footer.astro";
-import "../styles/global.scss";
+import CookieBanner from "../components/CookieBanner.astro";
+import CookieSelector from "../components/CookieSelector.astro";
 
 interface Props {
   title: string;
@@ -22,20 +24,30 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="/assets/icons/logo/favicons/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/assets/icons/logo/favicons/logo.png">
-    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo/logo.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="apple-touch-icon"
+      href="/assets/icons/logo/favicons/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/assets/icons/logo/favicons/logo.png"
+    />
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo/logo.svg" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {keywords && <meta name="keywords" content={keywords} />}
     {ogTitle && <meta property="og:title" content={ogTitle} />}
-    {ogDescription && <meta property="og:description" content={ogDescription} />}
+    {
+      ogDescription && (
+        <meta property="og:description" content={ogDescription} />
+      )
+    }
     {ogImage && <meta property="og:image" content={ogImage} />}
     {ogUrl && <meta property="og:url" content={ogUrl} />}
   </head>
   <body>
-    
     <header id="topbar">
       <Topbar />
     </header>
@@ -43,14 +55,18 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
     <nav id="sidebar">
       <Sidebar />
     </nav>
+
     <main id="content">
-      
       <slot />
     </main>
 
     <footer id="footer">
       <Footer />
     </footer>
+
+    <CookieBanner />
+
+    <CookieSelector />
   </body>
 </html>
 
@@ -68,7 +84,7 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
     top: 0;
     width: var(--sidebar-width);
     transition: margin-left 0.25s ease-in-out;
-    z-index: 1;
+    z-index: 2;
 
     @media (max-width: 1250px) {
       margin-left: calc(var(--sidebar-width) * -1);
@@ -102,9 +118,46 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
   }
 </style>
 
+<style is:inline>
+  #cookieBanner,
+  #cookieSelector {
+    z-index: 3;
+  }
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-JWH1VFSVHP");
+
+  gtag("consent", "default", {
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    analytics_storage: "denied",
+    functionality_storage: "denied",
+    personalization_storage: "denied",
+    security_storage: "denied",
+  });
+</script>
+
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-JWH1VFSVHP"
+  is:inline></script>
+
 <script>
-  const hamburgerOpen = document.querySelector("#topbar #hamburgerwrapper") as HTMLDivElement;
-  const hamburgerClose = document.querySelector("#sidebar #hamburgerclose") as HTMLDivElement;
+  const hamburgerOpen = document.querySelector(
+    "#topbar #hamburgerwrapper"
+  ) as HTMLDivElement;
+  const hamburgerClose = document.querySelector(
+    "#sidebar #hamburgerclose"
+  ) as HTMLDivElement;
   const sidebar = document.querySelector("#sidebar") as HTMLElement;
   hamburgerOpen.addEventListener("click", () => {
     sidebar.classList.add("active");
@@ -112,4 +165,163 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
   hamburgerClose.addEventListener("click", () => {
     sidebar.classList.remove("active");
   });
+
+  const cookieBanner = document.querySelector(
+    "#cookieBanner"
+  ) as HTMLDivElement;
+  const cookieSelector = document.querySelector(
+    "#cookieSelector"
+  ) as HTMLDivElement;
+  const cookieBannerAcceptAll = document.querySelector(
+    "#cookieBanner #accept"
+  ) as HTMLDivElement;
+  const cookieBannerSettings = document.querySelector(
+    "#cookieBanner #settings"
+  ) as HTMLDivElement;
+  const cookieSelectorClose = document.querySelector(
+    "#cookieSelector #close"
+  ) as HTMLDivElement;
+  const cookieSelectorSave = document.querySelector(
+    "#cookieSelector #save"
+  ) as HTMLDivElement;
+  const analyticsConsent = document.querySelector(
+    "#cookieSelector #analyticsConsent"
+  ) as HTMLInputElement;
+  const cookieSelectorFooter = document.querySelector(
+    "#footer #cookieSelectorOpen"
+  ) as HTMLDivElement;
+
+  if (!getCookie("showCookieConsent")) {
+    setCookie("showCookieConsent", "true", 180);
+  }
+
+  if(getCookie("googleAnalyticsConsent") === "true") {
+    allowGoogleAnalytics();
+  }
+
+  if (getCookie("showCookieConsent") === "true") {
+    await showCookieBanner();
+  }
+
+  cookieBannerAcceptAll.addEventListener("click", async () => {
+    acceptAll();
+    hideCookieBanner();
+  });
+
+  cookieBannerSettings.addEventListener("click", async () => {
+    hideCookieBanner();
+    showCookieSelector();
+  });
+
+  cookieSelectorClose.addEventListener("click", async () => {
+    hideCookieSelector();
+    if (getCookie("showCookieConsent") !== "false") {
+      showCookieBanner();
+    }
+  });
+
+  cookieSelectorSave.addEventListener("click", async () => {
+    saveConsent();
+    hideCookieSelector();
+  });
+
+  cookieSelectorFooter.addEventListener("click", async () => {
+    showCookieSelector();
+  });
+
+  function acceptAll() {
+    setCookie("googleAnalyticsConsent", "true", 180);
+    setCookie("showCookieConsent", "false", 180);
+    allowGoogleAnalytics();
+  }
+
+  function saveConsent() {
+    const googleAnalyticsAllowed = analyticsConsent.checked;
+    setCookie("showCookieConsent", "false", 180);
+    if (googleAnalyticsAllowed) {
+      allowGoogleAnalytics();
+      setCookie("googleAnalyticsConsent", "true", 180);
+    } else {
+      denyGoogleAnalytics();
+      setCookie("googleAnalyticsConsent", "false", 180);
+    }
+  }
+
+  async function showCookieBanner() {
+    cookieBanner.classList.remove("hiddendom");
+    await sleep(0);
+    cookieBanner.classList.remove("hidden");
+  }
+
+  async function hideCookieBanner() {
+    cookieBanner.classList.add("hidden");
+    await sleep(500);
+    cookieBanner.classList.add("hiddendom");
+  }
+
+  async function showCookieSelector() {
+    analyticsConsent.checked = getCookie("googleAnalyticsConsent") !== "false";
+    cookieSelector.classList.remove("hiddendom");
+    await sleep(0);
+    cookieSelector.classList.remove("hidden");
+  }
+
+  async function hideCookieSelector() {
+    cookieSelector.classList.add("hidden");
+    await sleep(500);
+    cookieSelector.classList.add("hiddendom");
+  }
+
+  function denyGoogleAnalytics() {
+    const gtag = (window as any).gtag;
+    gtag("consent", "update", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      functionality_storage: "denied",
+      personalization_storage: "denied",
+      security_storage: "denied",
+    });
+  }
+
+  function allowGoogleAnalytics() {
+    const gtag = (window as any).gtag;
+    gtag("consent", "update", {
+      ad_storage: "granted",
+      ad_user_data: "granted",
+      ad_personalization: "granted",
+      analytics_storage: "granted",
+      functionality_storage: "granted",
+      personalization_storage: "granted",
+      security_storage: "granted",
+    });
+  }
+
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  function setCookie(cname: string, cvalue: string, exdays: number) {
+    const d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  function getCookie(cname: string): string | null {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return null;
+  }
 </script>

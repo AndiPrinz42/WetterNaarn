@@ -1,0 +1,82 @@
+<div id="cookieBanner" class="hidden hiddendom">
+  <div id="wrapper">
+    <div id="text">
+      Wir verwenden Cookies, um Ihr Benutzererlebnis zu verbessern
+    </div>
+    <div id="actions">
+      <div id="settings" (click)="openSettings()">Einstellungen</div>
+      <div id="accept" (click)="accept()">AKZEPTIEREN</div>
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  #cookieBanner {
+    position: fixed;
+    bottom: 1em;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    transition: transform 0.25s ease-in-out;
+    transform: translateY(0);
+    &.hidden {
+      transform: translateY(calc(100% + 1em));
+    }
+    &.hiddendom {
+      display: none;
+    }
+    #wrapper {
+      max-width: calc(100vw - 4em);
+      background-color: #ffffff;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      padding: 1em;
+      width: fit-content;
+      border-radius: 0.3em;
+      #text {
+        text-align: center;
+        margin-bottom: 1em;
+      }
+
+      #actions {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        @media (max-width: 325px) {
+          flex-direction: column;
+        }
+
+        * {
+          padding: 0.8em;
+          border-radius: 0.3em;
+          cursor: pointer;
+          width: 7em;
+          text-align: center;
+          transition: background-color 0.25s ease-in-out;
+          @media (max-width: 325px) {
+            width: calc(100% - 1.6em);
+          }
+        }
+
+        #settings {
+          border: 1px solid #000000;
+          margin-right: 0.5em;
+          @media (max-width: 325px) {
+            margin-right: 0;
+            margin-bottom: 0.5em;
+          }
+          &:hover {
+            background-color: #f0f0f0;
+          }
+        }
+        #accept {
+          background-color: #000000;
+          color: #ffffff;
+          &:hover {
+            background-color: #181818;
+          }
+        }
+      }
+    }
+  }
+</style>

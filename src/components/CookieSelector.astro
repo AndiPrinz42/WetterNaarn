@@ -1,0 +1,255 @@
+<div id="cookieSelector" class="hidden hiddendom">
+  <div id="wrapper">
+    <div id="contentwrapper">
+      <div id="cookieiconwrapper">
+        <img id="cookieicon" src="/assets/icons/cookie.svg" alt="Cookie" />
+      </div>
+      <h2 id="settingtext">Einstellungen</h2>
+      <div class="cookie">
+        <div>
+          Notwendige Cookies
+          <div class="tooltip">
+            <span class="question-mark">?</span>
+            <span class="tooltiptext"
+              >Diese Cookies sind für die ordnungsgemäße Funktion unserer
+              Website erforderlich und können nicht deaktiviert werden. Wir
+              speichern hier beispielsweise ihre Cookie-Preferenzen.</span
+            >
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="analytics" checked disabled readonly />
+          <span class="slider round disabled"></span>
+        </label>
+      </div>
+      <div class="cookie">
+        <div>
+          Aktivitätsanalyse
+          <div class="tooltip">
+            <span class="question-mark">?</span>
+            <span class="tooltiptext"
+              >Diese Cookies dienen zur Aufzeichnung ihrer Aktivitäten und
+              Interaktionen mithilfe von Google Analytics.</span
+            >
+          </div>
+        </div>
+        <label class="switch">
+          <input
+            type="checkbox"
+            id="analyticsConsent"
+          />
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+
+    <div id="actions">
+      <div id="close" (click)="close()">Schliessen</div>
+      <div id="save" (click)="save()">Speichern</div>
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../styles/mixins" as global;
+
+  #cookieSelector {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.125s;
+    &.hidden {
+      opacity: 0;
+    }
+    &.hiddendom {
+      display: none;
+    }
+    #wrapper {
+      width: 20em;
+      max-width: 90vw;
+      background-color: white;
+      border-radius: 0.3em;
+
+      #contentwrapper {
+        padding: 1.25em;
+
+        #cookieiconwrapper {
+          text-align: center;
+
+          #cookieicon {
+            margin-top: 1em;
+            margin-bottom: 1em;
+            width: 6.5em;
+            height: 6.5em;
+            @include global.disableSelect();
+            @include global.disableDrag();
+            @include global.disableHighlight();
+          }
+        }
+
+        #settingtext {
+          font-size: 2em;
+          text-align: center;
+          margin-bottom: 0.5em;
+        }
+
+        .cookie {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          justify-content: space-between;
+          margin-bottom: 0.5em;
+        }
+
+        .tooltip {
+          position: relative;
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: 700;
+          height: 10px;
+          width: 10px;
+          border-radius: 20px;
+          background-color: #000000;
+          padding: 5px;
+          color: #ffffff;
+          margin-left: 5px;
+          @media (max-width: 335px) {
+            display: none;
+          }
+
+          .question-mark {
+            cursor: help;
+            font-weight: 500;
+          }
+
+          .tooltiptext {
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: 200px;
+            pointer-events: none;
+            background-color: #28282b;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            left: 110%;
+            margin-left: 4px;
+
+            &::after {
+              content: "";
+              position: absolute;
+              top: 50%;
+              margin-top: -5px;
+              right: 100%;
+              border-width: 5px;
+              border-style: solid;
+              border-color: transparent black transparent transparent;
+            }
+          }
+
+          .question-mark:hover + .tooltiptext {
+            opacity: 1;
+          }
+        }
+
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 3.5em;
+          height: 2em;
+
+          .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #9fa6ad;
+            transition: 0.4s;
+
+            &:before {
+              position: absolute;
+              content: "";
+              height: 75%;
+              aspect-ratio: 1/1;
+              left: 0.25em;
+              bottom: 0.25em;
+              background-color: #ffffff;
+              transition: 0.4s;
+            }
+
+            &.round {
+              border-radius: 2.125em;
+              &:before {
+                border-radius: 50%;
+              }
+            }
+          }
+
+          input {
+            display: none;
+            &:checked + .slider {
+              background-color: #5eba7d;
+
+              &.disabled {
+                background-color: #bfe3cb;
+              }
+
+              &:before {
+                transform: translateX(100%);
+              }
+            }
+
+            &:focus + .slider {
+              box-shadow: 0 0 0.0625em #5eba7d;
+            }
+          }
+        }
+      }
+
+      #actions {
+        display: flex;
+
+        * {
+          flex: 1;
+          padding: 0.8em;
+          cursor: pointer;
+          border-top: #e1e8ec 1px solid;
+          text-align: center;
+          font-size: 1.1em;
+          transition: background-color 0.25s ease-in-out;
+        }
+
+        #close {
+          border-radius: 0 0 0 0.3em;
+
+          &:hover {
+            background-color: #f0f0f0;
+          }
+        }
+
+        #save {
+          background-color: #000000;
+          color: #ffffff;
+          border-radius: 0 0 0.3em 0;
+
+          &:hover {
+            background-color: #181818;
+          }
+        }
+      }
+    }
+  }
+</style>

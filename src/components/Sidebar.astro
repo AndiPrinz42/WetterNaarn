@@ -8,11 +8,11 @@ const path = Astro.url.pathname;
     src="/assets/icons/navigation/hamburgerclose.svg"
     alt="Hamburger close Icon"
   />
-  <a href={path !== "/" ? '/' : '#'}>
-    <div id="logoContainer">
+  <div id="logoContainer">
+    <a href={path !== "/" ? '/' : '#'}>
       <img src="/assets/icons/logo/logo.svg" alt="Logo" id="logo" />
-    </div>
-  </a>
+    </a>
+  </div>
   <a class="menuitem first" href={path !== "/" ? '/' : '#'}>
     <img
       class="icon"

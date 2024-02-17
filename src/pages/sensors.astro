@@ -4,86 +4,10 @@ import DetailSensorWidget from "../components/DetailSensorWidget.astro";
 import DetailSensorWidgetWind from "../components/DetailSensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
 import { getMoonIndex, getMoonIcon, getMoonName } from "../scripts/utils.ts";
+import { execSync } from "child_process";
 
-const data = {
-  outTemp: {
-    current: 0.6,
-    avg: 6.9,
-    min: 0.6,
-    minTime: "22:07",
-    max: 10.6,
-    maxTime: "15:34",
-  },
-  appTemp: {
-    current: -1.5,
-    avg: 4.8,
-    min: -1.5,
-    minTime: "22:07",
-    max: 9.2,
-    maxTime: "15:37",
-  },
-  dewpoint: {
-    current: -0.7,
-    avg: 3.9,
-    min: -0.8,
-    minTime: "22:07",
-    max: 5.4,
-    maxTime: "09:58",
-  },
-  outHumidity: {
-    current: 91,
-    avg: 81,
-    min: 60,
-    minTime: "15:47",
-    max: 93,
-    maxTime: "02:34",
-  },
-  barometer: {
-    current: 1025.7,
-    avg: 1021.4,
-    min: 1015.1,
-    minTime: "00:00",
-    max: 1025.8,
-    maxTime: "22:08",
-  },
-  wind: {
-    current: 0,
-    avg: 4.2,
-    max: 10.5,
-    maxTime: "10:40",
-    currentDir: 4,
-    maxDir: 292.5,
-    maxGust: 24.1,
-    maxGustTime: "15:03",
-    maxGustDir: 270,
-  },
-  rain: {
-    day: 0.4,
-    last: "Heute\u00A002:30",
-    week: 1,
-    weekBefore: 10.2,
-    month: 15.4,
-    monthBefore: 55.6,
-  },
-  suntoday: {
-    sunrise: "07:10",
-    sunset: "17:20",
-  },
-  suntomorrow: {
-    sunrise: "07:09",
-    sunset: "17:22",
-  },
-  daylength: "11h 09m",
-  daylengthdiff: "3m länger als gestern",
-  moon: {
-    phase: 15,
-    illumination: 21,
-    nextFullMoon: "24.02.2024",
-    nextFullMoonDays: 11,
-    nextNewMoon: "10.03.2024",
-    nextNewMoonDays: 25,
-  },
-};
+const script = "php -f /var/www/wetter-naarn.at/api/sensors/index.php";
+const data = JSON.parse(execSync(script).toString());
 
 const moonindex = getMoonIndex(data.moon.illumination);
 const moonIcon = getMoonIcon(moonindex);

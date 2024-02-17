@@ -13,72 +13,10 @@ import {
   getMoonName,
   getWindText,
 } from "../scripts/utils.ts";
+import { execSync } from "child_process";
 
-import { exec } from "child_process";
-const script = "C:\\xampp\\php\\php.exe D:\\test.php";
-const { stdout, stderr } = await exec(script);
-const scriptOutput = stdout;
-
-const data = {
-  date: "Heute 22:25",
-  icon: "06n",
-  condition: "stark bewölkt",
-  outTemp: 0,
-  appTemp: -2,
-  outHumidity: 92,
-  barometer: 1025.8,
-  windspeed: 0,
-  winddir: 246,
-  rain: 0.4,
-  morningtemp: 7,
-  noontemp: 9,
-  eveningtemp: 6,
-  nighttemp: 3,
-  forecasttoday: {
-    maxTemp: 9,
-    minTemp: 3,
-    name: "Heute",
-    date: "13. Feb",
-    icon: "05n",
-    condition: "Regenschauer",
-  },
-  forecastin1d: {
-    maxTemp: 10,
-    minTemp: 2,
-    name: "Morgen",
-    date: "14. Feb",
-    icon: "06n",
-    condition: "stark bewölkt",
-  },
-  forecastin2d: {
-    maxTemp: 13,
-    minTemp: 6,
-    name: "Donnerstag",
-    date: "15. Feb",
-    icon: "06n",
-    condition: "stark bewölkt",
-  },
-  forecastin3d: {
-    maxTemp: 13,
-    minTemp: 7,
-    name: "Freitag",
-    date: "16. Feb",
-    icon: "07n",
-    condition: "bewölkt",
-  },
-  forecastin4d: {
-    maxTemp: 9,
-    minTemp: 6,
-    name: "Samstag",
-    date: "17. Feb",
-    icon: "06n",
-    condition: "stark bewölkt",
-  },
-  sunrise: "07:10",
-  sunset: "17:20",
-  moonphase: 15,
-  moonillumination: 21,
-};
+const script = "php -f /var/www/wetter-naarn.at/api/dashboard/index.php";
+const data = JSON.parse(execSync(script).toString());
 
 const humidityText = getHumidityText(data.outHumidity);
 const barometerText = getBarometerText(data.barometer);
@@ -90,7 +28,6 @@ const moonPhase = getMoonName(moonindex);
 
 const windText = getWindText(data.windspeed);
 ---
-
 <Layout
   title="Dashboard | Wetter Naarn"
   description="Wie wird das Wetter heute und morgen in Naarn im Machlande? Mit detaillierten Wetterdaten, Prognosen und anschaulichen Grafiken bist du immer bestens informiert."
@@ -106,7 +43,7 @@ const windText = getWindText(data.windspeed);
       <div
         id="mainWidget"
         class="widget"
-        style=`background-image: url(assets/backgrounds/${data.icon}.jpg)`
+        style=`background-image: url(assets/backgrounds/${data.icon}.webp)`
       >
         <div>
           <div id="rowSplitter">

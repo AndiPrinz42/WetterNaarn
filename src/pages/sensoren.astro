@@ -6,7 +6,7 @@ import SunWidget from "../components/SunWidget.astro";
 import { getMoonIndex, getMoonIcon, getMoonName } from "../scripts/utils.ts";
 import { execSync } from "child_process";
 
-const script = "php -f /var/www/wetter-naarn.at/api/sensors/index.php";
+const script = "php -f /var/www/wetter-naarn.at/public/api/sensors/index.php";
 const data = JSON.parse(execSync(script).toString());
 
 const moonindex = getMoonIndex(data.moon.illumination);

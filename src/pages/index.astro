@@ -232,16 +232,6 @@ const windText = getWindText(data.windspeed);
       sunsetIconAlt="Sonnenuntergang Icon"
       sunsetTime=`${data.sunset}`
     />
-
-    <app-widget-sensor-sun
-      class="sensor"
-      [name]="'Sonne'"
-      [sunriseIcon]="'/assets/icons/meteocons/static/sun/sunrise.svg'"
-      [sunriseIconAlt]="'Sonnenaufgang Icon'"
-      [sunriseTime]="data.sunrise"
-      [sunsetIcon]="'/assets/icons/meteocons/static/sun/sunset.svg'"
-      [sunsetIconAlt]="'Sonnenuntergang Icon'"
-      [sunsetTime]="data.sunset"></app-widget-sensor-sun>
   </div>
 </Layout>
 

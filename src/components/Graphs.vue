@@ -663,30 +663,3 @@ export default {
   }
 }
 </style>
-
-<style lang="scss" is:inline>
-.v-chip {
-  width: 100%;
-}
-
-.v-chip__content {
-  color: #000000;
-}
-
-.dp__input {
-  height: 3.5em;
-}
-
-.v-input__details {
-  display: none;
-}
-
-.v-checkbox-btn {
-  margin-left: 0.5em;
-}
-
-.v-label {
-  width: 100%;
-  opacity: 1;
-}
-</style>

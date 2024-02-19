@@ -1,0 +1,87 @@
+---
+interface Props {
+  morningtemp: number;
+  noontemp: number;
+  eveningtemp: number;
+  nighttemp: number;
+}
+const { morningtemp, noontemp, eveningtemp, nighttemp } = Astro.props;
+---
+
+<canvas id="daytempchart"></canvas>
+<div id="morningtemp" class="serverVariable">{morningtemp}</div>
+<div id="noontemp" class="serverVariable">{noontemp}</div>
+<div id="eveningtemp" class="serverVariable">{eveningtemp}</div>
+<div id="nighttemp" class="serverVariable">{nighttemp}</div>
+
+<style>
+  .serverVariable {
+    display: none;
+  }
+</style>
+
+<script>
+  import Chart from "chart.js/auto";
+  const morningtemp = (document.getElementById("morningtemp") as HTMLDivElement).innerText;
+  const noontemp = (document.getElementById("noontemp") as HTMLDivElement).innerText;
+  const eveningtemp = (document.getElementById("eveningtemp") as HTMLDivElement).innerText;
+  const nighttemp = (document.getElementById("nighttemp") as HTMLDivElement).innerText;
+
+  const ctx = document.getElementById("daytempchart") as HTMLCanvasElement;
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["Morgen", "Mittag", "Abend", "Nacht"],
+      datasets: [
+        {
+          data: [morningtemp, noontemp, eveningtemp, nighttemp],
+          backgroundColor: "#BADCFF",
+          borderColor: "#FFFFFF",
+          borderWidth: 1.5,
+          pointBackgroundColor: "#FFFFFF",
+          pointBorderColor: "#BADCFF",
+          pointRadius: 6,
+          pointHoverRadius: 6,
+          pointBorderWidth: 2,
+          pointHoverBackgroundColor: "#D9D9D9",
+          pointHoverBorderColor: "#BADCFF",
+          pointHoverBorderWidth: 2,
+          tension: 0.4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: 0,
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            display: false,
+          },
+          border: {
+            display: false,
+          },
+          grid: {
+            color: "rgba(255, 255, 255, 0.30)",
+            lineWidth: 1.5,
+          },
+        },
+        y: {
+          display: false,
+          offset: true,
+        },
+      },
+    },
+  });
+</script>

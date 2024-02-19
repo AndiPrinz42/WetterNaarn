@@ -6,8 +6,8 @@
 
 <script>
 import { Line } from 'vue-chartjs'
-import { Chart, LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip } from "chart.js";
-Chart.register(LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
+import { Chart, LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, ScatterController} from "chart.js";
+Chart.register(LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, ScatterController);
 
 export default {
   components: { Line },

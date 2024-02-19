@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="404 Nicht gefunden | Wetter Naarn">
+<Layout title="Nicht gefunden | Wetter Naarn">
     <div id="content">
         <div id="text">Diese Seite wurde nicht gefunden</div>
         <a href="/">
@@ -45,7 +45,11 @@ import Layout from "../../layouts/Layout.astro";
             font-size: 1.5em;
         }
     }
-
+    
+    a {
+        text-decoration: none;
+    }
+    
     #action {
         background-color: #000000;
         color: #ffffff;
@@ -63,7 +67,4 @@ import Layout from "../../layouts/Layout.astro";
     }
 }
 
-a {
-    text-decoration: none;
-}
 </style>

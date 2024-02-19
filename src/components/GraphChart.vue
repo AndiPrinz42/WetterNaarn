@@ -1,16 +1,16 @@
 <template>
   <div>
-    <Line id="my-chart-id" :options="chartOptions" :data="chartData" />
+    <Line :options="chartOptions" :data="chartData" />
   </div>
 </template>
 
 <script>
-import { Bar, Line } from 'vue-chartjs'
-import Chart from 'chart.js/auto'
+import { Line } from 'vue-chartjs'
+import { Chart, LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip } from "chart.js";
+Chart.register(LineController, LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
 
 export default {
-  name: 'BarChart',
-  components: { Bar, Line },
+  components: { Line },
   props: ['data', 'selectedSensors'],
   data() {
     return {

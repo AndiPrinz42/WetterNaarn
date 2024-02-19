@@ -48,11 +48,11 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
     {ogUrl && <meta property="og:url" content={ogUrl} />}
   </head>
   <body>
-    <header id="topbar">
+    <header id="topbarWrapper">
       <Topbar />
     </header>
 
-    <nav id="sidebar">
+    <nav id="sidebarWrapper">
       <Sidebar />
     </nav>
 
@@ -60,7 +60,7 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
       <slot />
     </main>
 
-    <footer id="footer">
+    <footer id="footerWrapper">
       <Footer />
     </footer>
 
@@ -71,7 +71,7 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
 </html>
 
 <style lang="scss">
-  #topbar {
+  #topbarWrapper {
     display: none;
 
     @media (max-width: 1250px) {
@@ -79,7 +79,7 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
     }
   }
 
-  #sidebar {
+  #sidebarWrapper {
     position: fixed;
     top: 0;
     width: var(--sidebar-width);
@@ -106,7 +106,7 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
     }
   }
 
-  #footer {
+  #footerWrapper {
     width: calc(100% - var(--sidebar-width));
     margin-left: var(--sidebar-width);
     position: absolute;
@@ -153,12 +153,12 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
 
 <script>
   const hamburgerOpen = document.querySelector(
-    "#topbar #hamburgerwrapper"
+    "#topbarWrapper #hamburgerwrapper"
   ) as HTMLDivElement;
   const hamburgerClose = document.querySelector(
-    "#sidebar #hamburgerclose"
+    "#sidebarWrapper #hamburgerclose"
   ) as HTMLDivElement;
-  const sidebar = document.querySelector("#sidebar") as HTMLElement;
+  const sidebar = document.querySelector("#sidebarWrapper") as HTMLElement;
   hamburgerOpen.addEventListener("click", () => {
     sidebar.classList.add("active");
   });
@@ -188,7 +188,7 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
     "#cookieSelector #analyticsConsent"
   ) as HTMLInputElement;
   const cookieSelectorFooter = document.querySelector(
-    "#footer #cookieSelectorOpen"
+    "#footerWrapper #cookieSelectorOpen"
   ) as HTMLDivElement;
 
   if (!getCookie("showCookieConsent")) {

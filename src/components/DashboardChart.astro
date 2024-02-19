@@ -21,7 +21,8 @@ const { morningtemp, noontemp, eveningtemp, nighttemp } = Astro.props;
 </style>
 
 <script>
-  import Chart from "chart.js/auto";
+  import {Chart, LineController, LineElement, CategoryScale, LinearScale, PointElement} from "chart.js";
+  Chart.register(LineController, LineElement, CategoryScale, LinearScale, PointElement);
   const morningtemp = (document.getElementById("morningtemp") as HTMLDivElement).innerText;
   const noontemp = (document.getElementById("noontemp") as HTMLDivElement).innerText;
   const eveningtemp = (document.getElementById("eveningtemp") as HTMLDivElement).innerText;

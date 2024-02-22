@@ -10,13 +10,14 @@ interface Props {
   title: string;
   description?: string;
   keywords?: string;
+  preloadImages?: string[];
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
   ogUrl?: string;
 }
 
-const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } = Astro.props;
+const { title, description, keywords, preloadImages, ogTitle, ogDescription, ogImage, ogUrl } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,6 +26,10 @@ const { title, description, keywords, ogTitle, ogDescription, ogImage, ogUrl } =
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {description && <meta name="description" content={description} />}
+    {preloadImages && preloadImages.map((image) => (
+      <link rel="preload" fetchpriority="high" as="image" href={image} /> 
+    ))}
     <link
       rel="apple-touch-icon"
       href="/assets/icons/logo/favicons/apple-touch-icon-180x180.png"

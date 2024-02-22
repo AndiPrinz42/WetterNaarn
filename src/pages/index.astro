@@ -32,6 +32,7 @@ const windText = getWindText(data.windspeed);
   title="Wetter Naarn"
   description="Wie wird das Wetter heute und morgen in Naarn im Machlande? Mit detaillierten Wetterdaten, Prognosen und anschaulichen Grafiken bist du immer bestens informiert."
   keywords="Wetter, Naarn im Machlande, Aktuelle Wetterwerte, Wettervorhersage"
+  preloadImages={[`/assets/backgrounds/${data.icon}.webp`]}
   ogTitle="Wetter Naarn | Dashboard"
   ogDescription="Detaillierte Wetterdaten, Prognosen und anschauliche Grafiken für das Wetter in Naarn im Machlande."
   ogImage="https://wetter-naarn.at/assets/icons/logo/og-image.png"
@@ -43,7 +44,7 @@ const windText = getWindText(data.windspeed);
       <div
         id="mainWidget"
         class="widget"
-        style=`background-image: url(assets/backgrounds/${data.icon}.webp)`
+        style=`background-image: url(/assets/backgrounds/${data.icon}.webp)`
       >
         <div>
           <div id="rowSplitter">

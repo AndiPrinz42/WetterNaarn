@@ -213,8 +213,6 @@ const {
     if (getCookie("showCookieConsent") === "true") {
       await showCookieBanner();
     }
-
-    addTagManager();
   }
 
   function initGoogleAnalytics() {
@@ -237,11 +235,19 @@ const {
   }
 
   function addTagManager() {
-    var scriptElement = document.createElement("script");
+    const scriptElement = document.createElement("script");
+    scriptElement.id = "googleTagManager";
     scriptElement.type = "text/partytown";
     scriptElement.src =
       "https://www.googletagmanager.com/gtag/js?id=G-JWH1VFSVHP";
     document.head.appendChild(scriptElement);
+  }
+
+  function removeTagManager() {
+    const scriptElement = document.getElementById("googleTagManager");
+    if (scriptElement) {
+      scriptElement.remove();
+    }
   }
 
   function acceptAll() {
@@ -297,6 +303,7 @@ const {
       personalization_storage: "denied",
       security_storage: "denied",
     });
+    removeTagManager();
   }
 
   function allowGoogleAnalytics() {
@@ -309,6 +316,8 @@ const {
       personalization_storage: "granted",
       security_storage: "granted",
     });
+    
+    Manager();
   }
 
   function sleep(ms) {

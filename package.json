@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/check": "^0.5.4",
     "@astrojs/node": "^8.2.0",
+    "@astrojs/partytown": "^2.0.4",
     "@astrojs/vue": "^4.0.8",
     "@mdi/font": "^7.4.47",
     "@vuepic/vue-datepicker": "^8.1.1",

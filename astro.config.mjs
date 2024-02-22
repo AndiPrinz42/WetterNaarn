@@ -1,25 +1,32 @@
 import { defineConfig } from "astro/config";
-import vue from "@astrojs/vue";
-
 import node from "@astrojs/node";
+import vue from "@astrojs/vue";
+import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
   output: "server",
   adapter: node({
-    mode: "standalone"
+    mode: "standalone",
   }),
-  integrations: [vue({
-    appEntrypoint: '/src/pages/_app',
-    template: {
-      transformAssetUrls: {
-        includeAbsolute: false,
+  integrations: [
+    vue({
+      appEntrypoint: "/src/pages/_app",
+      template: {
+        transformAssetUrls: {
+          includeAbsolute: false,
+        },
       },
-    },
-  })],
+    }),
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
+  ],
   vite: {
     ssr: {
-      noExternal: ['vuetify']
-    }
+      noExternal: ["vuetify"],
+    },
   },
 });

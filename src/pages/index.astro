@@ -15,11 +15,8 @@ import {
 } from "../scripts/utils.ts";
 import { execSync } from "child_process";
 
-// const script = "php -f /var/www/wetter-naarn.at/public/api/dashboard/index.php";
-// const data = JSON.parse(execSync(script).toString());
-
-const rawdata = await fetch("https://wetter-naarn.at/api/dashboard/index.php");
-const data = await rawdata.json();
+const script = "php -f /var/www/wetter-naarn.at/public/api/dashboard/index.php";
+const data = JSON.parse(execSync(script).toString());
 
 const humidityText = getHumidityText(data.outHumidity);
 const barometerText = getBarometerText(data.barometer);

@@ -36,7 +36,8 @@ const { name, text, value, icon, iconAlt } = Astro.props;
   $background: #ecf3f8;
 
   #sensorWidget {
-    height: calc(100% - 3.2em);
+    height: 100%;
+    box-sizing: border-box;
     background-color: $background;
     border-radius: 1em;
     padding: 1.6em;

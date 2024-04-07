@@ -270,7 +270,7 @@ const {
 
   async function showCookieBanner() {
     cookieBanner.classList.remove("hiddendom");
-    await sleep(0);
+    await sleep(50);
     cookieBanner.classList.remove("hidden");
   }
 
@@ -283,7 +283,7 @@ const {
   async function showCookieSelector() {
     analyticsConsent.checked = getCookie("googleAnalyticsConsent") !== "false";
     cookieSelector.classList.remove("hiddendom");
-    await sleep(0);
+    await sleep(50);
     cookieSelector.classList.remove("hidden");
   }
 

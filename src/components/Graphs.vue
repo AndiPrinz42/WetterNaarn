@@ -1,4 +1,3 @@
-
 <template>
   <div id="content">
     <section>
@@ -17,8 +16,7 @@
             <span id="textShortened">7d</span>
           </div>
 
-          <div id="month" class="custombutton" @click="timespanSetMonth"
-            :class="{ selected: timespanButtonsSelected[2] }">
+          <div id="month" class="custombutton" @click="timespanSetMonth" :class="{ selected: timespanButtonsSelected[2] }">
             <img src="/assets/icons/calendar/calendar-month.svg" alt="Monatskalender" id="icon" />
             <span id="text">31 Tage</span>
             <span id="textShortened">31d</span>
@@ -26,16 +24,13 @@
         </div>
 
         <div id="custom">
-          <div id="customselect" class="custombutton" @click="timespanSetCustom"
-            :class="{ selected: timespanButtonsSelected[3] }">
+          <div id="customselect" class="custombutton" @click="timespanSetCustom" :class="{ selected: timespanButtonsSelected[3] }">
             <img src="/assets/icons/calendar/calendar-solid.svg" alt="Benutzerdefinierter Kalender" id="icon" />
             <span id="text">Benutzerdefiniert</span>
             <span id="textShortened">Benutzerdefiniert</span>
           </div>
 
-          <Datepicker v-if="timespanButtonsSelected[3]" v-model="datepicker" range :enable-time-picker="false"
-            :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" :max-date="new Date()"
-            modeHeight="1000" :year-range="[2019, new Date().getFullYear()]" @update:model-value="updateCustom()" />
+          <Datepicker v-if="timespanButtonsSelected[3]" v-model="datepicker" range :enable-time-picker="false" :clearable="false" :format-locale="de" format="dd.MM.yyyy" :min-date="new Date(2019, 2, 10)" :max-date="new Date()" modeHeight="1000" :year-range="[2019, new Date().getFullYear()]" @update:model-value="updateCustom()" />
         </div>
       </div>
     </section>
@@ -147,96 +142,96 @@
 
       <div id="mobileSensorSelector">
         <v-select v-model="mobileSelectorText" label="Sensoren wählen..." :items="[
-          { props: { header: 'Temperatur' } },
-          {
-            title: 'Durchschnitt',
-            value: 0,
-          },
-          {
-            title: 'Min (Tag)',
-            value: 1,
-          },
-          {
-            title: 'Max (Tag)',
-            value: 2,
-          },
-          { props: { divider: true } },
-          { props: { header: 'Gefühlte Temperatur' } },
-          {
-            title: 'Durchschnitt',
-            value: 3,
-          },
-          {
-            title: 'Min (Tag)',
-            value: 4,
-          },
-          {
-            title: 'Max (Tag)',
-            value: 5,
-          },
-          { props: { divider: true } },
-          { props: { header: 'Taupunkt' } },
-          {
-            title: 'Durchschnitt',
-            value: 6,
-          },
-          {
-            title: 'Min (Tag)',
-            value: 7,
-          },
-          {
-            title: 'Max (Tag)',
-            value: 8,
-          },
-          { props: { divider: true } },
-          { props: { header: 'Luftfeuchte' } },
-          {
-            title: 'Durchschnitt',
-            value: 9,
-          },
-          {
-            title: 'Min (Tag)',
-            value: 10,
-          },
-          {
-            title: 'Max (Tag)',
-            value: 11,
-          },
-          { props: { divider: true } },
-          { props: { header: 'Luftdruck' } },
-          {
-            title: 'Durchschnitt',
-            value: 12,
-          },
-          {
-            title: 'Min (Tag)',
-            value: 13,
-          },
-          {
-            title: 'Max (Tag)',
-            value: 14,
-          },
-          { props: { divider: true } },
-          { props: { header: 'Wind' } },
-          {
-            title: 'Durchschnitt',
-            value: 15,
-          },
-          {
-            title: 'Max (Tag)',
-            value: 16,
-          },
-          {
-            title: 'Richtung',
-            value: 17,
-          },
-          { props: { divider: true } },
-          { props: { header: 'Regen' } },
-          {
-            title: 'Menge',
-            value: 18,
-          }
-        ]">
+            { props: { header: 'Temperatur' } },
+            {
+              title: 'Durchschnitt',
+              value: 0,
+            },
+            {
+              title: 'Min (Tag)',
+              value: 1,
+            },
+            {
+              title: 'Max (Tag)',
+              value: 2,
+            },
+            { props: { divider: true } },
+            { props: { header: 'Gefühlte Temperatur' } },
+            {
+              title: 'Durchschnitt',
+              value: 3,
+            },
+            {
+              title: 'Min (Tag)',
+              value: 4,
+            },
+            {
+              title: 'Max (Tag)',
+              value: 5,
+            },
+            { props: { divider: true } },
+            { props: { header: 'Taupunkt' } },
+            {
+              title: 'Durchschnitt',
+              value: 6,
+            },
+            {
+              title: 'Min (Tag)',
+              value: 7,
+            },
+            {
+              title: 'Max (Tag)',
+              value: 8,
+            },
+            { props: { divider: true } },
+            { props: { header: 'Luftfeuchte' } },
+            {
+              title: 'Durchschnitt',
+              value: 9,
+            },
+            {
+              title: 'Min (Tag)',
+              value: 10,
+            },
+            {
+              title: 'Max (Tag)',
+              value: 11,
+            },
+            { props: { divider: true } },
+            { props: { header: 'Luftdruck' } },
+            {
+              title: 'Durchschnitt',
+              value: 12,
+            },
+            {
+              title: 'Min (Tag)',
+              value: 13,
+            },
+            {
+              title: 'Max (Tag)',
+              value: 14,
+            },
+            { props: { divider: true } },
+            { props: { header: 'Wind' } },
+            {
+              title: 'Durchschnitt',
+              value: 15,
+            },
+            {
+              title: 'Max (Tag)',
+              value: 16,
+            },
+            {
+              title: 'Richtung',
+              value: 17,
+            },
+            { props: { divider: true } },
+            { props: { header: 'Regen' } },
+            {
+              title: 'Menge',
+              value: 18,
+            }
+          ]">
           <template #item="{ props, item }">
             <v-list-subheader v-if="props.header">
               {{ props.header }}
@@ -429,7 +424,7 @@ export default {
   }
 };
 </script>
-  
+
 <style scoped lang="scss">
 @use "../styles/mixins" as global;
 
@@ -624,6 +619,7 @@ export default {
             &::after {
               content: "Durschn.";
             }
+
             span {
               display: none;
             }
@@ -642,6 +638,7 @@ export default {
 
     #mobileSensorSelector {
       display: none;
+
       @media (max-width: 615px) {
         display: block;
         margin-bottom: 1em;
@@ -656,6 +653,7 @@ export default {
       height: 100%;
       width: 100%;
     }
+
     #chart {
       min-height: 25em;
       height: calc(100vh - 25em);

@@ -7,7 +7,7 @@ import partytown from "@astrojs/partytown";
 export default defineConfig({
   output: "server",
   adapter: node({
-    mode: "standalone",
+    mode: "middleware",
   }),
   integrations: [
     vue({
@@ -26,7 +26,7 @@ export default defineConfig({
   ],
   vite: {
     ssr: {
-      noExternal: ["vuetify"],
+      noExternal: ["vuetify", "path-to-regexp"],
     },
   },
 });

@@ -7,11 +7,14 @@ export interface ForecastData {
   condition: string;
 }
 
-export const dummyForecastData: ForecastData = {
-  maxTemp: 0,
-  minTemp: 0,
-  name: "",
-  date: "",
-  icon: "09d",
-  condition: "",
-};
+export function getDummyForecastData(): ForecastData {
+  const dummyForecastData: ForecastData = {
+    maxTemp: 0,
+    minTemp: 0,
+    name: "",
+    date: "",
+    icon: "09d",
+    condition: "",
+  };
+  return structuredClone(dummyForecastData);
+}

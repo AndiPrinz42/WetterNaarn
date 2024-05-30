@@ -1,4 +1,4 @@
-import { dummyForecastData, type ForecastData } from "../models/forecast.model";
+import { type ForecastData, getDummyForecastData } from "../models/forecast.model";
 
 export interface DashboardData {
   date: string;
@@ -26,29 +26,31 @@ export interface DashboardData {
   moonillumination: number;
 }
 
-
-export const dummyDashboardData: DashboardData = {
-  date: "",
-  icon: "09d",
-  condition: "",
-  outTemp: 0,
-  appTemp: 0,
-  outHumidity: "",
-  barometer: 0,
-  windspeed: 0,
-  winddir: 0,
-  rain: 0,
-  morningtemp: 0,
-  noontemp: 0,
-  eveningtemp: 0,
-  nighttemp: 0,
-  forecasttoday: dummyForecastData,
-  forecastin1d: dummyForecastData,
-  forecastin2d: dummyForecastData,
-  forecastin3d: dummyForecastData,
-  forecastin4d: dummyForecastData,
-  sunrise: "",
-  sunset: "",
-  moonphase: 0,
-  moonillumination: 0,
-};
+export function getDummyDashboardData(): DashboardData {
+  const dummyDashboardData: DashboardData = {
+    date: "",
+    icon: "09d",
+    condition: "",
+    outTemp: 0,
+    appTemp: 0,
+    outHumidity: "",
+    barometer: 0,
+    windspeed: 0,
+    winddir: 0,
+    rain: 0,
+    morningtemp: 0,
+    noontemp: 0,
+    eveningtemp: 0,
+    nighttemp: 0,
+    forecasttoday: getDummyForecastData(),
+    forecastin1d: getDummyForecastData(),
+    forecastin2d: getDummyForecastData(),
+    forecastin3d: getDummyForecastData(),
+    forecastin4d: getDummyForecastData(),
+    sunrise: "",
+    sunset: "",
+    moonphase: 0,
+    moonillumination: 0,
+  };
+  return structuredClone(dummyDashboardData);
+}

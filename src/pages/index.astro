@@ -4,15 +4,12 @@ import SensorWidget from "../components/SensorWidget.astro";
 import SensorWidgetRotateable from "../components/SensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
 import DashboardChart from "../components/DashboardChart.astro";
-import { getHumidityText, getBarometerText, getBarometerIcon, getMoonIndex, getMoonIcon, getMoonName, getWindText } from "../scripts/utils";
-import { type DashboardData, getDummyDashboardData } from "../scripts/models/dashboard.model";
-
-import { Database } from "../scripts/database";
-import * as serverUtils from "../scripts/serverUtils";
+import * as utils from "../scripts/utils";
 import * as unitConverter from "../scripts/unitConverter";
-
-import suncalc from "suncalc";
+import { Database } from "../scripts/database";
+import { type DashboardData, getDummyDashboardData } from "../scripts/models/dashboard.model";
 import { type ForecastData, getDummyForecastData } from "../scripts/models/forecast.model";
+import suncalc from "suncalc";
 
 const data = await getData();
 
@@ -24,7 +21,7 @@ async function getData(): Promise<DashboardData> {
   // Get latest datatime from archive
   result = await db.query("weewx", "SELECT dateTime FROM archive ORDER BY dateTime DESC LIMIT 1;");
   const currentUnixTime = Number(result[0].dateTime);
-  dashboardData.date = serverUtils.formatDate(result[0].dateTime * 1000);
+  dashboardData.date = utils.formatDate(result[0].dateTime * 1000);
 
   // Get "outTemp", "appTemp", "outHumidity", "barometer", "windspeed", "winddir" from archive
   result = await db.query("weewx", "SELECT outTemp, appTemp, outHumidity, barometer, windspeed, winddir FROM archive WHERE dateTime = ?;", [currentUnixTime]);
@@ -37,6 +34,12 @@ async function getData(): Promise<DashboardData> {
   dashboardData.windspeed = unitConverter.mphToKmh(result[0].windspeed, 0);
   dashboardData.winddir = result[0].winddir;
 
+  // style calculations
+  dashboardData.humidityText = utils.getHumidityText(Number(dashboardData.outHumidity));
+  dashboardData.barometerText = utils.getBarometerText(Number(dashboardData.barometer));
+  dashboardData.barometerIcon = utils.getBarometerIcon(Number(dashboardData.barometer));
+  dashboardData.windText = utils.getWindText(Number(dashboardData.windspeed));
+
   const lat = 48.226179739915345;
   const lon = 14.604849316395049;
 
@@ -44,23 +47,27 @@ async function getData(): Promise<DashboardData> {
   const sunTimes = suncalc.getTimes(new Date(currentUnixTime * 1000), lat, lon);
   const sunriseUnix = sunTimes.sunrise.getTime();
   const sunsetUnix = sunTimes.sunset.getTime();
-  dashboardData.sunrise = serverUtils.formatTime(sunriseUnix);
-  dashboardData.sunset = serverUtils.formatTime(sunsetUnix);
+  dashboardData.sunrise = utils.formatTime(sunriseUnix);
+  dashboardData.sunset = utils.formatTime(sunsetUnix);
   const sunIsUp = currentUnixTime >= sunriseUnix / 1000 && currentUnixTime <= sunsetUnix / 1000;
 
   // get Moon phase (0 = New, .5 = Full, 1 = New)
   dashboardData.moonphase = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).phase * 100);
   dashboardData.moonillumination = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).fraction * 100);
 
+  const moonindex = utils.getMoonIndex(dashboardData.moonphase);
+  dashboardData.moonphaseText = utils.getMoonName(moonindex);
+  dashboardData.moonphaseIcon = utils.getMoonIcon(moonindex);
+
   // get current conditions
   result = await db.query("forecast", "SELECT icon, `condition` FROM current ORDER BY updateTime DESC LIMIT 1;");
-  dashboardData.icon = serverUtils.convertIcon(result[0].icon, sunIsUp);
+  dashboardData.icon = utils.convertIcon(result[0].icon, sunIsUp);
   dashboardData.condition = result[0].condition;
 
   // get forecast daytimes
   // for hour 6,12,18,0
   const forecastTimes = [6, 12, 18, 0];
-  const forecastTimesFormatted = forecastTimes.map((time) => serverUtils.getUTCTimestampByOffset(time, 0));
+  const forecastTimesFormatted = forecastTimes.map((time) => utils.getUTCTimestampByOffset(time, 0));
   const forecastDaytimes = await getTodaysForecast(forecastTimesFormatted, db);
   dashboardData.morningtemp = forecastDaytimes[0];
   dashboardData.noontemp = forecastDaytimes[1];
@@ -84,19 +91,19 @@ async function getForecastData(dayoffset: number, sunIsUp: boolean, db: Database
   const forecastData: ForecastData = getDummyForecastData();
   let result;
 
-  const from = serverUtils.getUTCTimestampByOffset(0, 0, dayoffset);
-  const to = serverUtils.getUTCTimestampByOffset(0, 0, dayoffset + 1);
+  const from = utils.getUTCTimestampByOffset(0, 0, dayoffset);
+  const to = utils.getUTCTimestampByOffset(0, 0, dayoffset + 1);
   result = await db.query("forecast", "SELECT MAX(temp_max) AS maxTemp, MIN(temp_min) AS minTemp FROM three_hour_forecast WHERE dateTime BETWEEN ? AND ?;", [from, to]);
   forecastData.maxTemp = Math.round(result[0].maxTemp);
   forecastData.minTemp = Math.round(result[0].minTemp);
-  forecastData.name = serverUtils.getDayName(dayoffset);
-  forecastData.date = serverUtils.formatMonthDate(from);
+  forecastData.name = utils.getDayName(dayoffset);
+  forecastData.date = utils.formatMonthDate(from);
 
   result = await db.query("forecast", "SELECT icon FROM three_hour_forecast WHERE dateTime BETWEEN ? AND ?;", [from, to]);
   const icons = result.map((row: any) => row.icon);
-  const iconnumber = serverUtils.flattenIcons(icons);
-  forecastData.icon = serverUtils.getForecastIcon(iconnumber, sunIsUp);
-  forecastData.condition = serverUtils.getForecastCondition(iconnumber);
+  const iconnumber = utils.flattenIcons(icons);
+  forecastData.icon = utils.getForecastIcon(iconnumber, sunIsUp);
+  forecastData.condition = utils.getForecastCondition(iconnumber);
 
   return forecastData;
 }
@@ -108,20 +115,10 @@ async function getTodaysForecast(timestamps: number[], database: Database): Prom
   });
   sql = sql.slice(0, -2);
   sql += ");";
-  
+
   const result = await database.query("forecast", sql);
   return result.map((row: any) => Math.round(row.temp));
 }
-
-const humidityText = getHumidityText(Number(data.outHumidity));
-const barometerText = getBarometerText(data.barometer);
-const barometerIcon = getBarometerIcon(data.barometer);
-
-const moonindex = getMoonIndex(data.moonphase);
-const moonIcon = getMoonIcon(moonindex);
-const moonPhase = getMoonName(moonindex);
-
-const windText = getWindText(data.windspeed);
 ---
 
 <Layout
@@ -240,15 +237,15 @@ const windText = getWindText(data.windspeed);
     </section>
 
     <h2 id="sensorheader">Sensoren</h2>
-    <SensorWidget name="Luftfeuchte" text=`${humidityText}` value=`${data.outHumidity}%` icon="/assets/icons/meteocons/static/sensors/humidity.svg" iconAlt="Luftfeuchte Icon" />
+    <SensorWidget name="Luftfeuchte" text=`${data.humidityText}` value=`${data.outHumidity}%` icon="/assets/icons/meteocons/static/sensors/humidity.svg" iconAlt="Luftfeuchte Icon" />
 
-    <SensorWidget name="Luftdruck" text=`${barometerText}` value=`${data.barometer}hPa` icon=`${barometerIcon}` iconAlt="Luftfeuchte Icon" />
+    <SensorWidget name="Luftdruck" text=`${data.barometerText}` value=`${data.barometer}hPa` icon=`${data.barometerIcon}` iconAlt="Luftfeuchte Icon" />
 
-    <SensorWidgetRotateable name="Wind" text={windText} value=`${data.windspeed}km/h` rotation={data.winddir} />
+    <SensorWidgetRotateable name="Wind" text={data.windText} value=`${data.windspeed}km/h` rotation={data.winddir} />
 
     <SensorWidget name="Regen" text="Heutiger Regen" value=`${data.rain}mm²` icon="/assets/icons/meteocons/static/sensors/raindrops.svg" iconAlt="Regen Icon" />
 
-    <SensorWidget name="Mond" text=`${moonPhase}` value=`${data.moonillumination}%` icon=`${moonIcon}` iconAlt="Mondphase Icon" />
+    <SensorWidget name="Mond" text=`${data.moonphaseText}` value=`${data.moonillumination}%` icon=`${data.moonphaseIcon}` iconAlt="Mondphase Icon" />
 
     <SunWidget name="Sonne" sunriseIcon="/assets/icons/meteocons/static/sun/sunrise.svg" sunriseIconAlt="Sonnenaufgang Icon" sunriseTime=`${data.sunrise}` sunsetIcon="/assets/icons/meteocons/static/sun/sunset.svg" sunsetIconAlt="Sonnenuntergang Icon" sunsetTime=`${data.sunset}` />
   </div>

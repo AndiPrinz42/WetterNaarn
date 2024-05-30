@@ -7,8 +7,12 @@ export interface DashboardData {
   outTemp: number;
   appTemp: number;
   outHumidity: string;
+  humidityText: string;
   barometer: number;
+  barometerText: string;
+  barometerIcon: string;
   windspeed: number;
+  windText: string;
   winddir: number;
   rain: number;
   morningtemp: number;
@@ -24,6 +28,8 @@ export interface DashboardData {
   sunset: string;
   moonphase: number;
   moonillumination: number;
+  moonphaseText: string;
+  moonphaseIcon: string;
 }
 
 export function getDummyDashboardData(): DashboardData {
@@ -34,8 +40,12 @@ export function getDummyDashboardData(): DashboardData {
     outTemp: 0,
     appTemp: 0,
     outHumidity: "",
+    humidityText: "",
     barometer: 0,
+    barometerText: "",
+    barometerIcon: "",
     windspeed: 0,
+    windText: "",
     winddir: 0,
     rain: 0,
     morningtemp: 0,
@@ -51,6 +61,8 @@ export function getDummyDashboardData(): DashboardData {
     sunset: "",
     moonphase: 0,
     moonillumination: 0,
+    moonphaseText: "",
+    moonphaseIcon: "",
   };
   return structuredClone(dummyDashboardData);
 }

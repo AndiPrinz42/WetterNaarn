@@ -40,6 +40,7 @@ async function getData(): Promise<DashboardData> {
   dashboardData.barometerIcon = utils.getBarometerIcon(Number(dashboardData.barometer));
   dashboardData.windText = utils.getWindText(Number(dashboardData.windspeed));
 
+  // configure lat and lon
   const lat = 48.226179739915345;
   const lon = 14.604849316395049;
 

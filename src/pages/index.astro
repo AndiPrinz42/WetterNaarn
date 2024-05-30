@@ -12,13 +12,34 @@ import {
   getMoonIcon,
   getMoonName,
   getWindText,
-} from "../scripts/utils.ts";
-import { execSync } from "child_process";
+} from "../scripts/utils";
+import type { DashboardData } from "../scripts/models/dashboard.model";
+import {dummyDashboardData} from '../scripts/models/dashboard.model';
 
-const script = "php -f /var/www/wetter-naarn.at/public/api/dashboard/index.php";
-const data = JSON.parse(execSync(script).toString());
+import {Database} from '../scripts/database';
+import * as serverUtils from '../scripts/serverUtils';
 
-const humidityText = getHumidityText(data.outHumidity);
+
+const data = await getData();
+
+async function getData(): Promise<DashboardData> {
+  const db = new Database();
+  const dashboardData: DashboardData = dummyDashboardData;
+  let result;
+  
+  // Get latest datatime from archive
+  result = await db.query("SELECT dateTime FROM archive ORDER BY dateTime DESC LIMIT 1;");
+  dashboardData.date = serverUtils.formatDate(result[0].dateTime);
+
+
+
+
+
+  await db.close();
+  return dashboardData;
+}
+
+const humidityText = getHumidityText(Number(data.outHumidity));
 const barometerText = getBarometerText(data.barometer);
 const barometerIcon = getBarometerIcon(data.barometer);
 
@@ -28,6 +49,7 @@ const moonPhase = getMoonName(moonindex);
 
 const windText = getWindText(data.windspeed);
 ---
+
 <Layout
   title="Wetter Naarn"
   description="Wie wird das Wetter heute und morgen in Naarn im Machlande? Mit detaillierten Wetterdaten, Prognosen und anschaulichen Grafiken bist du immer bestens informiert."
@@ -37,7 +59,7 @@ const windText = getWindText(data.windspeed);
   ogDescription="Detaillierte Wetterdaten, Prognosen und anschauliche Grafiken für das Wetter in Naarn im Machlande."
   ogImage="https://wetter-naarn.at/assets/icons/logo/og-image.png"
   ogUrl="https://wetter-naarn.at"
-  >
+>
   <div id="content">
     <section id="mainWidgetWrapper">
       <h2>Aktuelle Werte</h2>
@@ -83,7 +105,7 @@ const windText = getWindText(data.windspeed);
             <div id="daytempchart-outer-container">
               <div id="daytempchart-middle-container">
                 <div id="daytempchart-inner-container">
-                    <DashboardChart
+                  <DashboardChart
                     morningtemp={data.morningtemp}
                     noontemp={data.noontemp}
                     eveningtemp={data.eveningtemp}
@@ -563,4 +585,3 @@ const windText = getWindText(data.windspeed);
     }
   }
 </style>
-

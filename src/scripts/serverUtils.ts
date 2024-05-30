@@ -17,3 +17,17 @@ export function formatTime(unix: number): string {
   const date = new Date(unix);
   return date.toLocaleString('de-DE', {hour: '2-digit', minute: '2-digit'});
 }
+
+export function convertIcon(icon: string, sunIsUp: boolean): string {
+  if (icon.length === 1) {
+    icon = "0" + icon;
+  }
+  return icon + (sunIsUp ? "d" : "n");
+}
+
+export function getUTCTimestampByOffset (hours: number, minutes: number, days = 0): number {
+  const now = new Date();
+  now.setUTCHours(hours, minutes, 0, 0);
+  now.setUTCDate(now.getUTCDate() + days);
+  return Math.round(now.getTime() / 1000);
+}

@@ -129,3 +129,4 @@ function getWindText(windspeed: number): string {
   }
   return "Orkan";
 }
+

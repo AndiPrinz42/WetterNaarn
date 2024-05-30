@@ -50,9 +50,16 @@ async function getData(): Promise<DashboardData> {
   dashboardData.sunset = serverUtils.formatTime(sunsetUnix);
   const sunIsUp = currentUnixTime >= sunriseUnix / 1000 && currentUnixTime <= sunsetUnix / 1000;
 
-  // get Moon phase (0 = New, .5 = Full, 1= New).
+  // get Moon phase (0 = New, .5 = Full, 1 = New)
   dashboardData.moonphase = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).phase * 100);
   dashboardData.moonillumination = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).fraction * 100);
+
+  // get current conditions
+  result = await db.query("forecast", "SELECT icon, `condition` FROM current ORDER BY updateTime DESC LIMIT 1;");
+  dashboardData.icon = serverUtils.convertIcon(result[0].icon, sunIsUp);
+  dashboardData.condition = result[0].condition;
+
+  console.log(serverUtils.getUTCTimestampByOffset(6,0))
 
 
   // close db connection

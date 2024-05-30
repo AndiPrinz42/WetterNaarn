@@ -40,7 +40,6 @@ export function getDayName(dayoffset: number): string {
     return "Morgen";
   }
   const weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-  // date from day
   const now = new Date();
   now.setDate(now.getDate() + dayoffset);
   return weekdays[now.getDay()];

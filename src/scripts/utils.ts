@@ -47,21 +47,21 @@ function getMoonName(index: number): string {
 }
 
 function getMoonIndex(moonpercent: number): number {
-  if (moonpercent === 0 || moonpercent === 100) {
+  if (moonpercent <= 3 || moonpercent >= 97) {
     return 0;
-  } else if (moonpercent > 0 && moonpercent < 25) {
+  } else if (moonpercent > 3 && moonpercent < 25) {
     return 1;
   } else if (moonpercent === 25) {
     return 2;
-  } else if (moonpercent > 25 && moonpercent < 50) {
+  } else if (moonpercent > 25 && moonpercent < 47) {
     return 3;
-  } else if (moonpercent === 50) {
+  } else if (moonpercent >= 47 && moonpercent <= 53) {
     return 4;
-  } else if (moonpercent > 50 && moonpercent < 75) {
+  } else if (moonpercent > 53 && moonpercent < 75) {
     return 5;
   } else if (moonpercent === 75) {
     return 6;
-  } else if (moonpercent > 75 && moonpercent < 100) {
+  } else if (moonpercent > 75 && moonpercent < 97) {
     return 7;
   } else {
     throw new Error("Moonpercent out of range: " + moonpercent);

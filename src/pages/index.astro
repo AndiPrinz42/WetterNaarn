@@ -50,7 +50,10 @@ async function getData(): Promise<DashboardData> {
   dashboardData.sunset = serverUtils.formatTime(sunsetUnix);
   const sunIsUp = currentUnixTime >= sunriseUnix / 1000 && currentUnixTime <= sunsetUnix / 1000;
 
-  
+  // get Moon phase (0 = New, .5 = Full, 1= New).
+  dashboardData.moonphase = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).phase * 100);
+  dashboardData.moonillumination = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).fraction * 100);
+
 
   // close db connection
   db.close("weewx");
@@ -62,7 +65,7 @@ const humidityText = getHumidityText(Number(data.outHumidity));
 const barometerText = getBarometerText(data.barometer);
 const barometerIcon = getBarometerIcon(data.barometer);
 
-const moonindex = getMoonIndex(data.moonillumination);
+const moonindex = getMoonIndex(data.moonphase);
 const moonIcon = getMoonIcon(moonindex);
 const moonPhase = getMoonName(moonindex);
 

@@ -4,21 +4,15 @@ import SensorWidget from "../components/SensorWidget.astro";
 import SensorWidgetRotateable from "../components/SensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
 import DashboardChart from "../components/DashboardChart.astro";
-import {
-  getHumidityText,
-  getBarometerText,
-  getBarometerIcon,
-  getMoonIndex,
-  getMoonIcon,
-  getMoonName,
-  getWindText,
-} from "../scripts/utils";
+import { getHumidityText, getBarometerText, getBarometerIcon, getMoonIndex, getMoonIcon, getMoonName, getWindText } from "../scripts/utils";
 import type { DashboardData } from "../scripts/models/dashboard.model";
-import {dummyDashboardData} from '../scripts/models/dashboard.model';
+import { dummyDashboardData } from "../scripts/models/dashboard.model";
 
-import {Database} from '../scripts/database';
-import * as serverUtils from '../scripts/serverUtils';
+import { Database } from "../scripts/database";
+import * as serverUtils from "../scripts/serverUtils";
+import * as unitConverter from "../scripts/unitConverter";
 
+import suncalc from "suncalc";
 
 const data = await getData();
 
@@ -26,16 +20,41 @@ async function getData(): Promise<DashboardData> {
   const db = new Database();
   const dashboardData: DashboardData = dummyDashboardData;
   let result;
-  
+
   // Get latest datatime from archive
-  result = await db.query("SELECT dateTime FROM archive ORDER BY dateTime DESC LIMIT 1;");
-  dashboardData.date = serverUtils.formatDate(result[0].dateTime);
+  result = await db.query("weewx", "SELECT dateTime FROM archive ORDER BY dateTime DESC LIMIT 1;");
+  const currentUnixTime = Number(result[0].dateTime);
+  dashboardData.date = serverUtils.formatDate(result[0].dateTime * 1000);
 
+  // Get "outTemp", "appTemp", "outHumidity", "barometer", "windspeed", "winddir" from archive
+  result = await db.query("weewx", "SELECT outTemp, appTemp, outHumidity, barometer, windspeed, winddir FROM archive WHERE dateTime = ?;", [
+    currentUnixTime,
+  ]);
 
+  // transform data
+  dashboardData.outTemp = unitConverter.fahrenheitToCelsius(result[0].outTemp, 0);
+  dashboardData.appTemp = unitConverter.fahrenheitToCelsius(result[0].appTemp, 0);
+  dashboardData.outHumidity = result[0].outHumidity;
+  dashboardData.barometer = unitConverter.inHgToHpa(result[0].barometer, 0);
+  dashboardData.windspeed = unitConverter.mphToKmh(result[0].windspeed, 0);
+  dashboardData.winddir = result[0].winddir;
 
+  const lat = 48.226179739915345;
+  const lon = 14.604849316395049;
 
+  // Get sunrise and sunset
+  const sunTimes = suncalc.getTimes(new Date(currentUnixTime * 1000), lat, lon);
+  const sunriseUnix = sunTimes.sunrise.getTime();
+  const sunsetUnix = sunTimes.sunset.getTime();
+  dashboardData.sunrise = serverUtils.formatTime(sunriseUnix);
+  dashboardData.sunset = serverUtils.formatTime(sunsetUnix);
+  const sunIsUp = currentUnixTime >= sunriseUnix / 1000 && currentUnixTime <= sunsetUnix / 1000;
 
-  await db.close();
+  
+
+  // close db connection
+  db.close("weewx");
+  db.close("forecast");
   return dashboardData;
 }
 
@@ -63,11 +82,7 @@ const windText = getWindText(data.windspeed);
   <div id="content">
     <section id="mainWidgetWrapper">
       <h2>Aktuelle Werte</h2>
-      <div
-        id="mainWidget"
-        class="widget"
-        style=`background-image: url(/assets/backgrounds/${data.icon}.webp)`
-      >
+      <div id="mainWidget" class="widget" style=`background-image: url(/assets/backgrounds/${data.icon}.webp)`>
         <div>
           <div id="rowSplitter">
             <div id="row1">
@@ -83,17 +98,9 @@ const windText = getWindText(data.windspeed);
               </div>
             </div>
             <div id="row3">
-              <span id="maxmintemp"
-                >{data.forecasttoday.minTemp}°/{
-                  data.forecasttoday.maxTemp
-                }°</span
-              >
+              <span id="maxmintemp">{data.forecasttoday.minTemp}°/{data.forecasttoday.maxTemp}°</span>
               <span id="feelsliketemp">
-                <img
-                  src="/assets/icons/temperaturefeelslike.svg"
-                  alt="Gefühlte Temperatur Icon"
-                  id="feelslikeicon"
-                />
+                <img src="/assets/icons/temperaturefeelslike.svg" alt="Gefühlte Temperatur Icon" id="feelslikeicon" />
                 <div>{data.appTemp}°</div>
               </span>
             </div>
@@ -105,12 +112,7 @@ const windText = getWindText(data.windspeed);
             <div id="daytempchart-outer-container">
               <div id="daytempchart-middle-container">
                 <div id="daytempchart-inner-container">
-                  <DashboardChart
-                    morningtemp={data.morningtemp}
-                    noontemp={data.noontemp}
-                    eveningtemp={data.eveningtemp}
-                    nighttemp={data.nighttemp}
-                  />
+                  <DashboardChart morningtemp={data.morningtemp} noontemp={data.noontemp} eveningtemp={data.eveningtemp} nighttemp={data.nighttemp} />
                 </div>
               </div>
             </div>
@@ -140,16 +142,10 @@ const windText = getWindText(data.windspeed);
             <span class="date">{data.forecastin1d.date}</span>
           </div>
           <div class="maxmintemp">
-            <span
-              >{data.forecastin1d.minTemp}°/{data.forecastin1d.maxTemp}°</span
-            >
+            <span>{data.forecastin1d.minTemp}°/{data.forecastin1d.maxTemp}°</span>
           </div>
           <div class="condition">
-            <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg`
-              alt={data.forecastin1d.condition}
-              class="icon"
-            />
+            <img src=`/assets/icons/meteocons/static/conditions/${data.forecastin1d.icon}.svg` alt={data.forecastin1d.condition} class="icon" />
           </div>
 
           <div class="day">
@@ -157,16 +153,10 @@ const windText = getWindText(data.windspeed);
             <span class="date">{data.forecastin2d.date}</span>
           </div>
           <div class="maxmintemp">
-            <span
-              >{data.forecastin2d.minTemp}°/{data.forecastin2d.maxTemp}°</span
-            >
+            <span>{data.forecastin2d.minTemp}°/{data.forecastin2d.maxTemp}°</span>
           </div>
           <div class="condition">
-            <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg`
-              alt={data.forecastin2d.condition}
-              class="icon"
-            />
+            <img src=`/assets/icons/meteocons/static/conditions/${data.forecastin2d.icon}.svg` alt={data.forecastin2d.condition} class="icon" />
           </div>
 
           <div class="day">
@@ -174,16 +164,10 @@ const windText = getWindText(data.windspeed);
             <span class="date">{data.forecastin3d.date}</span>
           </div>
           <div class="maxmintemp">
-            <span
-              >{data.forecastin3d.minTemp}°/{data.forecastin3d.maxTemp}°</span
-            >
+            <span>{data.forecastin3d.minTemp}°/{data.forecastin3d.maxTemp}°</span>
           </div>
           <div class="condition">
-            <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg`
-              alt={data.forecastin3d.condition}
-              class="icon"
-            />
+            <img src=`/assets/icons/meteocons/static/conditions/${data.forecastin3d.icon}.svg` alt={data.forecastin3d.condition} class="icon" />
           </div>
 
           <div class="day last">
@@ -191,16 +175,10 @@ const windText = getWindText(data.windspeed);
             <span class="date">{data.forecastin4d.date}</span>
           </div>
           <div class="maxmintemp last">
-            <span
-              >{data.forecastin4d.minTemp}°/{data.forecastin4d.maxTemp}°</span
-            >
+            <span>{data.forecastin4d.minTemp}°/{data.forecastin4d.maxTemp}°</span>
           </div>
           <div class="condition last">
-            <img
-              src=`/assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg`
-              alt={data.forecastin4d.condition}
-              class="icon"
-            />
+            <img src=`/assets/icons/meteocons/static/conditions/${data.forecastin4d.icon}.svg` alt={data.forecastin4d.condition} class="icon" />
           </div>
         </div>
       </div>
@@ -215,20 +193,9 @@ const windText = getWindText(data.windspeed);
       iconAlt="Luftfeuchte Icon"
     />
 
-    <SensorWidget
-      name="Luftdruck"
-      text=`${barometerText}`
-      value=`${data.barometer}hPa`
-      icon=`${barometerIcon}`
-      iconAlt="Luftfeuchte Icon"
-    />
+    <SensorWidget name="Luftdruck" text=`${barometerText}` value=`${data.barometer}hPa` icon=`${barometerIcon}` iconAlt="Luftfeuchte Icon" />
 
-    <SensorWidgetRotateable
-      name="Wind"
-      text={windText}
-      value=`${data.windspeed}km/h`
-      rotation={data.winddir}
-    />
+    <SensorWidgetRotateable name="Wind" text={windText} value=`${data.windspeed}km/h` rotation={data.winddir} />
 
     <SensorWidget
       name="Regen"
@@ -238,13 +205,7 @@ const windText = getWindText(data.windspeed);
       iconAlt="Regen Icon"
     />
 
-    <SensorWidget
-      name="Mond"
-      text=`${moonPhase}`
-      value=`${data.moonillumination}%`
-      icon=`${moonIcon}`
-      iconAlt="Mondphase Icon"
-    />
+    <SensorWidget name="Mond" text=`${moonPhase}` value=`${data.moonillumination}%` icon=`${moonIcon}` iconAlt="Mondphase Icon" />
 
     <SunWidget
       name="Sonne"

@@ -1,28 +1,48 @@
 import mariadb from "mariadb";
 
 export class Database {
-  pool = mariadb.createPool({
+  weewxPool = mariadb.createPool({
     host: "192.168.178.26",
     user: "username",
     password: "password",
     database: "weewx",
     connectionLimit: 5,
+    acquireTimeout: 1000000
   });
 
-  async query(query: string, params: any[] = []) {
+  forecastPool = mariadb.createPool({
+    host: "192.168.178.26",
+    user: "username",
+    password: "password",
+    database: "openweatherapi",
+    connectionLimit: 5,
+    acquireTimeout: 1000000
+  });
+
+  async query(db: "weewx" | "forecast", query: string, params: any[] = []) {
     let conn;
     try {
-      conn = await this.pool.getConnection();
+      conn = await this.getConnection(db);
       const rows = await conn.query(query, params);
       return rows;
-    } catch (err) {
-      throw err;
     } finally {
-      if (conn) conn.end();
+      if (conn) conn.destroy();
     }
   }
 
-  async close() {
-    await this.pool.end();
+  async getConnection(db: "weewx" | "forecast"): Promise<mariadb.PoolConnection> {
+    if (db === "weewx") {
+      return await this.weewxPool.getConnection();
+    } else {
+      return await this.forecastPool.getConnection();
+    }
+  }
+
+  async close(db: "weewx" | "forecast") {
+    if (db === "weewx") {
+      await this.weewxPool.end();
+    } else {
+      await this.forecastPool.end();
+    }
   }
 }

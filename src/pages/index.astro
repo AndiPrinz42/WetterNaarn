@@ -101,7 +101,12 @@ async function getForecastData(dayoffset: number, sunIsUp: boolean, db: Database
   forecastData.date = utils.formatMonthDate(from);
 
   result = await db.query("forecast", "SELECT icon FROM three_hour_forecast WHERE dateTime BETWEEN ? AND ?;", [from, to]);
-  const icons = result.map((row: any) => row.icon);
+
+  interface resultRow {
+    icon: string;
+  }
+
+  const icons = result.map((row: resultRow) => row.icon);
   const iconnumber = utils.flattenIcons(icons);
   forecastData.icon = utils.getForecastIcon(iconnumber, sunIsUp);
   forecastData.condition = utils.getForecastCondition(iconnumber);
@@ -118,7 +123,13 @@ async function getTodaysForecast(timestamps: number[], database: Database): Prom
   sql += ");";
 
   const result = await database.query("forecast", sql);
-  return result.map((row: any) => Math.round(row.temp));
+
+  interface resultRow {
+    dateTime: number;
+    temp: number;
+  }
+
+  return result.map((row: resultRow) => Math.round(row.temp));
 }
 ---
 

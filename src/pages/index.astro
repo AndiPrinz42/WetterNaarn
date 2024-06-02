@@ -48,13 +48,13 @@ async function getData(): Promise<DashboardData> {
   const sunTimes = suncalc.getTimes(new Date(currentUnixTime * 1000), lat, lon);
   const sunriseUnix = sunTimes.sunrise.getTime();
   const sunsetUnix = sunTimes.sunset.getTime();
-  dashboardData.sunrise = utils.formatTime(sunriseUnix);
-  dashboardData.sunset = utils.formatTime(sunsetUnix);
+  dashboardData.sunrise = utils.formatTime(new Date(sunriseUnix));
+  dashboardData.sunset = utils.formatTime(new Date(sunsetUnix));
   const sunIsUp = currentUnixTime >= sunriseUnix / 1000 && currentUnixTime <= sunsetUnix / 1000;
 
   // get Moon phase (0 = New, .5 = Full, 1 = New)
-  dashboardData.moonphase = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).phase * 100);
-  dashboardData.moonillumination = Math.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).fraction * 100);
+  dashboardData.moonphase = utils.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).phase * 100);
+  dashboardData.moonillumination = utils.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).fraction * 100);
 
   const moonindex = utils.getMoonIndex(dashboardData.moonphase);
   dashboardData.moonphaseText = utils.getMoonName(moonindex);
@@ -95,8 +95,8 @@ async function getForecastData(dayoffset: number, sunIsUp: boolean, db: Database
   const from = utils.getUTCTimestampByOffset(0, 0, dayoffset);
   const to = utils.getUTCTimestampByOffset(0, 0, dayoffset + 1);
   result = await db.query("forecast", "SELECT MAX(temp_max) AS maxTemp, MIN(temp_min) AS minTemp FROM three_hour_forecast WHERE dateTime BETWEEN ? AND ?;", [from, to]);
-  forecastData.maxTemp = Math.round(result[0].maxTemp);
-  forecastData.minTemp = Math.round(result[0].minTemp);
+  forecastData.maxTemp = utils.round(result[0].maxTemp);
+  forecastData.minTemp = utils.round(result[0].minTemp);
   forecastData.name = utils.getDayName(dayoffset);
   forecastData.date = utils.formatMonthDate(from);
 
@@ -129,7 +129,7 @@ async function getTodaysForecast(timestamps: number[], database: Database): Prom
     temp: number;
   }
 
-  return result.map((row: resultRow) => Math.round(row.temp));
+  return result.map((row: resultRow) => utils.round(row.temp));
 }
 ---
 

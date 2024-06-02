@@ -15,5 +15,5 @@ export function inchToMm(inch: number, precision: number): number {
 }
 
 function toPrecision(value: number, precision: number): number {
-  return parseFloat(value.toFixed(precision));
+  return parseFloat(Number(value).toFixed(precision));
 }

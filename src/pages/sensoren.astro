@@ -4,12 +4,188 @@ import DetailSensorWidget from "../components/DetailSensorWidget.astro";
 import DetailSensorWidgetWind from "../components/DetailSensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
 import { getMoonIndex, getMoonIcon, getMoonName } from "../scripts/utils.ts";
-import { execSync } from "child_process";
+import { type SensorData, getDummySensorData, type SensorDataGeneric, getDummySensorDataGeneric, getDummySensorDataWind, getDummySensorDataRain } from "../scripts/models/sensors.model";
+import * as utils from "../scripts/utils";
+import * as unitConverter from "../scripts/unitConverter";
+import { Database } from "../scripts/database";
+import type { SensorDataWind } from "../scripts/models/sensors.model";
+import type { SensorDataRain } from "../scripts/models/sensors.model";
+import suncalc from "suncalc";
 
-const script = "php -f /var/www/wetter-naarn.at/public/api/sensors/index.php";
-const data = JSON.parse(execSync(script).toString());
+const data = await getData();
 
-const moonindex = getMoonIndex(data.moon.illumination);
+async function getData(): Promise<SensorData> {
+  const db = new Database();
+  const sensorData = getDummySensorData();
+  sensorData.outTemp = await getGenericCurrentMinMax("outTemp", 1, unitConverter.fahrenheitToCelsius, db);
+  sensorData.appTemp = await getGenericCurrentMinMax("appTemp", 1, unitConverter.fahrenheitToCelsius, db);
+  sensorData.dewpoint = await getGenericCurrentMinMax("dewpoint", 1, unitConverter.fahrenheitToCelsius, db);
+  sensorData.outHumidity = await getGenericCurrentMinMax("outHumidity", 0, undefined, db);
+  sensorData.barometer = await getGenericCurrentMinMax("barometer", 1, unitConverter.inHgToHpa, db);
+  sensorData.wind = await getWindCurrentMinMax(1, unitConverter.mphToKmh, db);
+  sensorData.rain = await getRainData(1, unitConverter.inchToMm, db);
+
+  const lat = 48.226179739915345;
+  const lon = 14.604849316395049;
+
+  sensorData.suntoday = getSunriseSet(lat, lon, 0);
+  sensorData.suntomorrow = getSunriseSet(lat, lon, 1);
+  const daylength = getDayLength(lat, lon, 0);
+  const daylengthyesterday = getDayLength(lat, lon, -1);
+  sensorData.daylength = utils.formatDuration(daylength);
+  const minutes = Math.floor((daylength - daylengthyesterday) / 1000 / 60);
+  if(minutes != 0) {
+    sensorData.daylengthdiff = minutes > 0 ? `${minutes}m länger als gestern` : `${minutes*-1}m kürzer als gestern`;
+  } else {
+    sensorData.daylengthdiff = "Gleich lang wie gestern";
+  }
+
+
+
+  return sensorData;
+}
+
+async function getGenericCurrentMinMax(sensor: string, digits: number, convertFn: Function | undefined = undefined, db: Database): Promise<SensorDataGeneric> {
+  const data: SensorDataGeneric = getDummySensorDataGeneric();
+  let result;
+  result = await db.query("weewx", `SELECT ${sensor} FROM archive ORDER BY dateTime DESC LIMIT 1`);
+  data.current = result[0][sensor];
+
+  result = await db.query("weewx", `SELECT min, minTime, max, maxTime, sum, count FROM archive_day_${sensor} ORDER BY dateTime DESC LIMIT 1`);
+  data.min = result[0].min;
+  data.minTime = utils.formatTime(new Date(Number(result[0].minTime) * 1000));
+  data.max = result[0].max;
+  data.maxTime = utils.formatTime(new Date(Number(result[0].maxTime) * 1000));
+  data.avg = utils.round(result[0].sum / result[0].count, digits);
+
+  if (convertFn) {
+    data.current = convertFn(data.current, digits);
+    data.min = convertFn(data.min, digits);
+    data.max = convertFn(data.max, digits);
+    data.avg = convertFn(data.avg, digits);
+  }
+
+  return data;
+}
+
+async function getWindCurrentMinMax(digits: number, convertFn: Function | undefined = undefined, db: Database): Promise<SensorDataWind> {
+  const data: SensorDataWind = getDummySensorDataWind();
+  let result;
+
+  result = await db.query("weewx", "SELECT dateTime, windSpeed FROM archive ORDER BY dateTime DESC LIMIT 1");
+  data.current = result[0].windSpeed;
+  const dateTime = result[0].dateTime;
+
+  result = await db.query("weewx", `SELECT max, maxTime, sum, count FROM archive_day_windSpeed ORDER BY dateTime DESC LIMIT 1`);
+  data.max = result[0].max;
+  data.maxTime = result[0].maxTime;
+  data.avg = result[0].sum / result[0].count;
+
+  result = await db.query("weewx", `SELECT windDir FROM archive WHERE dateTime = ?`, [dateTime]);
+  data.currentDir = result[0].windDir;
+
+  result = await db.query("weewx", `SELECT windDir FROM archive WHERE dateTime = ?`, [data.maxTime]);
+  data.maxDir = result[0].windDir;
+
+  result = await db.query("weewx", `SELECT max, maxTime FROM archive_day_windGust ORDER BY dateTime DESC LIMIT 1`);
+  data.maxGust = result[0].max;
+  data.maxGustTime = result[0].maxTime;
+
+  result = await db.query("weewx", `SELECT windDir FROM archive WHERE dateTime > ? LIMIT 1`, [parseInt(data.maxGustTime) - 300]);
+
+  data.maxTime = utils.formatTime(new Date(Number(data.maxTime) * 1000));
+  data.maxGustTime = utils.formatTime(new Date(Number(data.maxGustTime) * 1000));
+
+  if (convertFn) {
+    data.current = convertFn(data.current, digits);
+    data.max = convertFn(data.max, digits);
+    data.avg = convertFn(data.avg, digits);
+    data.maxGust = convertFn(data.maxGust, digits);
+  }
+
+  return data;
+}
+
+async function getRainData(digits: number, convertFn: Function | undefined = undefined, db: Database): Promise<SensorDataRain> {
+  const data: SensorDataRain = getDummySensorDataRain();
+  let result;
+  
+  result = await db.query("weewx", "SELECT sum FROM archive_day_rain ORDER BY dateTime DESC LIMIT 1");
+  data.day = result[0].sum;
+
+  // SELECT dateTime FROM archive WHERE rain > 0 ORDER BY dateTime DESC LIMIT 1
+  result = await db.query("weewx", "SELECT dateTime FROM archive WHERE rain > 0 ORDER BY dateTime DESC LIMIT 1");
+  data.last = result[0].dateTime;
+
+  // from = monday this week at 00:00:00 to = sunday this week at 23:59:59
+  let from = new Date();
+  from.setHours(0, 0, 0, 0);
+  from.setDate(from.getDate() - from.getDay() + (from.getDay() === 0 ? -6 : 1));
+
+  let to = new Date();
+  to.setHours(23, 59, 59, 999);
+  if (to.getDay() !== 0) {
+    to.setDate(to.getDate() + (7 - to.getDay()));
+  }
+
+  // $sql = "SELECT sum FROM archive_day_rain WHERE dateTime BETWEEN $from AND $to ORDER BY dateTime DESC";
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  data.week = result[0]["SUM(sum)"];
+  
+  // same for last week
+  from.setDate(from.getDate() - 7);
+  to.setDate(to.getDate() - 7);
+
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  data.weekBefore = result[0]["SUM(sum)"];
+
+  from = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  to = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
+
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  data.month = result[0]["SUM(sum)"];
+
+  from.setMonth(from.getMonth() - 1);
+  to.setMonth(to.getMonth() - 1);
+
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  data.monthBefore = result[0]["SUM(sum)"];
+
+  if (convertFn) {
+    data.day = convertFn(data.day, digits);
+    data.week = convertFn(data.week, digits);
+    data.weekBefore = convertFn(data.weekBefore, digits);
+    data.month = convertFn(data.month, digits);
+    data.monthBefore = convertFn(data.monthBefore, digits);
+  }
+
+  data.last = utils.formatTime(new Date(Number(data.last) * 1000));
+
+  return data;
+}
+
+function calcSunriseSet(lat: number, lon: number, dayoffset: number): { sunrise: number, sunset: number } {
+  const date = new Date();
+  date.setDate(date.getDate() + dayoffset);
+  const times = suncalc.getTimes(date, lat, lon);
+  const sunrise = times.sunrise.getTime();
+  const sunset = times.sunset.getTime();
+  return { sunrise: sunrise, sunset: sunset };
+}
+
+function getSunriseSet(lat: number, lon: number, dayoffset: number): { sunrise: string, sunset: string } {
+  const times = calcSunriseSet(lat, lon, dayoffset);
+  const sunrise = utils.formatTime(new Date(times.sunrise));
+  const sunset = utils.formatTime(new Date(times.sunset));
+  return { sunrise: sunrise, sunset: sunset };
+}
+
+function getDayLength(lat: number, lon: number, dayoffset: number): number {
+  const times = calcSunriseSet(lat, lon, dayoffset);
+  return times.sunset - times.sunrise;
+}
+
+const moonindex = getMoonIndex(data.moon.phase);
 const moonIcon = getMoonIcon(moonindex);
 const moonPhase = getMoonName(moonindex);
 ---
@@ -28,33 +204,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Temperatur</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget
-            name="Aktuell"
-            text=`Ø ${data.outTemp.avg}°`
-            value=`${data.outTemp.current}°`
-            icon="/assets/icons/meteocons/static/sensors/thermometer/thermometer.svg"
-            iconAlt="Temperatur Icon"
-          />
+          <DetailSensorWidget name="Aktuell" text=`Ø ${data.outTemp.avg}°` value=`${data.outTemp.current}°` icon="/assets/icons/meteocons/static/sensors/thermometer/thermometer.svg" iconAlt="Temperatur Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Min"
-            value=`${data.outTemp.min}°`
-            text={data.outTemp.minTime}
-            icon="/assets/icons/meteocons/static/sensors/thermometer/thermometer-colder.svg"
-            iconAlt="Temperatur Min Icon"
-          />
+          <DetailSensorWidget name="Min" value=`${data.outTemp.min}°` text={data.outTemp.minTime} icon="/assets/icons/meteocons/static/sensors/thermometer/thermometer-colder.svg" iconAlt="Temperatur Min Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Max"
-            value=`${data.outTemp.max}°`
-            text={data.outTemp.maxTime}
-            icon="/assets/icons/meteocons/static/sensors/thermometer/thermometer-warmer.svg"
-            iconAlt="Temperatur Max Icon"
-          />
+          <DetailSensorWidget name="Max" value=`${data.outTemp.max}°` text={data.outTemp.maxTime} icon="/assets/icons/meteocons/static/sensors/thermometer/thermometer-warmer.svg" iconAlt="Temperatur Max Icon" />
         </div>
       </div>
     </section>
@@ -63,33 +221,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Gefühlte Temperatur</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget
-            name="Aktuell"
-            text=`Ø ${data.appTemp.avg}°`
-            value=`${data.appTemp.current}°`
-            icon="/assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer.svg"
-            iconAlt="Gefühlte Temperatur Icon"
-          />
+          <DetailSensorWidget name="Aktuell" text=`Ø ${data.appTemp.avg}°` value=`${data.appTemp.current}°` icon="/assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer.svg" iconAlt="Gefühlte Temperatur Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Min"
-            value=`${data.appTemp.min}°`
-            text={data.appTemp.minTime}
-            icon="/assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer-colder.svg"
-            iconAlt="Gefühlte Temperatur Min Icon"
-          />
+          <DetailSensorWidget name="Min" value=`${data.appTemp.min}°` text={data.appTemp.minTime} icon="/assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer-colder.svg" iconAlt="Gefühlte Temperatur Min Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Max"
-            value=`${data.appTemp.max}°`
-            text={data.appTemp.maxTime}
-            icon="/assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer-warmer.svg"
-            iconAlt="Gefühlte Temperatur Max Icon"
-          />
+          <DetailSensorWidget name="Max" value=`${data.appTemp.max}°` text={data.appTemp.maxTime} icon="/assets/icons/meteocons/static/sensors/thermometer-feelslike/thermometer-warmer.svg" iconAlt="Gefühlte Temperatur Max Icon" />
         </div>
       </div>
     </section>
@@ -98,33 +238,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Taupunkt</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget
-            name="Aktuell"
-            text=`Ø ${data.dewpoint.avg}°`
-            value=`${data.dewpoint.current}°`
-            icon="/assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer.svg"
-            iconAlt="Taupunkt Icon"
-          />
+          <DetailSensorWidget name="Aktuell" text=`Ø ${data.dewpoint.avg}°` value=`${data.dewpoint.current}°` icon="/assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer.svg" iconAlt="Taupunkt Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Min"
-            value=`${data.dewpoint.min}°`
-            text={data.dewpoint.minTime}
-            icon="/assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-colder.svg"
-            iconAlt="Taupunkt Min Icon"
-          />
+          <DetailSensorWidget name="Min" value=`${data.dewpoint.min}°` text={data.dewpoint.minTime} icon="/assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-colder.svg" iconAlt="Taupunkt Min Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Max"
-            value=`${data.dewpoint.max}°`
-            text={data.dewpoint.maxTime}
-            icon="/assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-warmer.svg"
-            iconAlt="Taupunkt Max Icon"
-          />
+          <DetailSensorWidget name="Max" value=`${data.dewpoint.max}°` text={data.dewpoint.maxTime} icon="/assets/icons/meteocons/static/sensors/thermometer-dewpoint/thermometer-warmer.svg" iconAlt="Taupunkt Max Icon" />
         </div>
       </div>
     </section>
@@ -133,33 +255,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Luftfeuchte</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget
-            name="Aktuell"
-            text=`Ø ${data.outHumidity.avg}%`
-            value=`${data.outHumidity.current}%`
-            icon="/assets/icons/meteocons/static/sensors/humidity/humidity.svg"
-            iconAlt="Luftfeuchte Icon"
-          />
+          <DetailSensorWidget name="Aktuell" text=`Ø ${data.outHumidity.avg}%` value=`${data.outHumidity.current}%` icon="/assets/icons/meteocons/static/sensors/humidity/humidity.svg" iconAlt="Luftfeuchte Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Min"
-            value=`${data.outHumidity.min}%`
-            text={data.outHumidity.minTime}
-            icon="/assets/icons/meteocons/static/sensors/humidity/humidity-min.svg"
-            iconAlt="Luftfeuchte Min Icon"
-          />
+          <DetailSensorWidget name="Min" value=`${data.outHumidity.min}%` text={data.outHumidity.minTime} icon="/assets/icons/meteocons/static/sensors/humidity/humidity-min.svg" iconAlt="Luftfeuchte Min Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Max"
-            value=`${data.outHumidity.max}%`
-            text={data.outHumidity.maxTime}
-            icon="/assets/icons/meteocons/static/sensors/humidity/humidity-max.svg"
-            iconAlt="Luftfeuchte Max Icon"
-          />
+          <DetailSensorWidget name="Max" value=`${data.outHumidity.max}%` text={data.outHumidity.maxTime} icon="/assets/icons/meteocons/static/sensors/humidity/humidity-max.svg" iconAlt="Luftfeuchte Max Icon" />
         </div>
       </div>
     </section>
@@ -168,33 +272,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Luftdruck</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget
-            name="Aktuell"
-            text=`Ø ${data.barometer.avg}hPa`
-            value=`${data.barometer.current}hPa`
-            icon="/assets/icons/meteocons/static/sensors/barometer/barometer.svg"
-            iconAlt="Luftdruck Icon"
-          />
+          <DetailSensorWidget name="Aktuell" text=`Ø ${data.barometer.avg}hPa` value=`${data.barometer.current}hPa` icon="/assets/icons/meteocons/static/sensors/barometer/barometer.svg" iconAlt="Luftdruck Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Min"
-            value=`${data.barometer.min}hPa`
-            text={data.barometer.minTime}
-            icon="/assets/icons/meteocons/static/sensors/barometer/barometer-min.svg"
-            iconAlt="Luftdruck Min Icon"
-          />
+          <DetailSensorWidget name="Min" value=`${data.barometer.min}hPa` text={data.barometer.minTime} icon="/assets/icons/meteocons/static/sensors/barometer/barometer-min.svg" iconAlt="Luftdruck Min Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Max"
-            value=`${data.barometer.max}hPa`
-            text={data.barometer.maxTime}
-            icon="/assets/icons/meteocons/static/sensors/barometer/barometer-max.svg"
-            iconAlt="Luftdruck Max Icon"
-          />
+          <DetailSensorWidget name="Max" value=`${data.barometer.max}hPa` text={data.barometer.maxTime} icon="/assets/icons/meteocons/static/sensors/barometer/barometer-max.svg" iconAlt="Luftdruck Max Icon" />
         </div>
       </div>
     </section>
@@ -203,30 +289,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Wind</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidgetWind
-            name="Aktuell"
-            text=`${data.wind.current}km/h`
-            value=`Ø ${data.wind.avg}km/h`
-            rotation={data.wind.currentDir}
-          />
+          <DetailSensorWidgetWind name="Aktuell" text=`${data.wind.current}km/h` value=`Ø ${data.wind.avg}km/h` rotation={data.wind.currentDir} />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidgetWind
-            name="Max"
-            value=`${data.wind.max}km/h`
-            text={data.wind.maxTime}
-            rotation={data.wind.maxDir}
-          />
+          <DetailSensorWidgetWind name="Max" value=`${data.wind.max}km/h` text={data.wind.maxTime} rotation={data.wind.maxDir} />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidgetWind
-            name="Böen Max"
-            value=`${data.wind.maxGust}km/h`
-            text={data.wind.maxGustTime}
-            rotation={data.wind.maxGustDir}
-          />
+          <DetailSensorWidgetWind name="Böen Max" value=`${data.wind.maxGust}km/h` text={data.wind.maxGustTime} rotation={data.wind.maxGustDir} />
         </div>
       </div>
     </section>
@@ -235,33 +306,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Regen</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget
-            name="Heute"
-            value=`${data.rain.day}mm²`
-            text={`Letzter Regen:​ ${data.rain.last}`}
-            icon="/assets/icons/meteocons/static/sensors/rain/rain-day.svg"
-            iconAlt="Regen Tag Icon"
-          />
+          <DetailSensorWidget name="Heute" value=`${data.rain.day}mm²` text={`Letzter Regen:​ ${data.rain.last}`} icon="/assets/icons/meteocons/static/sensors/rain/rain-day.svg" iconAlt="Regen Tag Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Woche"
-            value=`${data.rain.week}mm²`
-            text={`Vorwoche:​ ${data.rain.weekBefore}mm²`}
-            icon="/assets/icons/meteocons/static/sensors/rain/rain-week.svg"
-            iconAlt="Regen Woche Icon"
-          />
+          <DetailSensorWidget name="Woche" value=`${data.rain.week}mm²` text={`Vorwoche:​ ${data.rain.weekBefore}mm²`} icon="/assets/icons/meteocons/static/sensors/rain/rain-week.svg" iconAlt="Regen Woche Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Monat"
-            value=`${data.rain.month}mm²`
-            text={`Vormonat:​ ${data.rain.monthBefore}mm²`}
-            icon="/assets/icons/meteocons/static/sensors/rain/rain-month.svg"
-            iconAlt="Regen Monat Icon"
-          />
+          <DetailSensorWidget name="Monat" value=`${data.rain.month}mm²` text={`Vormonat:​ ${data.rain.monthBefore}mm²`} icon="/assets/icons/meteocons/static/sensors/rain/rain-month.svg" iconAlt="Regen Monat Icon" />
         </div>
       </div>
     </section>
@@ -270,15 +323,7 @@ const moonPhase = getMoonName(moonindex);
       <h2>Sonne</h2>
       <div class="row">
         <div class="sensor">
-          <SunWidget
-            name="Heute"
-            sunriseIcon="/assets/icons/meteocons/static/sun/sunrise.svg"
-            sunriseIconAlt="Sonnenaufgang Icon"
-            sunriseTime={data.suntoday.sunrise}
-            sunsetIcon="/assets/icons/meteocons/static/sun/sunset.svg"
-            sunsetIconAlt="Sonnenuntergang Icon"
-            sunsetTime={data.suntoday.sunset}
-          />
+          <SunWidget name="Heute" sunriseIcon="/assets/icons/meteocons/static/sun/sunrise.svg" sunriseIconAlt="Sonnenaufgang Icon" sunriseTime={data.suntoday.sunrise} sunsetIcon="/assets/icons/meteocons/static/sun/sunset.svg" sunsetIconAlt="Sonnenuntergang Icon" sunsetTime={data.suntoday.sunset} />
         </div>
         <div class="sensor">
           <SunWidget
@@ -292,13 +337,7 @@ const moonPhase = getMoonName(moonindex);
           />
         </div>
         <div class="sensor">
-          <DetailSensorWidget
-            name="Tageslänge"
-            value={data.daylength}
-            text={data.daylengthdiff}
-            icon="/assets/icons/meteocons/static/conditions/09d.svg"
-            iconAlt="Tageslänge Icon"
-          />
+          <DetailSensorWidget name="Tageslänge" value={data.daylength} text={data.daylengthdiff} icon="/assets/icons/meteocons/static/conditions/09d.svg" iconAlt="Tageslänge Icon" />
         </div>
       </div>
     </section>
@@ -307,33 +346,15 @@ const moonPhase = getMoonName(moonindex);
       <h2>Mond</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget
-            name="Aktuell"
-            value={data.moon.illumination + "%"}
-            text={moonPhase}
-            icon={moonIcon}
-            iconAlt="Mondphase Icon"
-          />
+          <DetailSensorWidget name="Aktuell" value={data.moon.illumination + "%"} text={moonPhase} icon={moonIcon} iconAlt="Mondphase Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Nächster Vollmond"
-            value={data.moon.nextFullMoon}
-            text={`in ${data.moon.nextFullMoonDays} ${data.moon.nextFullMoonDays !== 1 ? "Tagen" : "Tag"}`}
-            icon="/assets/icons/meteocons/static/moon/moon-full.svg"
-            iconAlt="Vollmond Icon"
-          />
+          <DetailSensorWidget name="Nächster Vollmond" value={data.moon.nextFullMoon} text={`in ${data.moon.nextFullMoonDays} ${data.moon.nextFullMoonDays !== 1 ? "Tagen" : "Tag"}`} icon="/assets/icons/meteocons/static/moon/moon-full.svg" iconAlt="Vollmond Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget
-            name="Nächster Neumond"
-            value={data.moon.nextNewMoon}
-            text={`in ${data.moon.nextNewMoonDays} ${data.moon.nextNewMoonDays !== 1 ? "Tagen" : "Tag"}`}
-            icon="/assets/icons/meteocons/static/moon/moon-new.svg"
-            iconAlt="Neumond Icon"
-          />
+          <DetailSensorWidget name="Nächster Neumond" value={data.moon.nextNewMoon} text={`in ${data.moon.nextNewMoonDays} ${data.moon.nextNewMoonDays !== 1 ? "Tagen" : "Tag"}`} icon="/assets/icons/meteocons/static/moon/moon-new.svg" iconAlt="Neumond Icon" />
         </div>
       </div>
     </section>

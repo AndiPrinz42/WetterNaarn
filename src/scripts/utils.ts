@@ -13,9 +13,14 @@ export function formatDate(unix: number): string {
   return formattedDate;
 }
 
-export function formatTime(unix: number): string {
-  const date = new Date(unix);
+export function formatTime(date: Date): string {
   return date.toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" });
+}
+
+export function formatDuration(duration: number): string {
+  const hours = Math.floor(duration / 3600000);
+  const minutes = Math.floor((duration % 3600000) / 60000);
+  return `${hours}h ${minutes}m`;
 }
 
 export function convertIcon(icon: string, sunIsUp: boolean): string {
@@ -254,4 +259,8 @@ export function getWindText(windspeed: number): string {
     return "Orkanartiger Sturm";
   }
   return "Orkan";
+}
+
+export function round(value: number, precision: number = 0): number {
+  return Number(Number(value).toFixed(precision));
 }

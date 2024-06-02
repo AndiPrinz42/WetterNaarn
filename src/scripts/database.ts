@@ -7,7 +7,7 @@ export class Database {
     password: "password",
     database: "weewx",
     connectionLimit: 5,
-    acquireTimeout: 1000000
+    acquireTimeout: 100000
   });
 
   forecastPool = mariadb.createPool({
@@ -16,7 +16,7 @@ export class Database {
     password: "password",
     database: "openweatherapi",
     connectionLimit: 5,
-    acquireTimeout: 1000000
+    acquireTimeout: 100000
   });
 
   async query(db: "weewx" | "forecast", query: string, params: any[] = []) {

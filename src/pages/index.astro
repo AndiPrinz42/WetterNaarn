@@ -9,7 +9,7 @@ import * as unitConverter from "../scripts/unitConverter";
 import { Database } from "../scripts/database";
 import { type DashboardData, getDummyDashboardData } from "../scripts/models/dashboard.model";
 import { type ForecastData, getDummyForecastData } from "../scripts/models/forecast.model";
-import suncalc from "suncalc";
+import suncalc from "suncalc3";
 
 const data = await getData();
 
@@ -45,15 +45,15 @@ async function getData(): Promise<DashboardData> {
   const lon = 14.604849316395049;
 
   // Get sunrise and sunset
-  const sunTimes = suncalc.getTimes(new Date(currentUnixTime * 1000), lat, lon);
-  const sunriseUnix = sunTimes.sunrise.getTime();
-  const sunsetUnix = sunTimes.sunset.getTime();
+  const sunTimes = suncalc.getSunTimes(new Date(currentUnixTime * 1000), lat, lon);
+  const sunriseUnix = sunTimes.sunriseEnd.value.getTime();
+  const sunsetUnix = sunTimes.sunsetStart.value.getTime();
   dashboardData.sunrise = utils.formatTime(new Date(sunriseUnix));
   dashboardData.sunset = utils.formatTime(new Date(sunsetUnix));
   const sunIsUp = currentUnixTime >= sunriseUnix / 1000 && currentUnixTime <= sunsetUnix / 1000;
 
   // get Moon phase (0 = New, .5 = Full, 1 = New)
-  dashboardData.moonphase = utils.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).phase * 100);
+  dashboardData.moonphase = utils.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).phaseValue * 100);
   dashboardData.moonillumination = utils.round(suncalc.getMoonIllumination(new Date(currentUnixTime * 1000)).fraction * 100);
 
   const moonindex = utils.getMoonIndex(dashboardData.moonphase);

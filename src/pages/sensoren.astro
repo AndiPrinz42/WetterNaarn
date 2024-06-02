@@ -10,7 +10,8 @@ import * as unitConverter from "../scripts/unitConverter";
 import { Database } from "../scripts/database";
 import type { SensorDataWind } from "../scripts/models/sensors.model";
 import type { SensorDataRain } from "../scripts/models/sensors.model";
-import suncalc from "suncalc";
+import suncalc from 'suncalc3';
+
 
 const data = await getData();
 
@@ -34,13 +35,21 @@ async function getData(): Promise<SensorData> {
   const daylengthyesterday = getDayLength(lat, lon, -1);
   sensorData.daylength = utils.formatDuration(daylength);
   const minutes = Math.floor((daylength - daylengthyesterday) / 1000 / 60);
-  if(minutes != 0) {
-    sensorData.daylengthdiff = minutes > 0 ? `${minutes}m länger als gestern` : `${minutes*-1}m kürzer als gestern`;
+  if (minutes != 0) {
+    sensorData.daylengthdiff = minutes > 0 ? `${minutes}m länger als gestern` : `${minutes * -1}m kürzer als gestern`;
   } else {
     sensorData.daylengthdiff = "Gleich lang wie gestern";
   }
 
+  console.log(suncalc.getMoonIllumination(new Date()));
+  sensorData.moon.phase = utils.round(suncalc.getMoonIllumination(new Date()).phaseValue * 100);
+  sensorData.moon.illumination = utils.round(suncalc.getMoonIllumination(new Date()).fraction * 100);
 
+  console.log(suncalc.getMoonIllumination(new Date()).next.newMoon.value);
+  console.log(suncalc.getMoonIllumination(new Date()).next.fullMoon.value);
+  console.log(suncalc.getMoonIllumination(new Date()).next.newMoon.date);
+  console.log(suncalc.getMoonIllumination(new Date()).next.fullMoon.date);
+  
 
   return sensorData;
 }
@@ -109,7 +118,7 @@ async function getWindCurrentMinMax(digits: number, convertFn: Function | undefi
 async function getRainData(digits: number, convertFn: Function | undefined = undefined, db: Database): Promise<SensorDataRain> {
   const data: SensorDataRain = getDummySensorDataRain();
   let result;
-  
+
   result = await db.query("weewx", "SELECT sum FROM archive_day_rain ORDER BY dateTime DESC LIMIT 1");
   data.day = result[0].sum;
 
@@ -131,7 +140,7 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
   // $sql = "SELECT sum FROM archive_day_rain WHERE dateTime BETWEEN $from AND $to ORDER BY dateTime DESC";
   result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
   data.week = result[0]["SUM(sum)"];
-  
+
   // same for last week
   from.setDate(from.getDate() - 7);
   to.setDate(to.getDate() - 7);
@@ -164,16 +173,16 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
   return data;
 }
 
-function calcSunriseSet(lat: number, lon: number, dayoffset: number): { sunrise: number, sunset: number } {
+function calcSunriseSet(lat: number, lon: number, dayoffset: number): { sunrise: number; sunset: number } {
   const date = new Date();
   date.setDate(date.getDate() + dayoffset);
-  const times = suncalc.getTimes(date, lat, lon);
-  const sunrise = times.sunrise.getTime();
-  const sunset = times.sunset.getTime();
+  const times = suncalc.getSunTimes(date, lat, lon);
+  const sunrise = times.sunriseEnd.value.getTime();
+  const sunset = times.sunsetStart.value.getTime();
   return { sunrise: sunrise, sunset: sunset };
 }
 
-function getSunriseSet(lat: number, lon: number, dayoffset: number): { sunrise: string, sunset: string } {
+function getSunriseSet(lat: number, lon: number, dayoffset: number): { sunrise: string; sunset: string } {
   const times = calcSunriseSet(lat, lon, dayoffset);
   const sunrise = utils.formatTime(new Date(times.sunrise));
   const sunset = utils.formatTime(new Date(times.sunset));

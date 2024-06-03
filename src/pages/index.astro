@@ -11,6 +11,7 @@ import { Database } from "../scripts/database";
 import { type DashboardData, getDummyDashboardData } from "../scripts/models/dashboard.model";
 import { type ForecastData, getDummyForecastData } from "../scripts/models/forecast.model";
 import suncalc from "suncalc3";
+const env = import.meta.env;
 
 const data = await getData();
 
@@ -46,8 +47,8 @@ async function getData(): Promise<DashboardData> {
   dashboardData.barometerRotation = utils.getBarometerRotation(dashboardData.barometer);
 
   // configure lat and lon
-  const lat = 48.226179739915345;
-  const lon = 14.604849316395049;
+  const lat = env.LATITUDE;
+  const lon = env.LONGITUDE;
 
   // Get sunrise and sunset
   const sunTimes = suncalc.getSunTimes(new Date(currentUnixTime * 1000), lat, lon);

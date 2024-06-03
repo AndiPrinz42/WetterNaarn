@@ -12,6 +12,7 @@ import { Database } from "../scripts/database";
 import type { SensorDataWind } from "../scripts/models/sensors.model";
 import type { SensorDataRain } from "../scripts/models/sensors.model";
 import suncalc from "suncalc3";
+const env = import.meta.env;
 
 const data = await getData();
 
@@ -28,8 +29,8 @@ async function getData(): Promise<SensorData> {
 
   sensorData.barometerRotation = utils.getBarometerRotation(sensorData.barometer.current);
 
-  const lat = 48.226179739915345;
-  const lon = 14.604849316395049;
+  const lat = env.LATITUDE;
+  const lon = env.LONGITUDE;
 
   sensorData.suntoday = getSunriseSet(lat, lon, 0);
   sensorData.suntomorrow = getSunriseSet(lat, lon, 1);

@@ -76,13 +76,18 @@ async function getGenericCurrentMinMax(sensor: string, digits: number, convertFn
   data.minTime = utils.formatTime(new Date(Number(result[0].minTime) * 1000));
   data.max = result[0].max;
   data.maxTime = utils.formatTime(new Date(Number(result[0].maxTime) * 1000));
-  data.avg = utils.round(result[0].sum / result[0].count, digits);
+  data.avg = result[0].sum / result[0].count;
 
   if (convertFn) {
     data.current = convertFn(data.current, digits);
     data.min = convertFn(data.min, digits);
     data.max = convertFn(data.max, digits);
     data.avg = convertFn(data.avg, digits);
+  } else {
+    data.current = utils.round(data.current, digits);
+    data.min = utils.round(data.min, digits);
+    data.max = utils.round(data.max, digits);
+    data.avg = utils.round(data.avg, digits);
   }
 
   return data;
@@ -121,6 +126,11 @@ async function getWindCurrentMinMax(digits: number, convertFn: Function | undefi
     data.max = convertFn(data.max, digits);
     data.avg = convertFn(data.avg, digits);
     data.maxGust = convertFn(data.maxGust, digits);
+  } else {
+    data.current = utils.round(data.current, digits);
+    data.max = utils.round(data.max, digits);
+    data.avg = utils.round(data.avg, digits);
+    data.maxGust = utils.round(data.maxGust, digits);
   }
 
   return data;
@@ -176,6 +186,12 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
     data.weekBefore = convertFn(data.weekBefore, digits);
     data.month = convertFn(data.month, digits);
     data.monthBefore = convertFn(data.monthBefore, digits);
+  } else {
+    data.day = utils.round(data.day, digits);
+    data.week = utils.round(data.week, digits);
+    data.weekBefore = utils.round(data.weekBefore, digits);
+    data.month = utils.round(data.month, digits);
+    data.monthBefore = utils.round(data.monthBefore, digits);
   }
 
   data.last = utils.formatDateTime(new Date(Number(data.last) * 1000));

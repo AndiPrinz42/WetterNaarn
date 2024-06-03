@@ -74,7 +74,6 @@ async function getData(): Promise<DashboardData> {
   // for hour 6,12,18,0
   const forecastTimes = [6, 12, 18, 24];
   const forecastTimesFormatted = forecastTimes.map((time) => utils.getUTCTimestampByOffset(time, 0));
-  console.log(forecastTimesFormatted);
   const forecastDaytimes = await getTodaysForecast(forecastTimesFormatted, db);
   dashboardData.morningtemp = forecastDaytimes[0];
   dashboardData.noontemp = forecastDaytimes[1];
@@ -129,8 +128,6 @@ async function getTodaysForecast(timestamps: number[], database: Database): Prom
   sql += ") ORDER BY dateTime ASC;";
 
   const result = await database.query("forecast", sql);
-
-  console.log(result);
 
   interface resultRow {
     dateTime: number;

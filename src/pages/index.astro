@@ -21,7 +21,7 @@ async function getData(): Promise<DashboardData> {
   // Get latest datatime from archive
   result = await db.query("weewx", "SELECT dateTime FROM archive ORDER BY dateTime DESC LIMIT 1;");
   const currentUnixTime = Number(result[0].dateTime);
-  dashboardData.date = utils.formatDate(result[0].dateTime * 1000);
+  dashboardData.date = utils.formatDateTime(new Date(result[0].dateTime * 1000));
 
   // Get "outTemp", "appTemp", "outHumidity", "barometer", "windspeed", "winddir" from archive
   result = await db.query("weewx", "SELECT outTemp, appTemp, outHumidity, barometer, windspeed, winddir FROM archive WHERE dateTime = ?;", [currentUnixTime]);
@@ -98,7 +98,7 @@ async function getForecastData(dayoffset: number, sunIsUp: boolean, db: Database
   forecastData.maxTemp = utils.round(result[0].maxTemp);
   forecastData.minTemp = utils.round(result[0].minTemp);
   forecastData.name = utils.getDayName(dayoffset);
-  forecastData.date = utils.formatMonthDate(from);
+  forecastData.date = utils.formatMonthDate(new Date(from * 1000));
 
   result = await db.query("forecast", "SELECT icon FROM three_hour_forecast WHERE dateTime BETWEEN ? AND ?;", [from, to]);
 

@@ -41,15 +41,16 @@ async function getData(): Promise<SensorData> {
     sensorData.daylengthdiff = "Gleich lang wie gestern";
   }
 
-  console.log(suncalc.getMoonIllumination(new Date()));
   sensorData.moon.phase = utils.round(suncalc.getMoonIllumination(new Date()).phaseValue * 100);
   sensorData.moon.illumination = utils.round(suncalc.getMoonIllumination(new Date()).fraction * 100);
 
-  console.log(suncalc.getMoonIllumination(new Date()).next.newMoon.value);
-  console.log(suncalc.getMoonIllumination(new Date()).next.fullMoon.value);
-  console.log(suncalc.getMoonIllumination(new Date()).next.newMoon.date);
-  console.log(suncalc.getMoonIllumination(new Date()).next.fullMoon.date);
-  
+  const nextNewMoon = new Date(suncalc.getMoonIllumination(new Date()).next.newMoon.value);
+  const nextFullMoon = new Date(suncalc.getMoonIllumination(new Date()).next.fullMoon.value);
+
+  sensorData.moon.nextNewMoon = utils.formatDate(nextNewMoon);
+  sensorData.moon.nextFullMoon = utils.formatDate(nextFullMoon);
+  sensorData.moon.nextNewMoonDays = utils.calcDayDiff(new Date(), nextNewMoon);
+  sensorData.moon.nextFullMoonDays = utils.calcDayDiff(new Date(), nextFullMoon);
 
   return sensorData;
 }
@@ -122,11 +123,9 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
   result = await db.query("weewx", "SELECT sum FROM archive_day_rain ORDER BY dateTime DESC LIMIT 1");
   data.day = result[0].sum;
 
-  // SELECT dateTime FROM archive WHERE rain > 0 ORDER BY dateTime DESC LIMIT 1
   result = await db.query("weewx", "SELECT dateTime FROM archive WHERE rain > 0 ORDER BY dateTime DESC LIMIT 1");
   data.last = result[0].dateTime;
 
-  // from = monday this week at 00:00:00 to = sunday this week at 23:59:59
   let from = new Date();
   from.setHours(0, 0, 0, 0);
   from.setDate(from.getDate() - from.getDay() + (from.getDay() === 0 ? -6 : 1));
@@ -137,11 +136,9 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
     to.setDate(to.getDate() + (7 - to.getDay()));
   }
 
-  // $sql = "SELECT sum FROM archive_day_rain WHERE dateTime BETWEEN $from AND $to ORDER BY dateTime DESC";
   result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
   data.week = result[0]["SUM(sum)"];
 
-  // same for last week
   from.setDate(from.getDate() - 7);
   to.setDate(to.getDate() - 7);
 
@@ -197,6 +194,8 @@ function getDayLength(lat: number, lon: number, dayoffset: number): number {
 const moonindex = getMoonIndex(data.moon.phase);
 const moonIcon = getMoonIcon(moonindex);
 const moonPhase = getMoonName(moonindex);
+const nextFullMoonText = utils.futureDatestring(data.moon.nextFullMoonDays);
+const nextNewMoonText = utils.futureDatestring(data.moon.nextNewMoonDays);
 ---
 
 <Layout
@@ -359,11 +358,11 @@ const moonPhase = getMoonName(moonindex);
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget name="Nächster Vollmond" value={data.moon.nextFullMoon} text={`in ${data.moon.nextFullMoonDays} ${data.moon.nextFullMoonDays !== 1 ? "Tagen" : "Tag"}`} icon="/assets/icons/meteocons/static/moon/moon-full.svg" iconAlt="Vollmond Icon" />
+          <DetailSensorWidget name="Nächster Vollmond" value={data.moon.nextFullMoon} text={nextFullMoonText} icon="/assets/icons/meteocons/static/moon/moon-full.svg" iconAlt="Vollmond Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget name="Nächster Neumond" value={data.moon.nextNewMoon} text={`in ${data.moon.nextNewMoonDays} ${data.moon.nextNewMoonDays !== 1 ? "Tagen" : "Tag"}`} icon="/assets/icons/meteocons/static/moon/moon-new.svg" iconAlt="Neumond Icon" />
+          <DetailSensorWidget name="Nächster Neumond" value={data.moon.nextNewMoon} text={nextNewMoonText} icon="/assets/icons/meteocons/static/moon/moon-new.svg" iconAlt="Neumond Icon" />
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
-export function formatDate(unix: number): string {
+export function formatDateTime(date: Date): string {
   const now = new Date();
-  const date = new Date(unix);
   let formattedDate = "";
 
   if (date.toDateString() === now.toDateString()) {
@@ -13,6 +12,11 @@ export function formatDate(unix: number): string {
   return formattedDate;
 }
 
+//dd.mm.yyyy
+export function formatDate(date: Date) {
+  return date.toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
 export function formatTime(date: Date): string {
   return date.toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" });
 }
@@ -21,6 +25,21 @@ export function formatDuration(duration: number): string {
   const hours = Math.floor(duration / 3600000);
   const minutes = Math.floor((duration % 3600000) / 60000);
   return `${hours}h ${minutes}m`;
+}
+
+export function calcDayDiff(date1: Date, date2: Date): number {
+  const diff = date1.getTime() - date2.getTime();
+  return Math.abs(Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
+
+export function futureDatestring(daysuntil: number): string {
+  if (daysuntil === 0) {
+    return "Heute";
+  } else if (daysuntil === 1) {
+    return "Morgen";
+  } else {
+    return `in ${daysuntil} Tagen`;
+  }
 }
 
 export function convertIcon(icon: string, sunIsUp: boolean): string {
@@ -50,8 +69,7 @@ export function getDayName(dayoffset: number): string {
   return weekdays[now.getDay()];
 }
 
-export function formatMonthDate(unix: number): string {
-  const date = new Date(unix * 1000);
+export function formatMonthDate(date: Date): string {
   const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
   return `${date.getDate()}. ${months[date.getMonth()]}`;
 }

@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { Database } from "../../scripts/database";
 import { type GraphData, getDummyGraphData } from "../../scripts/models/graphs.model";
+import * as unitConverter from "../../scripts/unitConverter";
 
 export const GET: APIRoute = async ({ params, request }) => {
   const searchParams = new URLSearchParams(new URL(request.url).search);
@@ -15,5 +16,7 @@ export const GET: APIRoute = async ({ params, request }) => {
 
 async function getData(from: number, to: number): Promise<GraphData> {
   const db = new Database();
+
+
   return getDummyGraphData();
 }

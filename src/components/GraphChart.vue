@@ -27,6 +27,7 @@ export default {
             hidden: !this.selectedSensors.includes(0),
             pointRadius: 0,
             order: 1,
+            tension: .1
           },
           {
             type: 'line',
@@ -38,6 +39,7 @@ export default {
             hidden: !this.selectedSensors.includes(1),
             pointRadius: 0,
             order: 2,
+            tension: .1
           },
           {
             type: 'line',
@@ -49,6 +51,7 @@ export default {
             hidden: !this.selectedSensors.includes(2),
             pointRadius: 0,
             order: 3,
+            tension: .1
           },
           {
             type: 'line',
@@ -60,6 +63,7 @@ export default {
             hidden: !this.selectedSensors.includes(3),
             pointRadius: 0,
             order: 4,
+            tension: .1
           },
           {
             type: 'line',
@@ -71,6 +75,7 @@ export default {
             hidden: !this.selectedSensors.includes(4),
             pointRadius: 0,
             order: 5,
+            tension: .1
           },
           {
             type: 'line',
@@ -82,6 +87,7 @@ export default {
             hidden: !this.selectedSensors.includes(5),
             pointRadius: 0,
             order: 6,
+            tension: .1
           },
           {
             type: 'line',
@@ -93,6 +99,7 @@ export default {
             hidden: !this.selectedSensors.includes(6),
             pointRadius: 0,
             order: 7,
+            tension: .1
           },
           {
             type: 'line',
@@ -104,6 +111,7 @@ export default {
             hidden: !this.selectedSensors.includes(7),
             pointRadius: 0,
             order: 8,
+            tension: .1
           },
           {
             type: 'line',
@@ -115,6 +123,7 @@ export default {
             hidden: !this.selectedSensors.includes(8),
             pointRadius: 0,
             order: 9,
+            tension: .1
           },
           {
             type: 'line',
@@ -126,6 +135,7 @@ export default {
             hidden: !this.selectedSensors.includes(9),
             pointRadius: 0,
             order: 10,
+            tension: .1,
           },
           {
             type: 'line',
@@ -137,6 +147,7 @@ export default {
             hidden: !this.selectedSensors.includes(10),
             pointRadius: 0,
             order: 11,
+            tension: .1,
           },
           {
             type: 'line',
@@ -148,6 +159,7 @@ export default {
             hidden: !this.selectedSensors.includes(11),
             pointRadius: 0,
             order: 12,
+            tension: .1,
           },
           {
             type: 'line',
@@ -159,6 +171,7 @@ export default {
             hidden: !this.selectedSensors.includes(12),
             pointRadius: 0,
             order: 13,
+            tension: .1,
           },
           {
             type: 'line',
@@ -170,6 +183,7 @@ export default {
             hidden: !this.selectedSensors.includes(13),
             pointRadius: 0,
             order: 14,
+            tension: .1,
           },
           {
             type: 'line',
@@ -181,6 +195,7 @@ export default {
             hidden: !this.selectedSensors.includes(14),
             pointRadius: 0,
             order: 15,
+            tension: .1,
           },
           {
             type: 'line',
@@ -192,6 +207,7 @@ export default {
             hidden: !this.selectedSensors.includes(15),
             pointRadius: 0,
             order: 16,
+            tension: .1,
           },
           {
             type: 'line',
@@ -203,6 +219,7 @@ export default {
             hidden: !this.selectedSensors.includes(16),
             pointRadius: 0,
             order: 17,
+            tension: .1,
           },
           {
             type: 'scatter',
@@ -212,7 +229,8 @@ export default {
             backgroundColor: 'rgb(128, 128, 128, 0.8)',
             yAxisID: 'winddir',
             hidden: !this.selectedSensors.includes(17),
-            order: 20,
+            order: 18,
+            tension: .1,
           },
           {
             type: 'line',
@@ -223,7 +241,8 @@ export default {
             yAxisID: 'rain',
             hidden: !this.selectedSensors.includes(18),
             pointRadius: 0,
-            order: 21,
+            order: 19,
+            tension: .1,
           },
         ],
       },

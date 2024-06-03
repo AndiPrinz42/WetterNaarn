@@ -10,7 +10,7 @@ export interface DashboardData {
   humidityText: string;
   barometer: number;
   barometerText: string;
-  barometerIcon: string;
+  barometerRotation: number;
   windspeed: number;
   windText: string;
   winddir: number;
@@ -43,7 +43,7 @@ export function getDummyDashboardData(): DashboardData {
     humidityText: "",
     barometer: 0,
     barometerText: "",
-    barometerIcon: "",
+    barometerRotation: 0,
     windspeed: 0,
     windText: "",
     winddir: 0,

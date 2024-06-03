@@ -4,6 +4,7 @@ export interface SensorData {
   dewpoint: SensorDataGeneric;
   outHumidity: SensorDataGeneric;
   barometer: SensorDataGeneric;
+  barometerRotation: number;
   wind: SensorDataWind;
   rain: SensorDataRain;
   suntoday: SensorDataSunriseSunset;
@@ -68,6 +69,7 @@ export function getDummySensorData(): SensorData {
     dewpoint: getDummySensorDataGeneric(),
     outHumidity: getDummySensorDataGeneric(),
     barometer: getDummySensorDataGeneric(),
+    barometerRotation: 0,
     wind: getDummySensorDataWind(),
     rain: getDummySensorDataRain(),
     suntoday: getDummySensorDataSunriseSunset(),

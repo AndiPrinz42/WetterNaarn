@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import DetailSensorWidget from "../components/DetailSensorWidget.astro";
+import DetailSensorWidgetBarometer from "../components/DetailSensorWidgetBarometer.astro";
 import DetailSensorWidgetWind from "../components/DetailSensorWidgetWind.astro";
 import SunWidget from "../components/SunWidget.astro";
 import { getMoonIndex, getMoonIcon, getMoonName } from "../scripts/utils.ts";
@@ -24,6 +25,8 @@ async function getData(): Promise<SensorData> {
   sensorData.barometer = await getGenericCurrentMinMax("barometer", 1, unitConverter.inHgToHpa, db);
   sensorData.wind = await getWindCurrentMinMax(1, unitConverter.mphToKmh, db);
   sensorData.rain = await getRainData(1, unitConverter.inchToMm, db);
+
+  sensorData.barometerRotation = utils.getBarometerRotation(sensorData.barometer.current);
 
   const lat = 48.226179739915345;
   const lon = 14.604849316395049;
@@ -279,7 +282,7 @@ function getDayLength(lat: number, lon: number, dayoffset: number): number {
       <h2>Luftdruck</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget name="Aktuell" text=`Ø ${data.barometer.avg}hPa` value=`${data.barometer.current}hPa` icon="/assets/icons/meteocons/static/sensors/barometer/barometer.svg" iconAlt="Luftdruck Icon" />
+          <DetailSensorWidgetBarometer name="Aktuell" text=`Ø ${data.barometer.avg}hPa` value=`${data.barometer.current}hPa` rotation={data.barometerRotation} />
         </div>
 
         <div class="sensor">

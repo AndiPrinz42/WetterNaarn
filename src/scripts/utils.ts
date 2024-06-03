@@ -12,7 +12,6 @@ export function formatDateTime(date: Date): string {
   return formattedDate;
 }
 
-//dd.mm.yyyy
 export function formatDate(date: Date) {
   return date.toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
@@ -230,24 +229,33 @@ export function getHumidityText(humidity: number): string {
   return "sehr hoch";
 }
 
-export function getBarometerText(barometer: number): string {
-  if (barometer < 1010) {
+export function getBarometerText(value: number): string {
+  if (value < 1000) {
+    return "sehr niedrig";
+  } else if (value >= 1000 && value < 1011) {
     return "niedrig";
-  }
-  if (barometer < 1020) {
+  } else if (value >= 1011 && value <= 1025) {
     return "normal";
+  } else if (value > 1025 && value <= 1036) {
+    return "hoch";
+  } else {
+    return "sehr hoch";
   }
-  return "hoch";
 }
 
-export function getBarometerIcon(barometer: number): string {
-  if (barometer < 1010) {
-    return "/assets/icons/meteocons/static/sensors/barometer/barometer-min.svg";
+export function getBarometerRotation(value: number): number {
+  const min = 993;
+  const max = 1043;
+  const maxAngle = 110;
+  const minAngle = -110;
+  if (value <= min) {
+    return minAngle;
   }
-  if (barometer < 1020) {
-    return "/assets/icons/meteocons/static/sensors/barometer/barometer.svg";
+  if (value >= max) {
+    return maxAngle;
   }
-  return "/assets/icons/meteocons/static/sensors/barometer/barometer-max.svg";
+  const ratio = (value - min) / (max - min);
+  return ratio * (maxAngle - minAngle) + minAngle;
 }
 
 export function getWindText(windspeed: number): string {

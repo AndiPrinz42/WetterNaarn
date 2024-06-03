@@ -50,11 +50,15 @@ export interface SensorDataSunriseSunset {
 
 export interface SensorDataMoon {
   phase: number;
+  text: string;
+  icon: string;
   illumination: number;
   nextFullMoon: string;
   nextFullMoonDays: number;
+  nextFullMoonText: string;
   nextNewMoon: string;
   nextNewMoonDays: number;
+  nextNewMoonText: string;
 }
 
 export function getDummySensorData(): SensorData {
@@ -125,11 +129,15 @@ export function getDummySensorDataSunriseSunset(): SensorDataSunriseSunset {
 export function getDummySensorDataMoon(): SensorDataMoon {
   const dummySensorDataMoon: SensorDataMoon = {
     phase: 0,
+    text: "",
+    icon: "",
     illumination: 0,
     nextFullMoon: "",
     nextFullMoonDays: 0,
+    nextFullMoonText: "",
     nextNewMoon: "",
     nextNewMoonDays: 0,
+    nextNewMoonText: "",
   };
   return structuredClone(dummySensorDataMoon);
 }

@@ -10,8 +10,7 @@ import * as unitConverter from "../scripts/unitConverter";
 import { Database } from "../scripts/database";
 import type { SensorDataWind } from "../scripts/models/sensors.model";
 import type { SensorDataRain } from "../scripts/models/sensors.model";
-import suncalc from 'suncalc3';
-
+import suncalc from "suncalc3";
 
 const data = await getData();
 
@@ -51,6 +50,12 @@ async function getData(): Promise<SensorData> {
   sensorData.moon.nextFullMoon = utils.formatDate(nextFullMoon);
   sensorData.moon.nextNewMoonDays = utils.calcDayDiff(new Date(), nextNewMoon);
   sensorData.moon.nextFullMoonDays = utils.calcDayDiff(new Date(), nextFullMoon);
+
+  const moonindex = getMoonIndex(sensorData.moon.phase);
+  sensorData.moon.icon = getMoonIcon(moonindex);
+  sensorData.moon.text = getMoonName(moonindex);
+  sensorData.moon.nextFullMoonText = utils.futureDatestring(sensorData.moon.nextFullMoonDays);
+  sensorData.moon.nextNewMoonText = utils.futureDatestring(sensorData.moon.nextNewMoonDays);
 
   return sensorData;
 }
@@ -190,12 +195,6 @@ function getDayLength(lat: number, lon: number, dayoffset: number): number {
   const times = calcSunriseSet(lat, lon, dayoffset);
   return times.sunset - times.sunrise;
 }
-
-const moonindex = getMoonIndex(data.moon.phase);
-const moonIcon = getMoonIcon(moonindex);
-const moonPhase = getMoonName(moonindex);
-const nextFullMoonText = utils.futureDatestring(data.moon.nextFullMoonDays);
-const nextNewMoonText = utils.futureDatestring(data.moon.nextNewMoonDays);
 ---
 
 <Layout
@@ -354,15 +353,15 @@ const nextNewMoonText = utils.futureDatestring(data.moon.nextNewMoonDays);
       <h2>Mond</h2>
       <div class="row">
         <div class="sensor">
-          <DetailSensorWidget name="Aktuell" value={data.moon.illumination + "%"} text={moonPhase} icon={moonIcon} iconAlt="Mondphase Icon" />
+          <DetailSensorWidget name="Aktuell" value={data.moon.illumination + "%"} text={data.moon.text} icon={data.moon.icon} iconAlt="Mondphase Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget name="Nächster Vollmond" value={data.moon.nextFullMoon} text={nextFullMoonText} icon="/assets/icons/meteocons/static/moon/moon-full.svg" iconAlt="Vollmond Icon" />
+          <DetailSensorWidget name="Nächster Vollmond" value={data.moon.nextFullMoon} text={data.moon.nextFullMoonText} icon="/assets/icons/meteocons/static/moon/moon-full.svg" iconAlt="Vollmond Icon" />
         </div>
 
         <div class="sensor">
-          <DetailSensorWidget name="Nächster Neumond" value={data.moon.nextNewMoon} text={nextNewMoonText} icon="/assets/icons/meteocons/static/moon/moon-new.svg" iconAlt="Neumond Icon" />
+          <DetailSensorWidget name="Nächster Neumond" value={data.moon.nextNewMoon} text={data.moon.nextNewMoonText} icon="/assets/icons/meteocons/static/moon/moon-new.svg" iconAlt="Neumond Icon" />
         </div>
       </div>
     </section>

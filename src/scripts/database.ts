@@ -1,18 +1,19 @@
 import mariadb from "mariadb";
+const env = import.meta.env;
 
 export class Database {
   weewxPool = mariadb.createPool({
-    host: "192.168.178.26",
-    user: "username",
-    password: "password",
+    host: env.DB_HOST,
+    user: env.DB_USER,
+    password: env.DB_PASS,
     database: "weewx",
     connectionLimit: 1,
   });
 
   forecastPool = mariadb.createPool({
-    host: "192.168.178.26",
-    user: "username",
-    password: "password",
+    host: env.DB_HOST,
+    user: env.DB_USER,
+    password: env.DB_PASS,
     database: "openweatherapi",
     connectionLimit: 1,
   });

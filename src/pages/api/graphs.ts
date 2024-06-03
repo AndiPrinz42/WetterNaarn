@@ -29,13 +29,14 @@ export const GET: APIRoute = async ({ params, request }) => {
   if (!from || !to || isNaN(from) || isNaN(to) || from > to) {
     return new Response(JSON.stringify({ error: "invalid parameters" }), { status: 400 });
   }
-  const data = await getData(from, to);
+  const db = new Database();
+  const data = await getData(db, from, to);
+  db.close("weewx");
+  db.close("forecast");
   return new Response(JSON.stringify(data));
 };
 
-async function getData(from: number, to: number): Promise<GraphData> {
-  const db = new Database();
-
+async function getData(db: Database, from: number, to: number): Promise<GraphData> {
   const minValues = 288;
   const intervalSingle = 300;
   const threshold = 86400;
@@ -44,10 +45,8 @@ async function getData(from: number, to: number): Promise<GraphData> {
   const dataSpacing = stepSize * intervalSingle;
 
   if (dataSpacing < threshold) {
-    console.log("Single data");
     return await calculateWSingleData(db, from, to, intervalSingle, minValues);
   }
-  console.log("Day data");
   return await calculateWDayData(db, from, to, minValues);
 }
 

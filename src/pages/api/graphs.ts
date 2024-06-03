@@ -22,7 +22,7 @@ interface DayCommonSensorRow {
   max: number[];
 }
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ request }) => {
   const searchParams = new URLSearchParams(new URL(request.url).search);
   const from = Number(searchParams.get("from"));
   const to = Number(searchParams.get("to"));
@@ -73,9 +73,9 @@ async function calculateWSingleData(db: Database, from: number, to: number, inte
   data.dewpointMin = (await getDayMin(db, "dewpoint", from, to)).map((value) => unitConverter.fahrenheitToCelsius(value, 1));
   data.dewpointMax = (await getDayMax(db, "dewpoint", from, to)).map((value) => unitConverter.fahrenheitToCelsius(value, 1));
   data.outHumidityMin = (await getDayMin(db, "outHumidity", from, to)).map((value) => utils.round(value, 0));
-  data.outHumidityMax = await (await getDayMax(db, "outHumidity", from, to)).map((value) => utils.round(value, 0));
+  data.outHumidityMax = (await getDayMax(db, "outHumidity", from, to)).map((value) => utils.round(value, 0));
   data.barometerMin = (await getDayMin(db, "barometer", from, to)).map((value) => unitConverter.inHgToHpa(value, 1));
-  data.barometerMax = await (await getDayMax(db, "barometer", from, to)).map((value) => unitConverter.inHgToHpa(value, 1));
+  data.barometerMax = (await getDayMax(db, "barometer", from, to)).map((value) => unitConverter.inHgToHpa(value, 1));
   data.windspeedMax = (await getDayMax(db, "windGust", from, to)).map((value) => unitConverter.mphToKmh(value, 1));
 
   const valDatetimes = singleData.dateTime;

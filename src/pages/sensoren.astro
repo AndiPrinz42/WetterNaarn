@@ -60,6 +60,8 @@ async function getData(): Promise<SensorData> {
   sensorData.moon.nextFullMoonText = utils.futureDatestring(sensorData.moon.nextFullMoonDays);
   sensorData.moon.nextNewMoonText = utils.futureDatestring(sensorData.moon.nextNewMoonDays);
 
+  db.close("weewx");
+  db.close("forecast")
   return sensorData;
 }
 

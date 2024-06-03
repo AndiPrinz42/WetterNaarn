@@ -1,0 +1,48 @@
+export interface GraphData {
+  outTempMin: number[],
+  outTempMax: number[],
+  appTempMin: number[],
+  appTempMax: number[],
+  dewPointMin: number[],
+  dewPointMax: number[],
+  outHumidityMin: number[],
+  outHumidityMax: number[],
+  barometerMin: number[],
+  barometerMax: number[],
+  windspeedMax: number[],
+  dateTime: string[],
+  outTemp: number[],
+  appTemp: number[],
+  dewPoint: number[],
+  outHumidity: number[],
+  barometer: number[],
+  windspeed: number[],
+  windDir: number[],
+  rain: number[],
+}
+
+export function getDummyGraphData(): GraphData {
+  const dummyGraphData: GraphData = {
+    outTempMin: [],
+    outTempMax: [],
+    appTempMin: [],
+    appTempMax: [],
+    dewPointMin: [],
+    dewPointMax: [],
+    outHumidityMin: [],
+    outHumidityMax: [],
+    barometerMin: [],
+    barometerMax: [],
+    windspeedMax: [],
+    dateTime: [],
+    outTemp: [],
+    appTemp: [],
+    dewPoint: [],
+    outHumidity: [],
+    barometer: [],
+    windspeed: [],
+    windDir: [],
+    rain: [],
+  };
+  return structuredClone(dummyGraphData);
+}

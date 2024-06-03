@@ -70,7 +70,7 @@ export function getDayName(dayoffset: number): string {
 
 export function formatMonthDate(date: Date): string {
   const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-  return `${date.getDate()}. ${months[date.getMonth()]}`;
+  return `${date.toLocaleString("de-DE", { day: "2-digit" })}. ${months[date.getMonth()]}`;
 }
 
 export function flattenIcons(icons: string[]): number {

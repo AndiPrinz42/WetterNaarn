@@ -35,6 +35,10 @@ async function getData(): Promise<DashboardData> {
   dashboardData.windspeed = unitConverter.mphToKmh(result[0].windspeed, 1);
   dashboardData.winddir = result[0].winddir;
 
+  // get rain from today
+  result = await db.query("weewx", "SELECT sum FROM archive_day_rain ORDER BY dateTime DESC LIMIT 1");
+  dashboardData.rain = unitConverter.inchToMm(result[0].sum, 1);
+
   // style calculations
   dashboardData.humidityText = utils.getHumidityText(Number(dashboardData.outHumidity));
   dashboardData.barometerText = utils.getBarometerText(Number(dashboardData.barometer));
@@ -68,8 +72,9 @@ async function getData(): Promise<DashboardData> {
 
   // get forecast daytimes
   // for hour 6,12,18,0
-  const forecastTimes = [6, 12, 18, 0];
+  const forecastTimes = [6, 12, 18, 24];
   const forecastTimesFormatted = forecastTimes.map((time) => utils.getUTCTimestampByOffset(time, 0));
+  console.log(forecastTimesFormatted);
   const forecastDaytimes = await getTodaysForecast(forecastTimesFormatted, db);
   dashboardData.morningtemp = forecastDaytimes[0];
   dashboardData.noontemp = forecastDaytimes[1];
@@ -121,9 +126,11 @@ async function getTodaysForecast(timestamps: number[], database: Database): Prom
     sql += "'" + timestamp + "', ";
   });
   sql = sql.slice(0, -2);
-  sql += ");";
+  sql += ") ORDER BY dateTime ASC;";
 
   const result = await database.query("forecast", sql);
+
+  console.log(result);
 
   interface resultRow {
     dateTime: number;

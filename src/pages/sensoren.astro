@@ -146,25 +146,28 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
     to.setDate(to.getDate() + (7 - to.getDay()));
   }
 
-  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ?", [from.getTime() / 1000, to.getTime() / 1000]);
   data.week = result[0]["SUM(sum)"];
 
   from.setDate(from.getDate() - 7);
   to.setDate(to.getDate() - 7);
 
-  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ?", [from.getTime() / 1000, to.getTime() / 1000]);
   data.weekBefore = result[0]["SUM(sum)"];
 
-  from = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-  to = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
+  from = new Date(new Date().getFullYear(), new Date().getMonth());
+  to = new Date(new Date().getFullYear(), new Date().getMonth() + 1);
+  to = new Date(to.getTime() - 1000);
 
-  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ?", [from.getTime() / 1000, to.getTime() / 1000]);
   data.month = result[0]["SUM(sum)"];
 
-  from.setMonth(from.getMonth() - 1);
-  to.setMonth(to.getMonth() - 1);
+  
+  from = new Date(new Date().getFullYear(), new Date().getMonth() - 1);
+  to = new Date(new Date().getFullYear(), new Date().getMonth());
+  to = new Date(to.getTime() - 1000);
 
-  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ? ORDER BY dateTime DESC", [from.getTime() / 1000, to.getTime() / 1000]);
+  result = await db.query("weewx", "SELECT SUM(sum) FROM archive_day_rain WHERE dateTime BETWEEN ? AND ?", [from.getTime() / 1000, to.getTime() / 1000]);
   data.monthBefore = result[0]["SUM(sum)"];
 
   if (convertFn) {
@@ -175,7 +178,7 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
     data.monthBefore = convertFn(data.monthBefore, digits);
   }
 
-  data.last = utils.formatTime(new Date(Number(data.last) * 1000));
+  data.last = utils.formatDateTime(new Date(Number(data.last) * 1000));
 
   return data;
 }

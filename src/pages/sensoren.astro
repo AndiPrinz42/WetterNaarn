@@ -49,8 +49,8 @@ async function getData(): Promise<SensorData> {
   const nextNewMoon = new Date(suncalc.getMoonIllumination(new Date()).next.newMoon.value);
   const nextFullMoon = new Date(suncalc.getMoonIllumination(new Date()).next.fullMoon.value);
 
-  sensorData.moon.nextNewMoon = utils.formatDate(nextNewMoon);
-  sensorData.moon.nextFullMoon = utils.formatDate(nextFullMoon);
+  sensorData.moon.nextNewMoon = utils.formatDateDDMMYY(nextNewMoon);
+  sensorData.moon.nextFullMoon = utils.formatDateDDMMYY(nextFullMoon);
   sensorData.moon.nextNewMoonDays = utils.calcDayDiff(new Date(), nextNewMoon);
   sensorData.moon.nextFullMoonDays = utils.calcDayDiff(new Date(), nextFullMoon);
 
@@ -194,7 +194,7 @@ async function getRainData(digits: number, convertFn: Function | undefined = und
     data.monthBefore = utils.round(data.monthBefore, digits);
   }
 
-  data.last = utils.formatDateTime(new Date(Number(data.last) * 1000));
+  data.last = utils.formatTime(new Date(Number(data.last) * 1000));
 
   return data;
 }

@@ -212,7 +212,7 @@ export default {
             backgroundColor: 'rgb(128, 128, 128, 0.8)',
             yAxisID: 'winddir',
             hidden: !this.selectedSensors.includes(17),
-            order: 20,
+            order: 18,
           },
           {
             type: 'line',
@@ -223,7 +223,7 @@ export default {
             yAxisID: 'rain',
             hidden: !this.selectedSensors.includes(18),
             pointRadius: 0,
-            order: 21,
+            order: 19,
           },
         ],
       },

@@ -12,8 +12,18 @@ export function formatDateTime(date: Date): string {
   return formattedDate;
 }
 
-export function formatDate(date: Date) {
+export function formatDateDDMMYY(date: Date) {
   return date.toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+// 12.05.2021 12:00
+export function formatDateDDMMYYHHMM(date: Date) {
+  return `${date.toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })} ${date.toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" })}`;
+}
+
+// 12.05 12:00
+export function formatDateDDMMHHMM(date: Date) {
+  return `${date.toLocaleString("de-DE", { day: "2-digit", month: "2-digit" }).slice(0, -1)} ${date.toLocaleString("de-DE", { hour: "2-digit", minute: "2-digit" })}`;
 }
 
 export function formatTime(date: Date): string {
@@ -288,5 +298,5 @@ export function getWindText(windspeed: number): string {
 }
 
 export function round(value: number, precision: number = 0): number {
-  return Number(Number(value).toFixed(precision));
+  return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
 }

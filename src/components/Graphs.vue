@@ -374,7 +374,7 @@ export default {
     },
     async updateData() {
       this.showChart = false;
-      this.data = await fetch(`/api/graphs/?from=${this.fromTimestamp}&to=${this.toTimestamp}`);
+      this.data = await fetch(`/api/graphs?from=${this.fromTimestamp}&to=${this.toTimestamp}`);
       this.data = await this.data.json();
       this.normalizeMaxMin();
       this.showChart = true

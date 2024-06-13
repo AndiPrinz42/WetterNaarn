@@ -7,7 +7,7 @@ import type { OpenWeatherCurrent } from "../../../scripts/models/openweathercurr
 
 const UPDATE_INTERVAL = 0;
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async () => {
   const db = new Database();
   const status = await updateCurrent(db, env.OPENWEATHER_API_KEY, UPDATE_INTERVAL);
   db.close("weewx");

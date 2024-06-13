@@ -5,7 +5,7 @@ import { Status } from "../../../scripts/updatestatus.enum";
 
 const UPDATE_INTERVAL = 900;
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async () => {
   const db = new Database();
   const status = await updateCurrent(db, env.OPENWEATHER_API_KEY, UPDATE_INTERVAL);
   db.close("weewx");

@@ -2,15 +2,10 @@ import type { APIRoute } from "astro";
 const env = import.meta.env;
 import { Database } from "../../../scripts/database";
 import * as utils from "../../../scripts/utils";
+import { Status } from "../../../scripts/status.enum";
+import type { OpenWeatherCurrent } from "../../../scripts/models/openweathercurrent.model";
 
-const UPDATE_INTERVAL = 450;
-
-enum Status {
-  Success = "success",
-  NoUpdateNecessary = "noupdatenecessary",
-  ApiError = "apierror",
-  DatabaseError = "databaseerror",
-}
+const UPDATE_INTERVAL = 0;
 
 export const GET: APIRoute = async ({ request }) => {
   const db = new Database();
@@ -35,7 +30,7 @@ async function updateCurrent(db: Database, apikey: string, updateInterval: numbe
     return Status.ApiError;
   }
 
-  const data = await response.json();
+  const data = (await response.json()) as OpenWeatherCurrent;
   const icon = utils.convertIconNumber(data.weather[0].icon);
   const condition = utils.getForecastCondition(icon);
 

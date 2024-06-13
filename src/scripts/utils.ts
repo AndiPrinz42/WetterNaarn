@@ -58,6 +58,26 @@ export function convertIcon(icon: string, sunIsUp: boolean): string {
   return icon + (sunIsUp ? "d" : "n");
 }
 
+export function convertIconNumber(icon: string): number {
+  const icons: { [key: string]: number } = {
+    "01": 9,
+    "02": 8,
+    "03": 7,
+    "04": 6,
+    "09": 5,
+    "10": 4,
+    "11": 0,
+    "13": 1,
+    "50": 3,
+  };
+  return icons[icon.substring(0, 2)];
+}
+
+export function convertNumericCondition(condition: number): string {
+  const conditions: string[] = ["Gewitter", "Schneefall", "Schneeschauer", "Nebel", "Regen", "Regenschauer", "stark bewölkt", "bewölkt", "wechselnd bewölkt", "wolkenlos"];
+  return conditions[condition];
+}
+
 export function getUTCTimestampByOffset(hours: number, minutes: number, days = 0): number {
   const now = new Date();
   now.setUTCHours(hours, minutes, 0, 0);
@@ -171,7 +191,6 @@ export function getForecastIcon(iconnumber: number, sunIsUp: boolean): string {
 
 export function getForecastCondition(iconnumber: number): string {
   const icons: string[] = ["Gewitter", "Schneefall", "Schneeschauer", "Nebel", "Regen", "Regenschauer", "stark bewölkt", "bewölkt", "wechselnd bewölkt", "wolkenlos"];
-
   return icons[iconnumber];
 }
 

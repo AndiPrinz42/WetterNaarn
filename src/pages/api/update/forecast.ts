@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 const env = import.meta.env;
 import { Database } from "../../../scripts/database";
-import { Status } from "../../../scripts/status.enum";
+import { Status } from "../../../scripts/updatestatus.enum";
 
 const UPDATE_INTERVAL = 900;
 

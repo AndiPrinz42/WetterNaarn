@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 const env = import.meta.env;
 import { Database } from "../../../scripts/database";
 import * as utils from "../../../scripts/utils";
-import { Status } from "../../../scripts/status.enum";
+import { Status } from "../../../scripts/updatestatus.enum";
 import type { OpenWeatherCurrent } from "../../../scripts/models/openweathercurrent.model";
 
 const UPDATE_INTERVAL = 0;

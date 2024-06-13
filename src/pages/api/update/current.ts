@@ -5,7 +5,7 @@ import * as utils from "../../../scripts/utils";
 import { Status } from "../../../scripts/updatestatus.enum";
 import type { OpenWeatherCurrent } from "../../../scripts/models/openweathercurrent.model";
 
-const UPDATE_INTERVAL = 0;
+const UPDATE_INTERVAL = 450;
 
 export const GET: APIRoute = async () => {
   const db = new Database();

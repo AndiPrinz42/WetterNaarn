@@ -1,4 +1,4 @@
-export enum Status {
+export enum UpdateStatus {
   Success = "success",
   NoUpdateNecessary = "noupdatenecessary",
   ApiError = "apierror",
